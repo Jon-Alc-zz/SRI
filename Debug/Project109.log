@@ -1,0 +1,107 @@
+﻿  Main.cpp
+c:\users\programmer\documents\github\cs109-sri\Database.h(28): error C2065: 'string': undeclared identifier
+c:\users\programmer\documents\github\cs109-sri\Database.h(28): error C2923: 'std::map': 'string' is not a valid template type argument for parameter '_Kty'
+c:\users\programmer\documents\github\cs109-sri\Database.h(28): error C3203: 'less': unspecialized class template can't be used as a template argument for template parameter '_Pr', expected a real type
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(70): error C3203: 'pair': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
+c:\users\programmer\documents\github\cs109-sri\Database.h(33): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(34): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(35): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(36): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(37): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(38): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(39): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(40): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(44): warning C4624: 'Database': destructor was implicitly defined as deleted
+Main.cpp(6): error C2065: 'string': undeclared identifier
+Main.cpp(6): error C2146: syntax error: missing ';' before identifier 'input'
+Main.cpp(6): error C2065: 'input': undeclared identifier
+Main.cpp(10): error C2065: 'cin': undeclared identifier
+Main.cpp(10): error C2065: 'input': undeclared identifier
+Main.cpp(11): error C2065: 'input': undeclared identifier
+Main.cpp(12): error C2065: 'input': undeclared identifier
+  KnowledgeBase.cpp
+c:\users\programmer\documents\github\cs109-sri\Fact.h(18): error C2143: syntax error: missing ';' before '<'
+c:\users\programmer\documents\github\cs109-sri\Fact.h(18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\programmer\documents\github\cs109-sri\Fact.h(18): error C2238: unexpected token(s) preceding ';'
+c:\users\programmer\documents\github\cs109-sri\Fact.h(19): error C3646: 'name': unknown override specifier
+c:\users\programmer\documents\github\cs109-sri\Fact.h(19): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\programmer\documents\github\cs109-sri\Fact.h(25): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Fact.h(25): error C2535: 'Fact::Fact(void)': member function already defined or declared
+  c:\users\programmer\documents\github\cs109-sri\Fact.h(24): note: see declaration of 'Fact::Fact'
+  Fact.cpp
+c:\users\programmer\documents\github\cs109-sri\Fact.h(18): error C2143: syntax error: missing ';' before '<'
+c:\users\programmer\documents\github\cs109-sri\Fact.h(18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\programmer\documents\github\cs109-sri\Fact.h(18): error C2238: unexpected token(s) preceding ';'
+c:\users\programmer\documents\github\cs109-sri\Fact.h(19): error C3646: 'name': unknown override specifier
+c:\users\programmer\documents\github\cs109-sri\Fact.h(19): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\programmer\documents\github\cs109-sri\Fact.h(25): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Fact.h(25): error C2535: 'Fact::Fact(void)': member function already defined or declared
+  c:\users\programmer\documents\github\cs109-sri\Fact.h(24): note: see declaration of 'Fact::Fact'
+  Database.cpp
+c:\users\programmer\documents\github\cs109-sri\Database.h(28): error C2065: 'string': undeclared identifier
+c:\users\programmer\documents\github\cs109-sri\Database.h(28): error C2923: 'std::map': 'string' is not a valid template type argument for parameter '_Kty'
+c:\users\programmer\documents\github\cs109-sri\Database.h(28): error C3203: 'less': unspecialized class template can't be used as a template argument for template parameter '_Pr', expected a real type
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(70): error C3203: 'pair': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
+c:\users\programmer\documents\github\cs109-sri\Database.h(33): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(34): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(35): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(36): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(37): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(38): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(39): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(40): error C2061: syntax error: identifier 'string'
+c:\users\programmer\documents\github\cs109-sri\Database.h(44): warning C4624: 'Database': destructor was implicitly defined as deleted
+Database.cpp(5): error C2512: 'std::map': no appropriate default constructor available
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(72): note: see declaration of 'std::map'
+Database.cpp(6): error C2065: 'KB': undeclared identifier
+Database.cpp(6): error C2061: syntax error: identifier 'KnowledgeBase'
+Database.cpp(8): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::map' (or there is no acceptable conversion)
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(336): note: could be '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](const _Kty &)'
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(176): note: or       '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](_Kty &&)'
+  Database.cpp(8): note: while trying to match the argument list '(std::map, const char [5])'
+Database.cpp(9): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::map' (or there is no acceptable conversion)
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(336): note: could be '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](const _Kty &)'
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(176): note: or       '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](_Kty &&)'
+  Database.cpp(9): note: while trying to match the argument list '(std::map, const char [5])'
+Database.cpp(10): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::map' (or there is no acceptable conversion)
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(336): note: could be '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](const _Kty &)'
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(176): note: or       '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](_Kty &&)'
+  Database.cpp(10): note: while trying to match the argument list '(std::map, const char [5])'
+Database.cpp(11): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::map' (or there is no acceptable conversion)
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(336): note: could be '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](const _Kty &)'
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(176): note: or       '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](_Kty &&)'
+  Database.cpp(11): note: while trying to match the argument list '(std::map, const char [5])'
+Database.cpp(12): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::map' (or there is no acceptable conversion)
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(336): note: could be '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](const _Kty &)'
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(176): note: or       '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](_Kty &&)'
+  Database.cpp(12): note: while trying to match the argument list '(std::map, const char [6])'
+Database.cpp(13): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::map' (or there is no acceptable conversion)
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(336): note: could be '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](const _Kty &)'
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(176): note: or       '_Ty &std::map<_Kty,_Ty,_Pr,_Alloc>::operator [](_Kty &&)'
+  Database.cpp(13): note: while trying to match the argument list '(std::map, const char [5])'
+Database.cpp(16): error C2511: 'void Database::Parse(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(22): error C2660: 'Database::Command': function does not take 1 arguments
+Database.cpp(24): error C2660: 'Database::Load': function does not take 1 arguments
+Database.cpp(27): error C2660: 'Database::Dump': function does not take 1 arguments
+Database.cpp(30): error C2660: 'Database::MakeFact': function does not take 1 arguments
+Database.cpp(33): error C2660: 'Database::MakeRule': function does not take 1 arguments
+Database.cpp(36): error C2660: 'Database::Query': function does not take 1 arguments
+Database.cpp(39): error C2660: 'Database::Drop': function does not take 1 arguments
+Database.cpp(47): error C2511: 'void Database::Load(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(54): error C2660: 'Database::Parse': function does not take 1 arguments
+Database.cpp(62): error C2511: 'void Database::Dump(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(66): error C2511: 'void Database::MakeFact(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(72): error C2511: 'void Database::MakeRule(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(76): error C2511: 'void Database::Query(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(80): error C2511: 'void Database::Drop(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(84): error C2511: 'command Database::Command(std::string)': overloaded member function not found in 'Database'
+  c:\users\programmer\documents\github\cs109-sri\Database.h(23): note: see declaration of 'Database'
+Database.cpp(86): error C2677: binary '[': no global operator found which takes type 'std::string' (or there is no acceptable conversion)
+  Generating Code...

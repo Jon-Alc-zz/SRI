@@ -8,12 +8,24 @@
 #include "KnowledgeBase.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
+#include <map>
+
+enum command {
+	load,
+	dump,
+	fact,
+	rule,
+	query,
+	drop
+};
 
 class Database{
 
 private:
 
 	KnowledgeBase* KB;
+	std::map <string, command> commandList;
 
 public:
 
@@ -23,7 +35,9 @@ public:
 	void Dump(string fileName);
 	void MakeFact(string params);
 	void MakeRule(string params);
-	void Inference(string params);
+	void Query(string params);
+	void Drop(string params);
+	command Command(string word);
 
 protected:
 
