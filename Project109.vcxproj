@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="Fact.cpp" />
     <ClCompile Include="KnowledgeBase.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h" />
