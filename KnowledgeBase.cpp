@@ -3,7 +3,7 @@
 //-----------------------------------
 
 
-#include KnowledgeBase.h
+#include "KnowledgeBase.h"
 
 KnowledgeBase::KnowledgeBase(){
 	

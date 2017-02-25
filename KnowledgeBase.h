@@ -8,24 +8,24 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-//#include Fact.h
+#include "Fact.h"
 
 class KnowledgeBase{
 
 private:
 
-	vector <Facts *> facts;
+	vector <Fact *> facts;
 
 public:
 
 	KnowledgeBase();
-	void Facts * getFacts(string fact);
-	void CreateFact(string name, vector <string>& facts);
-	void DeleteFact(string fact);
+	void Fact * getFacts(string fact);
+	void CreateFact(String name, vector <string>& facts);
+	void DeleteFact(String fact);
 	~KnowledgeBase();
 
 protected:
 
-}
+};
 
 #endif
