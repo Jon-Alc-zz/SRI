@@ -97,6 +97,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Database.cpp" />
     <ClCompile Include="Fact.cpp" />
     <ClCompile Include="KnowledgeBase.cpp" />
     <ClCompile Include="Main.cpp" />
