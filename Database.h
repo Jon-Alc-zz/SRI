@@ -15,13 +15,13 @@ private:
 
 public:
 
-	void Parse(String input) {
+	void Parse(string input) {
 
 	}
 
 protected:
 
-}
+};
 
 
 #endif

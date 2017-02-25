@@ -13,19 +13,19 @@ class Fact{
 
 private:
 
-	vector <JonsMeat *> jonsmeat;
+	vector <string> things;
 	string name;
 	int length;
 
 public:
 
 	Fact();
-	void Fact(string name, vector <string>& jonsmeat);
+	Fact(string name, vector <string>& jonsmeat);
 	~Fact();
 
 protected:
 
-}
+};
 
 
 #endif
