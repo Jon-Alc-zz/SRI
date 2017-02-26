@@ -1,5 +1,5 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Project109.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   KnowledgeBase.cpp
-Database.obj : error LNK2019: unresolved external symbol "public: void __thiscall KnowledgeBase::CreateFact(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?CreateFact@KnowledgeBase@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) referenced in function __catch$?Load@Database@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z$0
-Database.obj : error LNK2019: unresolved external symbol "public: void __thiscall KnowledgeBase::DeleteFact(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?DeleteFact@KnowledgeBase@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function __catch$?MakeRule@Database@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z$0
-C:\Users\Programmer\Documents\GitHub\CS109-SRI\Debug\109Query.exe : fatal error LNK1120: 2 unresolved externals
+Fact.obj : warning LNK4204: 'C:\Users\Programmer\Documents\GitHub\CS109-SRI\Debug\vc140.pdb' is missing debugging information for referencing module; linking object as if no debug info
+  109Query.vcxproj -> C:\Users\Programmer\Documents\GitHub\CS109-SRI\Debug\109Query.exe
+  109Query.vcxproj -> C:\Users\Programmer\Documents\GitHub\CS109-SRI\Debug\109Query.pdb (Full PDB)

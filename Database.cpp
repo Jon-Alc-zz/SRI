@@ -75,6 +75,10 @@ void Database::Dump(string fileName) {
 	f.open(fileName);
 	map < string, vector <Rule*> > rules;
 	rules = RB->getAllRules();
+
+	for (std::map< string, vector <Rule*> >::iterator it = rules.begin(); it != rules.end(); ++it) {
+
+	}
 }
 
 void Database::MakeFact(string params) {
