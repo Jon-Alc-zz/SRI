@@ -6,6 +6,10 @@
 #define __RULEBASE_H
 
 #include "Rule.h"
+#include <string>
+#include <vector>
+
+using namespace std;
 
 class RuleBase {
 

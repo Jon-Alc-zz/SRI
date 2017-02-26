@@ -7,7 +7,7 @@ int main() {
 
 	while (true) {
 
-		cin >> input;
+		getline(cin, input);
 		if (input == "q") break;
 		DB->Parse(input);
 

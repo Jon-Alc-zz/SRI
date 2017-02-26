@@ -60,25 +60,26 @@ void Database::Load(string fileName) {
 }
 
 void Database::Dump(string fileName) {
-	cout << "Dump";
+	cout << "Dump\n";
+	cout << fileName;
 }
 
 void Database::MakeFact(string params) {
-	cout << "MakeFact";
+	cout << "MakeFact\n";
 	//get information from params
 	//then call KB->CreateFact() with proper arguments
 }
 
 void Database::MakeRule(string params) {
-	cout << "MakeRule";
+	cout << "MakeRule\n";
 }
 
 void Database::Query(string params) {
-	cout << "Query";
+	cout << "Query\n";
 }
 
 void Database::Drop(string params) {
-	cout << "Drop";
+	cout << "Drop\n";
 }
 
 command Database::Command(string word) {
