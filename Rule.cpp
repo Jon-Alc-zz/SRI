@@ -9,10 +9,6 @@ Rule::Rule(string newName, string newSpecs) {
 	specs = newSpecs;
 }
 
-string Rule::getSpecs() {
-	return specs;
-}
-
 Rule::~Rule() {
 
 }
