@@ -9,12 +9,29 @@ KnowledgeBase::KnowledgeBase(){
 	
 }
 
+int KnowledgeBase::CheckFact(string fact) {
+	auto it = KBmp.find(fact);
+	if (it != KBmp.end()) {
+		return 1;
+	}
+	else {
+		return -1;
+	}
+}
+
 vector <Fact *> KnowledgeBase::GetAllFacts() {
 	return facts;
 }
 
-Fact* KnowledgeBase::getFacts(string fact) {
-	return facts[1];
+auto KnowledgeBase::getFacts(string fact) {
+	try {
+		if (CheckFact(fact) == 1) {
+			return KBmp[fact];
+		}
+	}
+	catch (...) {
+		cout << "getFacts Error: fact" << fact << " not found." << endl;
+	}
 }
 
 void KnowledgeBase::CreateFact(string name, string things) {
@@ -23,5 +40,8 @@ void KnowledgeBase::CreateFact(string name, string things) {
 }
 
 void KnowledgeBase::DeleteFact(string fact) {
-
+	it = KBmp.find(fact);
+	KBmp.erase(it);
 }
+
+KnowledgeBase::~KnowledgeBase() {};

@@ -19,11 +19,14 @@ class KnowledgeBase{
 private:
 
 	vector <Fact *> facts;
+	map<string, vector<Fact>* > KBmp;
+	map<string, vector<Fact>* >::iterator it;
 
 public:
 
 	KnowledgeBase();
-	Fact* getFacts(string fact);
+	int CheckFact(string fact);
+	auto getFacts(string fact);
 	vector <Fact *> GetAllFacts();
 	void CreateFact(string name, string things);
 	void DeleteFact(string fact);
