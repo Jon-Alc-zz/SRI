@@ -13,8 +13,6 @@ Fact::Fact(string thingString) {
 	while (true) {
 
 		// removes all whitespace
-		while (strPos = thingString.find(" ") != string::npos)
-
 		while (thingString.find(" ") != string::npos)
 			thingString.erase(strPos);
 
@@ -31,7 +29,7 @@ Fact::Fact(string thingString) {
 			
 		}
 
-		thingString.erase(0, strPos);
+		thingString.erase(0, strPos); // erases the added string
 
 		// if there's no commas, end the loop
 		if (strPos == string::npos)
