@@ -21,7 +21,7 @@ public:
 
 	RuleBase();
 
-	void createRule(string spec);
+	void createRule(string name, string spec);
 	void deleteRule(string name);
 	void checkRule(string name);
 
