@@ -14,7 +14,8 @@ Fact* KnowledgeBase::getFacts(string fact) {
 }
 
 void KnowledgeBase::CreateFact(string name, string things) {
-
+	Fact* newFact = new Fact(things);
+	facts.push_back(newFact);
 }
 
 void KnowledgeBase::DeleteFact(string fact) {

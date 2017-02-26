@@ -4,18 +4,11 @@
 
 #include "Fact.h"
 
-Fact::Fact(string factName, string thingString) {
+Fact::Fact(string thingString) {
 
-	name = factName;
 	int thingLength = 0;
 	int strPos = 0;
 	string strTemp = "";
-
-	// "thing1, thing2, thing3"
-	// thingString is a long string containing all things
-	// you want to split on ","
-	// you want to remove whitespace
-	// add the stuff to the things vector
 
 	while (true) {
 
@@ -28,7 +21,7 @@ Fact::Fact(string factName, string thingString) {
 		if (strPos != 1) { // catches "thing1,, thing2"
 
 			if (strPos == string::npos) // if there's 1 argument
-				strTemp.assign(thingString, 0, strTemp.length);
+				strTemp.assign(thingString, 0, strTemp.length());
 			else
 				strTemp.assign(thingString, 0, strPos);
 
@@ -43,7 +36,7 @@ Fact::Fact(string factName, string thingString) {
 	}
 
 	length = thingLength;
-	if (!thingString.empty) { thingString.clear; }
+	if (!thingString.empty()) { thingString.clear(); }
 
 }
 

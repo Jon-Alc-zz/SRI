@@ -18,12 +18,11 @@ class Fact {
 	private:
 
 		vector <string> things;
-		string name;
 		int length;
 
 	public:
 
-		Fact(string factName, string thingString);
+		Fact(string thingString);
 		~Fact();
 
 	protected:
