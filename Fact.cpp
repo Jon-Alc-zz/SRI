@@ -13,12 +13,9 @@ Fact::Fact(string thingString) {
 	while (true) {
 
 		// removes all whitespace
-<<<<<<< HEAD
 		while (strPos = thingString.find(" ") != string::npos)
-=======
 
 		while (thingString.find(" ") != string::npos)
->>>>>>> origin/master
 			thingString.erase(strPos);
 
 		strPos = thingString.find(","); // searches for index of ','
