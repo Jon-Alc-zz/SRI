@@ -6,7 +6,7 @@ Database::Database() {
 	KB = new KnowledgeBase();
 
 	commandList["load"] = load;
-	commandList["load"] = dump;
+	commandList["dump"] = dump;
 	commandList["fact"] = fact;
 	commandList["rule"] = rule;
 	commandList["query"] = query;
@@ -84,6 +84,8 @@ void Database::Drop(string params) {
 
 command Database::Command(string word) {
 	cout << "Command\n";
-	transform(word.begin(), word.end(), word.begin(), ::tolower);
+	for (unsigned int i = 0; i < word.length(); ++i) {
+		word[i] = tolower(word[i]);
+	}
 	return commandList[word];
 }
