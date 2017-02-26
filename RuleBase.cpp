@@ -6,6 +6,8 @@
 
 RuleBase::RuleBase() {
 
+	numRules = 0;
+
 }
 
 void RuleBase::createRule(string name, string param, string logic) {
@@ -36,16 +38,34 @@ void RuleBase::deleteRule(string name) {
 
 }
 
+auto RuleBase::getRule(string name) {
+
+	try {
+
+		if (checkRule(name) == 1) {
+			return rules[name];
+		}
+	}
+	catch (...) {
+
+		cout << "getRule Error: rule" << name << " not found." << endl;
+
+	}
+
+}
+
+auto RuleBase::getAllRules() {
+
+	return rules;
+
+}
+
 int RuleBase::checkRule(string name) {
+
 	auto it = rules.find(name);
 
-	if (it != rules.end()) {
-		return 1;
-	}
-	else {
-		
-		return -1;
-	}
+	if (it != rules.end()) return 1;
+	else return -1;
 
 }
 
