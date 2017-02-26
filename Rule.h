@@ -16,14 +16,16 @@ class Rule {
 
 private:
 
-	string specs;
-	string name;
+	vector <string> logic;
+	vector <string> param;
+	int numSpecs;
 
 public:
 
-	Rule(string newName, string newSpecs);
+	Rule(string newParam, string newLogic);
 
 	string getSpecs();
+	void addSpec();
 
 	~Rule();
 };

@@ -7,7 +7,7 @@
 
 #include "Rule.h"
 #include <string>
-#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -15,15 +15,16 @@ class RuleBase {
 
 private:
 
-	vector <Rule* > rules;
+	map <string,Rule> rules;
+	int numRules;
 
 public:
 
 	RuleBase();
 
-	void createRule(string name, string spec);
+	void createRule(string name, string param, string logic);
 	void deleteRule(string name);
-	void checkRule(string name);
+	int checkRule(string name);
 
 	~RuleBase();
 
