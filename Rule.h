@@ -16,14 +16,15 @@ class Rule {
 
 private:
 
-	string specs;
-	string name;
+	string logic;
+	string param;
 
 public:
 
-	Rule(string newName, string newSpecs);
+	Rule(string newParam, string newLogic);
 
-	string getSpecs();
+	string getParam();
+	string getLogic();
 
 	~Rule();
 };
