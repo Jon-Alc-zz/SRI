@@ -23,6 +23,7 @@ class Fact {
 	public:
 
 		Fact(string thingString);
+		vector <string> GetThings();
 		~Fact();
 
 	protected:

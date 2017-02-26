@@ -73,12 +73,23 @@ void Database::Dump(string fileName) {
 	cout << "Dump\n";
 	ofstream f;
 	f.open(fileName);
+
+	vector <Fact *> facts;
+	facts = KB->GetAllFacts();
+
 	map < string, vector <Rule*> > rules;
 	rules = RB->getAllRules();
 
-	for (std::map< string, vector <Rule*> >::iterator it = rules.begin(); it != rules.end(); ++it) {
-
+	for (int i = 0; i < facts.size(); i++) {
+		vector <string> printer = facts[i]->GetThings();
+		for (int j = 0; j < printer.size(); j++) {
+			cout << printer[j];
+		}
 	}
+
+	//for (std::map< string, vector <Rule*> >::iterator it = rules.begin(); it != rules.end(); ++it) {
+
+	//}
 }
 
 void Database::MakeFact(string params) {

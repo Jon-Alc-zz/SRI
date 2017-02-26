@@ -42,6 +42,10 @@ Fact::Fact(string thingString) {
 
 }
 
+vector <string> Fact::GetThings() {
+	return things;
+}
+
 Fact::~Fact() {
 
 }

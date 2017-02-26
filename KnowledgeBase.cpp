@@ -9,6 +9,10 @@ KnowledgeBase::KnowledgeBase(){
 	
 }
 
+vector <Fact *> KnowledgeBase::GetAllFacts() {
+	return facts;
+}
+
 Fact* KnowledgeBase::getFacts(string fact) {
 	return facts[1];
 }
