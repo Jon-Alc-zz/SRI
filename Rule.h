@@ -23,7 +23,7 @@ public:
 
 	Rule(string newName, string newSpecs);
 
-	string getSpecs(string name);
+	string getSpecs();
 
 	~Rule();
 };

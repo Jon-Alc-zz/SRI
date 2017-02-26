@@ -61,7 +61,7 @@ void Database::Load(string fileName) {
 
 void Database::Dump(string fileName) {
 	cout << "Dump\n";
-	cout << fileName;
+	cout << fileName << endl;
 }
 
 void Database::MakeFact(string params) {
