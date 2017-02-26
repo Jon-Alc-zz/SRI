@@ -8,7 +8,7 @@ RuleBase::RuleBase() {
 
 }
 
-void RuleBase::createRule(string spec) {
+void RuleBase::createRule(string name, string spec) {
 
 }
 
