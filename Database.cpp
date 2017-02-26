@@ -5,12 +5,12 @@ using namespace std;
 Database::Database() {
 	KB = new KnowledgeBase();
 
-	commandList["LOAD"] = load;
-	commandList["DUMP"] = dump;
-	commandList["FACT"] = fact;
-	commandList["Rule"] = rule;
-	commandList["QUERY"] = query;
-	commandList["DROP"] = drop;
+	commandList["load"] = load;
+	commandList["load"] = dump;
+	commandList["fact"] = fact;
+	commandList["rule"] = rule;
+	commandList["query"] = query;
+	commandList["drop"] = drop;
 }
 
 void Database::Parse(string input) {
@@ -83,6 +83,7 @@ void Database::Drop(string params) {
 }
 
 command Database::Command(string word) {
-	cout << "Command";
+	cout << "Command\n";
+	transform(word.begin(), word.end(), word.begin(), ::tolower);
 	return commandList[word];
 }

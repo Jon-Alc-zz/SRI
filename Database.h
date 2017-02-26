@@ -10,6 +10,7 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include <algorithm>
 
 enum command {
 	load,
