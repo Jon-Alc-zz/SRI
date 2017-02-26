@@ -26,7 +26,7 @@ void RuleBase::createRule(string name, string param, string logic) {
 
 void RuleBase::deleteRule(string name) {
 
-	if (checkRule(name); == -1) {
+	if (checkRule(name) == -1) {
 		
 	}
 	else {

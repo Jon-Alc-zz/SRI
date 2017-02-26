@@ -71,7 +71,8 @@ void Database::Load(string fileName) {
 
 void Database::Dump(string fileName) {
 	cout << "Dump\n";
-	cout << fileName << endl;
+	ofstream f;
+	f.open(fileName);
 }
 
 void Database::MakeFact(string params) {
