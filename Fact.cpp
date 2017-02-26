@@ -14,7 +14,7 @@ Fact::Fact(string thingString) {
 
 		// removes all whitespace
 		while (strPos = thingString.find(" ") != string::npos)
-			strTemp.erase(strTemp.begin() + strPos);
+			thingString.erase(strPos);
 
 		strPos = thingString.find(","); // searches for index of ','
 
@@ -28,6 +28,8 @@ Fact::Fact(string thingString) {
 			things.push_back(strTemp); // add to end of 'things' vector
 
 		}
+
+		thingString.erase(0, strPos);
 
 		// if there's no commas, end the loop
 		if (strPos == string::npos)
