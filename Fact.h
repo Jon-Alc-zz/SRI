@@ -13,21 +13,20 @@
 
 using namespace std;
 
-class Fact{
+class Fact {
 
-private:
+	private:
 
-	vector <string> things;
-	string name;
-	int length;
+		vector <string> things;
+		string name;
+		int length;
 
-public:
+	public:
 
-	Fact();
-	Fact(string name, vector <string>& jonsmeat);
-	~Fact();
+		Fact(string factName, string thingString);
+		~Fact();
 
-protected:
+	protected:
 
 };
 
