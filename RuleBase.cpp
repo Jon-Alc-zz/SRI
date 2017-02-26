@@ -9,31 +9,44 @@ RuleBase::RuleBase() {
 }
 
 void RuleBase::createRule(string name, string param, string logic) {
+	
+	if (checkRule(name) == -1) {
+		
+		vector <Rule*> newRule;
+		rules[name] = newRule;
+
+	}
+
+	Rule* A = new Rule(param, logic);
+
+	rules[name].push_back(A);
 
 	numRules++;
 }
 
 void RuleBase::deleteRule(string name) {
-	int index = checkRule(name);
 
-	if (index == -1) {
-		cout << "deleteRule Error:" << name << "not found" << endl;
+	if (checkRule(name); == -1) {
+		
 	}
 	else {
-		index--;
 
+		rules.erase(name);
 	}
 
 }
 
 int RuleBase::checkRule(string name) {
-	for (int i = 0; i < numRules; i++) {
+	auto it = rules.find(name);
 
-		if (rules[i].getName() == name) return i;
-
+	if (it != rules.end()) {
+		return 1;
+	}
+	else {
+		
+		return -1;
 	}
 
-	return -1;
 }
 
 

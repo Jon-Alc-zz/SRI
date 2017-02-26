@@ -15,7 +15,7 @@ class RuleBase {
 
 private:
 
-	map <string,Rule> rules;
+	map < string, vector <Rule*> > rules;
 	int numRules;
 
 public:
