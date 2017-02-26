@@ -17,7 +17,8 @@ enum command {
 	fact,
 	rule,
 	query,
-	drop
+	drop,
+	fail
 };
 
 class Database{

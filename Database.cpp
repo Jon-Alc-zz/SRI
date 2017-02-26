@@ -5,6 +5,7 @@ using namespace std;
 Database::Database() {
 	KB = new KnowledgeBase();
 
+	//initializes command map to point to correct function when called
 	commandList["load"] = load;
 	commandList["dump"] = dump;
 	commandList["fact"] = fact;
@@ -14,12 +15,17 @@ Database::Database() {
 }
 
 void Database::Parse(string input) {
+	//creates string stream to read input
 	istringstream iss(input);
 	string word;
 	string params;
+	//puts first word into a string
 	iss >> word;
+	//puts reaminder of command as parameters
 	getline(iss, params);
-	switch (Command(word)) {
+	//use commandList map to figure out which command was specified
+	command action = Command(word);
+	switch (action) {
 	case load:
 		Load(params);
 		break;
@@ -45,10 +51,13 @@ void Database::Parse(string input) {
 }
 
 void Database::Load(string fileName) {
+	cout << "load";
 	try {
+		//open file
 		std::ifstream infile(fileName);
 
 		std::string line;
+		//read file line by line and execute lines as commands
 		while (std::getline(infile, line)) {
 			std::istringstream iss(line);
 			Parse(line);
@@ -84,8 +93,18 @@ void Database::Drop(string params) {
 
 command Database::Command(string word) {
 	cout << "Command\n";
+	//change all characters in string to lowercase
 	for (unsigned int i = 0; i < word.length(); ++i) {
 		word[i] = tolower(word[i]);
 	}
-	return commandList[word];
+	//check if the command is valid
+	auto it = commandList.find(word);
+	if (it != commandList.end()) {
+		//use commandList to get correct function to execute
+		return commandList[word];
+	}
+	else {
+		//return invalid command if not recognized
+		return fail;
+	}
 }
