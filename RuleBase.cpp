@@ -45,6 +45,10 @@ auto RuleBase::getRule(string name) {
 		if (checkRule(name) == 1) {
 			return rules[name];
 		}
+		else {
+			throw;
+			return rules[name];
+		}
 	}
 	catch (...) {
 
@@ -54,7 +58,7 @@ auto RuleBase::getRule(string name) {
 
 }
 
-auto RuleBase::getAllRules() {
+map < string, vector <Rule*> > RuleBase::getAllRules() {
 
 	return rules;
 

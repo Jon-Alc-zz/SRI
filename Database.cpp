@@ -73,6 +73,8 @@ void Database::Dump(string fileName) {
 	cout << "Dump\n";
 	ofstream f;
 	f.open(fileName);
+	map < string, vector <Rule*> > rules;
+	rules = RB->getAllRules();
 }
 
 void Database::MakeFact(string params) {

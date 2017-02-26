@@ -1,8 +1,5 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Project109.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  RuleBase.cpp
-  Rule.cpp
-Rule.cpp(12): error C2511: 'std::string Rule::getSpecs(void)': overloaded member function not found in 'Rule'
-  c:\users\programmer\documents\github\cs109-sri\Rule.h(15): note: see declaration of 'Rule'
-Rule.cpp(13): error C2597: illegal reference to non-static member 'Rule::specs'
-  Database.cpp
-  Generating Code...
+  KnowledgeBase.cpp
+Database.obj : error LNK2019: unresolved external symbol "public: void __thiscall KnowledgeBase::CreateFact(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?CreateFact@KnowledgeBase@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) referenced in function __catch$?Load@Database@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z$0
+Database.obj : error LNK2019: unresolved external symbol "public: void __thiscall KnowledgeBase::DeleteFact(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?DeleteFact@KnowledgeBase@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function __catch$?MakeRule@Database@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z$0
+C:\Users\Programmer\Documents\GitHub\CS109-SRI\Debug\109Query.exe : fatal error LNK1120: 2 unresolved externals

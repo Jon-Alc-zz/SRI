@@ -25,7 +25,7 @@ public:
 	void createRule(string name, string param, string logic);
 	void deleteRule(string name);
 	auto getRule(string name);
-	auto getAllRules();
+	map < string, vector <Rule*> > getAllRules();
 	int checkRule(string name);
 
 	~RuleBase();
