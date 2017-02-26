@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ private:
 
 public:
 
-	Rule(string name, string specs);
+	Rule(string newName, string newSpecs);
 
 	string getSpecs(string name);
 
