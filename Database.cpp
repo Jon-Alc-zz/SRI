@@ -4,6 +4,7 @@ using namespace std;
 
 Database::Database() {
 	KB = new KnowledgeBase();
+	RB = new RuleBase();
 
 	//initializes command map to point to correct function when called
 	commandList["load"] = load;
@@ -97,6 +98,27 @@ void Database::MakeFact(string params) {
 
 void Database::MakeRule(string params) {
 	cout << "MakeRule\n";
+	try {
+		//remove first space in params
+		params.erase(0, 1);
+		//the characters up to the first parentheses is the fact name
+		auto tail = params.find("(");
+		//if no parentheses are found throw error
+		if (tail == std::string::npos) throw;
+		string ruleName = params.substr(0, tail);
+		//starting at tail, find closing parentheses for end of stuff
+		auto head = params.find(")", tail);
+		if (tail == std::string::npos) throw;
+		//put fact stuff in string
+		string args = params.substr(tail + 1, head - tail - 1);
+		tail = params.find(":-", head);
+		if (tail == std::string::npos) throw;
+		string logic = params.substr(tail + 4);
+		RB->createRule(ruleName, args, logic);
+	}
+	catch (...) {
+		cout << "Invalid rule syntax";
+	}
 }
 
 void Database::Query(string params) {
@@ -105,6 +127,8 @@ void Database::Query(string params) {
 
 void Database::Drop(string params) {
 	cout << "Drop\n";
+	RB->deleteRule(params);
+	KB->DeleteFact(params);
 }
 
 command Database::Command(string word) {
