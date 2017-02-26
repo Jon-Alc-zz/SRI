@@ -6,6 +6,7 @@
 #define __DATABASE_H
 
 #include "KnowledgeBase.h"
+#include "RuleBase.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -26,6 +27,7 @@ class Database{
 private:
 
 	KnowledgeBase* KB;
+	RuleBase* RB;
 	std::map <string, command> commandList;
 
 public:
