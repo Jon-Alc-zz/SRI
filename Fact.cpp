@@ -13,7 +13,12 @@ Fact::Fact(string thingString) {
 	while (true) {
 
 		// removes all whitespace
+<<<<<<< HEAD
 		while (strPos = thingString.find(" ") != string::npos)
+=======
+
+		while (thingString.find(" ") != string::npos)
+>>>>>>> origin/master
 			thingString.erase(strPos);
 
 		strPos = thingString.find(","); // searches for index of ','
@@ -26,7 +31,7 @@ Fact::Fact(string thingString) {
 				strTemp.assign(thingString, 0, strPos);
 
 			things.push_back(strTemp); // add to end of 'things' vector
-
+			
 		}
 
 		thingString.erase(0, strPos);
