@@ -24,7 +24,7 @@ public:
 
 	KnowledgeBase();
 	Fact* getFacts(string fact);
-	void CreateFact(string name, vector <string&> facts);
+	void CreateFact(string name, string things);
 	void DeleteFact(string fact);
 	~KnowledgeBase();
 
