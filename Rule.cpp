@@ -6,18 +6,17 @@
 
 Rule::Rule(string newParam, string newLogic) {
 
-	param.push_back(newParam);
-	logic.push_back(newLogic);
-	numSpecs = 1;
+	param = newParam;
+	logic = newLogic;
 
 }
 
-vector Rule::getParam() {
-
+string Rule::getParam() {
+	return param;
 }
 
-vector Rule::getLogic() {
-
+string Rule::getLogic() {
+	return logic;
 }
 
 
