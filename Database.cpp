@@ -97,14 +97,18 @@ void Database::MakeFact(string params) {
 	try {
 		//remove first space in params
 		params.erase(0, 1);
+		
 		//the characters up to the first parentheses is the fact name
 		auto tail = params.find("(");
+		
 		//if no parentheses are found throw error
 		if (tail == std::string::npos) throw;
 		string factName = params.substr(0, tail);
+		
 		//starting at tail, find closing parentheses for end of arguments
 		auto head = params.find(")", tail);
 		if (tail == std::string::npos) throw;
+		
 		//put all arguments in string and send it to KB->CreateFact
 		string args = params.substr(tail + 1, head - tail - 1);
 		KB->CreateFact(factName, args);

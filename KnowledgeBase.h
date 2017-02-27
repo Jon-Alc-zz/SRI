@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
+#include <map>
 #include "Fact.h"
 
 using namespace std;
@@ -18,9 +19,9 @@ class KnowledgeBase{
 
 private:
 
-	vector <Fact *> facts;
-	map<string, vector<Fact>* > KBmp;
-	map<string, vector<Fact>* >::iterator it;
+	vector <Fact*> facts;
+	map<string, vector<Fact*> > KBmp;
+	map<string, vector<Fact*> >::iterator it;
 
 public:
 
