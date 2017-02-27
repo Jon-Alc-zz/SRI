@@ -74,21 +74,18 @@ void Database::Dump(string fileName) {
 	ofstream f;
 	f.open(fileName);
 
-	vector <Fact *> facts;
+	map<string, vector<Fact*> > facts;
 	facts = KB->GetAllFacts();
 
 	map < string, vector <Rule*> > rules;
 	rules = RB->getAllRules();
 
-	for (int i = 0; i < facts.size(); i++) {
-		vector <string> printer = facts[i]->GetThings();
-		for (int j = 0; j < printer.size(); j++) {
-			cout << printer[j];
-		}
+	for (std::map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
+		std::cout << "FACT " << itf->first << "\n";
 	}
 
-	for (std::map< string, vector <Rule*> >::iterator it = rules.begin(); it != rules.end(); ++it) {
-		std::cout << it->first << '\n';
+	for (std::map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
+		std::cout << "RULE " << itr->first << '\n';
 	}
 }
 
@@ -145,6 +142,7 @@ void Database::MakeRule(string params) {
 
 void Database::Query(string params) {
 	cout << "Inference\n";
+	
 }
 
 void Database::Drop(string params) {
