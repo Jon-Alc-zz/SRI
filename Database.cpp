@@ -80,12 +80,21 @@ void Database::Dump(string fileName) {
 	map < string, vector <Rule*> > rules;
 	rules = RB->getAllRules();
 
-	for (std::map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
-		std::cout << "FACT " << itf->first << "\n";
+	for (map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
+		for (int i = 0; i < itf->second.size(); i++) {
+			cout << "FACT " << itf->first << "(";
+			for (int j = 0; j < itf->second[i]->GetThings().size(); j++) {
+				if (j > 0) { cout << ", "; }
+				cout << itf->second[i]->GetThings()[j];
+			}
+			cout << ")\n";
+		}
 	}
 
-	for (std::map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
-		std::cout << "RULE " << itr->first << '\n';
+	for (map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
+		for (int i = 0; i < itr->second.size(); i++) {
+			cout << "RULE " << itr->first << " " << itr->second[i]->getLogic();
+		}
 	}
 }
 
@@ -132,7 +141,7 @@ void Database::MakeRule(string params) {
 		string args = params.substr(tail + 1, head - tail - 1);
 		tail = params.find(":-", head);
 		if (tail == std::string::npos) throw;
-		string logic = params.substr(tail + 4);
+		string logic = params.substr(tail + 3);
 		RB->createRule(ruleName, args, logic);
 	}
 	catch (...) {
