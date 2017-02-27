@@ -10,35 +10,28 @@ Fact::Fact(string thingString) {
 	int strPos = 0;
 	string strTemp = "";
 
-	while (true) {
+	// removes all whitespace
+	while (thingString.find(" ") != string::npos) {
+		strPos = thingString.find(" ");
+		thingString.erase(thingString.begin() + strPos);
+	}
 
-		// removes all whitespace
-		while (thingString.find(" ") != string::npos)
-			thingString.erase(strPos);
+	 do {
 
 		strPos = thingString.find(","); // searches for index of ','
 
-		if (strPos != 1) { // catches "thing1,, thing2"
+		if (strPos != 0) { // catches "thing1,, thing2"
 
-			if (strPos == string::npos) // if there's 1 argument
-				strTemp.assign(thingString, 0, strTemp.length());
-			else
-				strTemp.assign(thingString, 0, strPos);
-
+			strTemp.assign(thingString, 0, strPos);
 			things.push_back(strTemp); // add to end of 'things' vector
 			
 		}
 
-		thingString.erase(0, strPos); // erases the added string
+		thingString.erase(0, strPos + 1); // erases the added string
 
-		// if there's no commas, end the loop
-		if (strPos == string::npos)
-			break;
-
-	}
+	 } while (strPos != string::npos);
 
 	length = thingLength;
-	if (!thingString.empty()) { thingString.clear(); }
 
 }
 
