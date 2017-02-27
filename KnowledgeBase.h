@@ -19,10 +19,6 @@ class KnowledgeBase{
 
 private:
 
-<<<<<<< HEAD
-=======
-	vector <Fact*> facts;
->>>>>>> bec09dff11b2650b1c5da63da253d60cd3c33bff
 	map<string, vector<Fact*> > KBmp;
 	map<string, vector<Fact*> >::iterator it;
 
