@@ -81,11 +81,11 @@ void Database::Dump(string fileName) {
 	rules = RB->getAllRules();
 
 	for (std::map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
-		std::cout << "Fact" << itf->first;
+		std::cout << "FACT " << itf->first << "\n";
 	}
 
 	for (std::map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
-		std::cout << itr->first << '\n';
+		std::cout << "RULE " << itr->first << '\n';
 	}
 }
 
@@ -142,6 +142,7 @@ void Database::MakeRule(string params) {
 
 void Database::Query(string params) {
 	cout << "Inference\n";
+	
 }
 
 void Database::Drop(string params) {
