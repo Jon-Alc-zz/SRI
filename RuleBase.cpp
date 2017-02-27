@@ -34,6 +34,7 @@ void RuleBase::deleteRule(string name) {
 	else {
 
 		rules.erase(name);
+		numRules--;
 	}
 
 }
