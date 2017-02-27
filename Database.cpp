@@ -142,7 +142,14 @@ void Database::MakeRule(string params) {
 
 void Database::Query(string params) {
 	cout << "Inference\n";
-	
+	//get operator
+	//get left fact/rule
+	//figure out if it is a fact or a rule
+	//if it is a rule, pass it recursively and get results for possible things
+	//if it is a fact, do this logic once for each instance of a fact with that name
+	//if AND, if any $params between rules/facts contradict one another, stop instance
+	//if OR, do it as if it was the only rule/fact, then add all results together
+	//put applicable $params into a CreateFact() call
 }
 
 void Database::Drop(string params) {
