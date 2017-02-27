@@ -19,8 +19,8 @@ int KnowledgeBase::CheckFact(string fact) {
 	}
 }
 
-vector <Fact *> KnowledgeBase::GetAllFacts() {
-	return facts;
+map<string, vector<Fact*> > KnowledgeBase::GetAllFacts() {
+	return KBmp;
 }
 
 auto KnowledgeBase::getFacts(string fact) {
@@ -36,7 +36,7 @@ auto KnowledgeBase::getFacts(string fact) {
 
 void KnowledgeBase::CreateFact(string name, string things) {
 	Fact* newFact = new Fact(things);
-	facts.push_back(newFact);
+	KBmp[name].push_back(newFact);
 }
 
 void KnowledgeBase::DeleteFact(string fact) {

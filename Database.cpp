@@ -87,9 +87,9 @@ void Database::Dump(string fileName) {
 		}
 	}
 
-	//for (std::map< string, vector <Rule*> >::iterator it = rules.begin(); it != rules.end(); ++it) {
-
-	//}
+	for (std::map< string, vector <Rule*> >::iterator it = rules.begin(); it != rules.end(); ++it) {
+		std::cout << it->first << '\n';
+	}
 }
 
 void Database::MakeFact(string params) {
