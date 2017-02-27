@@ -10,7 +10,8 @@ RuleBase::RuleBase() {
 
 }
 
-void RuleBase::createRule(string name, string param, string logic, string categories, string dollarParams) {
+
+void RuleBase::createRule(string name, string param, string logic, string paramName, string paramArg) {
 	
 	if (checkRule(name) == -1) {
 		
@@ -19,7 +20,7 @@ void RuleBase::createRule(string name, string param, string logic, string catego
 
 	}
 
-	Rule* A = new Rule(param, logic);
+	Rule* A = new Rule(param, logic, paramName, paramArg);
 
 	rules[name].push_back(A);
 

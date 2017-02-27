@@ -80,12 +80,21 @@ void Database::Dump(string fileName) {
 	map < string, vector <Rule*> > rules;
 	rules = RB->getAllRules();
 
-	for (std::map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
-		std::cout << "FACT " << itf->first << "\n";
+	for (map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
+		for (int i = 0; i < itf->second.size(); i++) {
+			cout << "FACT " << itf->first << "(";
+			for (int j = 0; j < itf->second[i]->GetThings().size(); j++) {
+				if (j > 0) { cout << ", "; }
+				cout << itf->second[i]->GetThings()[j];
+			}
+			cout << ")\n";
+		}
 	}
 
-	for (std::map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
-		std::cout << "RULE " << itr->first << '\n';
+	for (map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
+		for (int i = 0; i < itr->second.size(); i++) {
+			cout << "RULE " << itr->first << " " << itr->second[i]->getLogic();
+		}
 	}
 }
 
@@ -211,7 +220,14 @@ void Database::MakeRule(string params) {
 
 void Database::Query(string params) {
 	cout << "Inference\n";
-	
+	//get operator
+	//get left fact/rule
+	//figure out if it is a fact or a rule
+	//if it is a rule, pass it recursively and get results for possible things
+	//if it is a fact, do this logic once for each instance of a fact with that name
+	//if AND, if any $params between rules/facts contradict one another, stop instance
+	//if OR, do it as if it was the only rule/fact, then add all results together
+	//put applicable $params into a CreateFact() call
 }
 
 void Database::Drop(string params) {

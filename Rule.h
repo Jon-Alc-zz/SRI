@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -16,17 +17,18 @@ class Rule {
 
 private:
 
-	string logic;      // Either "and" or "or"
-	string rule_param; // The paramaters of the rule
-	vector <string> names_param;
+	string logic;                          // Either "and" or "or"
+	vector <string> rule_param;            // The paramaters of the rule
+	map <string, vector <string> > params; // contains all of the necessary params within the rule
 
 public:
 
 	// Constructor
-	Rule(string newParam, string newLogic);
+	Rule(string newArg, string newLogic, string paramName, string paramArg);
 
 	// Methods
-	string getParam();
+	map <string, vector <string> > getParam();
+	vector <string> getRuleParams();
 	string getLogic();
 
 	// Destructor
