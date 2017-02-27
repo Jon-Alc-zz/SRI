@@ -10,7 +10,7 @@ RuleBase::RuleBase() {
 
 }
 
-void RuleBase::createRule(string name, string param, string logic) {
+void RuleBase::createRule(string name, string param, string logic, string categories, string dollarParams) {
 	
 	if (checkRule(name) == -1) {
 		

@@ -90,6 +90,7 @@ void Database::Dump(string fileName) {
 }
 
 void Database::MakeFact(string params) {
+
 	cout << "MakeFact\n";
 	try {
 		//remove first space in params
@@ -116,27 +117,95 @@ void Database::MakeFact(string params) {
 }
 
 void Database::MakeRule(string params) {
+
+	bool error_caught = false;
 	cout << "MakeRule\n";
 	try {
 		//remove first space in params
 		params.erase(0, 1);
+
 		//the characters up to the first parentheses is the fact name
 		auto tail = params.find("(");
+
 		//if no parentheses are found throw error
-		if (tail == std::string::npos) throw;
+		if (tail == std::string::npos) throw 1;
 		string ruleName = params.substr(0, tail);
+
 		//starting at tail, find closing parentheses for end of stuff
 		auto head = params.find(")", tail);
-		if (tail == std::string::npos) throw;
+		if (head == std::string::npos) throw 2;
+
 		//put fact stuff in string
 		string args = params.substr(tail + 1, head - tail - 1);
 		tail = params.find(":-", head);
-		if (tail == std::string::npos) throw;
-		string logic = params.substr(tail + 4);
-		RB->createRule(ruleName, args, logic);
+
+		if (tail == std::string::npos) throw 3;
+
+		// throws out_of_range
+		string logic = params.substr(tail + 3, 3);
+
+		if (logic.compare("OR ") == 0) {
+			// erase whitespace from logic operator
+			int strPos = logic.find(" ");
+			logic.erase(strPos);
+		} else if (logic.compare("AND") != 0) throw 4; // throws error if logic != OR or AND
+
+		string strTemp = params.substr(tail + 6);
+
+		// erase whitespace
+		while (strTemp.find(" ") != string::npos) {
+		 	int strPos = strTemp.find(" ");
+		 	strTemp.erase(strTemp.begin() + strPos);
+		}
+
+		string categories = ""; // will contain the categories used in the rule
+		string dollarParams = ""; // will contain the $parameters of the categories
+		int leftPos = 0, rightPos = 0;
+
+		while (strTemp.find("(") != string::npos && strTemp.find(")") != string::npos) {
+
+			leftPos = strTemp.find("(");
+			rightPos = strTemp.find(")");
+
+			categories += strTemp.substr(0, leftPos) + ", ";
+			dollarParams += strTemp.substr(leftPos, rightPos - leftPos + 1) + ", ";
+			strTemp.erase(0, rightPos + 1);
+
+			/* debug stuff
+			cout << "strTemp: " << strTemp << "\n";
+			cout << "categories: " << categories << "\n";
+			cout << "params: " << dollarParams << "\n";
+			*/
+		}
+		
+		// erases comma and whitespace at the end
+		categories.erase(categories.begin() + categories.length() - 2, categories.begin() + categories.length());
+		dollarParams.erase(dollarParams.begin() + dollarParams.length() - 2, dollarParams.begin() + dollarParams.length());
+
+		RB->createRule(ruleName, args, logic, categories, dollarParams);
+
 	}
-	catch (...) {
-		cout << "Invalid rule syntax";
+
+	catch (int errorNum) {
+		if (errorNum == 1) cout << "'(' missing from argument\n";
+		if (errorNum == 2) cout << "')' missing from argument\n";
+		if (errorNum == 3) cout << "':-' missing from argument\n";
+		if (errorNum == 4) cout << "Logical operator caused error\n";
+		error_caught = true;
+	} catch (out_of_range error) {
+		cout << "Arguments past ':-' caused error\n";
+		error_caught = true;
+	} catch (...) {
+		cout << "Invalid rule syntax\n";
+		error_caught = true;
+	}
+
+	// prints usage message if error found
+	if (error_caught) {
+		cout << "USAGE: Rule 'Name'($'arga', $'argz')"
+			<< " :- [-L] 'factNameA'($'arga', $'...')"
+			<< " ... 'factNameZ'($'...', $'argz')\n"
+			<< "[-L] = Logical operator, OR/AND\n";
 	}
 }
 

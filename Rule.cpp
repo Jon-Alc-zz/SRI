@@ -7,7 +7,7 @@
 // Constructor
 Rule::Rule(string newParam, string newLogic) {
 
-	param = newParam;
+	rule_param = newParam;
 	logic = newLogic;
 
 }
@@ -16,7 +16,7 @@ Rule::Rule(string newParam, string newLogic) {
 
 // It gets the parameters of the rule
 string Rule::getParam() {
-	return param;
+	return rule_param;
 }
 
 // It gets the logic of the rule

@@ -22,7 +22,7 @@ public:
 
 	RuleBase();
 
-	void createRule(string name, string param, string logic);
+	void createRule(string name, string param, string logic, string categories, string dollarParams);
 	void deleteRule(string name);
 	auto getRule(string name);
 	map < string, vector <Rule*> > getAllRules();
