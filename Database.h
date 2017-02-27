@@ -17,7 +17,7 @@ enum command {
 	dump,
 	fact,
 	rule,
-	query,
+	inference,
 	drop,
 	fail
 };

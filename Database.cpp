@@ -11,7 +11,7 @@ Database::Database() {
 	commandList["dump"] = dump;
 	commandList["fact"] = fact;
 	commandList["rule"] = rule;
-	commandList["query"] = query;
+	commandList["inference"] = inference;
 	commandList["drop"] = drop;
 }
 
@@ -39,7 +39,7 @@ void Database::Parse(string input) {
 	case rule:
 		MakeRule(params);
 		break;
-	case query:
+	case inference:
 		Query(params);
 		break;
 	case drop:
@@ -144,7 +144,7 @@ void Database::MakeRule(string params) {
 }
 
 void Database::Query(string params) {
-	cout << "Query\n";
+	cout << "Inference\n";
 }
 
 void Database::Drop(string params) {
