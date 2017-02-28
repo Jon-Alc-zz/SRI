@@ -8,9 +8,11 @@
 Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 	int strPos = 0;
-	int strPos2 = 1;
+	int strPos2 = 0;
+	int strPos3 = 0;
 	int index = 0;
 	string strTemp = "";
+	string newpArg = "";
 	vector <string> Temp;
 
 	// removes all whitespace for new Arg
@@ -65,44 +67,48 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 	} while (strPos != string::npos);
 
-
-
 	do {
 
-		strPos = paramArg.find("("); // searches for index of '('
+		strPos = paramArg.find(")"); // searches for index of ')'
+		
+		if (strPos != string::npos) {
 
-		paramArg.erase(0, strPos + 1);
+			newpArg.assign(paramArg, 0, strPos + 1); // one set of parameters are given to newpArg
 
-		if (strPos != 0) {
+			paramArg.erase(0, strPos + 1); // the given part is deleted
+
+			strPos = newpArg.find("("); // searches for index of '('
+
+			newpArg.erase(0, strPos); // everything up to and on '(' is deleted
+
 
 			do {
 				
-				strPos2 = paramArg.find(","); // new search position looking for ','
+				strPos = newpArg.find(')');  // new search position looking for '('
+				strPos2 = newpArg.find(","); // new search position looking for ','
+				strPos3 = newpArg.find("$"); // new search position looking for '$'
+				
 
-				if (strPos2 != 0) {
-
-					strTemp.assign(paramArg, 0, strPos2); // assigns the argument to the strTemp
-					params[Temp[index]].push_back(strTemp); // in maps it to its appropiate vector
-
+				if (strPos2 >= 0) {
+					strTemp.assign(newpArg, strPos3, strPos2 - 1);
+					params[Temp[index]].push_back(strTemp);
+					newpArg.erase(0, strPos2 + 1);
 				}
-
-				paramArg.erase(0, strPos2 + 1); // erases the added string
-
-			} while (strPos2 < paramArg.find(")"));
-
-			strPos2 = paramArg.find(")"); // deletes the rest of the 
-
-			paramArg.erase(0, strPos2 + 1);
+				else if (strPos3 >= 0) {
+					strTemp.assign(newpArg, strPos3, strPos);
+					params[Temp[index]].push_back(strTemp);
+					newpArg.erase(0, strPos + 1);
+				}
+				
+			} while (strPos > 0);
 
 			index++;
 
 		}
 
-	} while (strPos != string::npos);
+	} while (Temp.size() > index);
 
-	// rule_param = newParam; not sure what's going on here
 	logic = newLogic;
-
 }
 
 // Methods
@@ -120,6 +126,25 @@ vector <string> Rule::getRuleParams() {
 // It gets the logic of the rule
 string Rule::getLogic() {
 	return logic;
+}
+
+void Rule::printRule() {
+	cout << "Rule Arguments: ";
+	for (int i = 0; i < rule_param.size(); i++) cout << rule_param[i] << " ";
+	
+	cout << "\nLogic: " << logic << endl;
+	
+	cout << "Rule Params:\n";
+	vector<string> v;
+	for (it = params.begin(); it != params.end(); ++it) {
+		v.push_back(it->first);
+		cout << it->first << ": ";
+
+		for (int i = 0; i < params[it->first].size(); i++) cout << params[it->first][i] << " ";
+
+		cout << "\n";
+	}
+	
 }
 
 // Destructor
