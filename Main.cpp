@@ -8,7 +8,7 @@ int main() {
 	while (true) {
 
 		getline(cin, input);
-		if (input == "q") break;
+		if (input == "exit") break;
 		DB->Parse(input);
 
 	}

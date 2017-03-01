@@ -292,13 +292,11 @@ void Database::Query(string params) {
 		printOutput = true;
 	}
 
-<<<<<<< HEAD
-=======
 	//cout << "name: " << ruleName << "\n";
 	//if (printOutput == false) {
 	//cout << "fact: " << newFact << "\n";
 	//}
->>>>>>> 8fa660cd93b5175cd7fee59b969469018ed8a206
+
 	//get the rule we are inferring from
 	vector<Rule*> ruleList = RB->getRule(ruleName);
 	for (int r = 0; r < ruleList.size(); r++) {
