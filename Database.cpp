@@ -318,82 +318,92 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 		//get operator (AND/OR)
 		string operation = thisRule->getLogic();
 
-		//get each fact/rule in this rule logic
 		map <string, vector<string>> logic = thisRule->getParam();
-		//get all facts/rules with name
-		for (auto it = logic.begin(); it != logic.end(); ++it) {
+
+		if (operation == "OR") {
+			//get each fact/rule in this rule logic
+			for (auto it = logic.begin(); it != logic.end(); ++it) {
+				vector<Fact*> factList = KB->getFacts(it->first);
+
+				//if not a fact, it is a rule
+				if (factList.empty()) {
+					//call a new query and get the results from this rule
+					string newQuery = " ";
+					newQuery += it->first;
+					newQuery += " ";
+					if (!printOutput) {
+						newQuery += newFact;
+					}
+					//recursively call query to get factmaps from it
+					factMaps = Query(newQuery, logic[it->first]);
+
+					//get params of this rule
+					vector<string> ruleParams = thisRule->getRuleParams();
+					//read from factMap using the rule parameters
+					//for each fact map from recursive query
+					if (top) {
+						for (int fm = 0; fm < factMaps.size(); fm++) {
+							cout << "FACT " << newFact << "(";
+							factMap = factMaps[fm];
+							//use the fact map to map things from the fact to the rule
+							for (int i = 0; i < factMap.size(); i++) {
+								cout << factMap[ruleParams[i]];
+								if (i < factMap.size() - 1) {
+									cout << ", ";
+								}
+							}
+							cout << ")\n";
+						}
+					}
+				}
+				else {
+					//if it is a fact
+					//get things from each fact with that name
+					for (int f = 0; f < factList.size(); f++) {
+						Fact* thisFact = factList[f];
+
+						//take fact parameters and put them in rule parameters
+						vector<string> factThings = thisFact->GetThings();
+						//create a map from the $params of thisFact
+						vector<string> factParamsInRule = it->second;
+
+						if (top) {
+							for (int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+								factMap[factParamsInRule[i]] = factThings[i];
+							}
+						}
+						else {
+							for (int i = 0; i < factThings.size() && i < upperParams.size(); i++) {
+								factMap[upperParams[i]] = factThings[i];
+							}
+						}
+
+						factMaps.push_back(factMap);
+
+						if (top) {
+							//get params of rule
+							vector<string> ruleParams = thisRule->getRuleParams();
+							//read from factMap using the rule parameters
+							cout << "FACT " << newFact << "(";
+							for (int i = 0; i < factMap.size(); i++) {
+								cout << factMap[ruleParams[i]];
+								if (i < factMap.size() - 1) {
+									cout << ", ";
+								}
+							}
+							cout << ")\n";
+						}
+					}
+				}
+			}
+		}
+		else {
+			//get left fact/rule
+			auto it = logic.begin();
 			vector<Fact*> factList = KB->getFacts(it->first);
 
-			//if not a fact, it is a rule
-			if (factList.empty()) {
-				//call a new query and get the results from this rule
-				string newQuery = " ";
-				newQuery += it->first;
-				newQuery += " ";
-				if (!printOutput) {
-					newQuery += newFact;
-				}
-				//recursively call query to get factmaps from it
-				factMaps = Query(newQuery, logic[it->first]);
-
-				//get params of this rule
-				vector<string> ruleParams = thisRule->getRuleParams();
-				//read from factMap using the rule parameters
-				//for each fact map from recursive query
-				if (top) {
-					for (int fm = 0; fm < factMaps.size(); fm++) {
-						cout << "FACT " << newFact << "(";
-						factMap = factMaps[fm];
-						//use the fact map to map things from the fact to the rule
-						for (int i = 0; i < factMap.size(); i++) {
-							cout << factMap[ruleParams[i]];
-							if (i < factMap.size() - 1) {
-								cout << ", ";
-							}
-						}
-						cout << ")\n";
-					}
-				}
-			}
-			else {
-				//if it is a fact
-				//get things from each fact with that name
-				for (int f = 0; f < factList.size(); f++) {
-					Fact* thisFact = factList[f];
-
-					//take fact parameters and put them in rule parameters
-					vector<string> factThings = thisFact->GetThings();
-					//create a map from the $params of thisFact
-					vector<string> factParamsInRule = it->second;
-
-					if (top) {
-						for (int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
-							factMap[factParamsInRule[i]] = factThings[i];
-						}
-					}
-					else {
-						for (int i = 0; i < factThings.size() && i < upperParams.size(); i++) {
-							factMap[upperParams[i]] = factThings[i];
-						}
-					}
-
-					factMaps.push_back(factMap);
-
-					if (top) {
-						//get params of rule
-						vector<string> ruleParams = thisRule->getRuleParams();
-						//read from factMap using the rule parameters
-						cout << "FACT " << newFact << "(";
-						for (int i = 0; i < factMap.size(); i++) {
-							cout << factMap[ruleParams[i]];
-							if (i < factMap.size() - 1) {
-								cout << ", ";
-							}
-						}
-						cout << ")\n";
-					}
-				}
-			}
+			//get left fact/rule params
+			vector<string> leftParams = logic[it->first];
 		}
 	}
 
