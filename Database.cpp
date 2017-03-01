@@ -40,7 +40,7 @@ void Database::Parse(string input) {
 		MakeRule(params);
 		break;
 	case inference:
-		Query(params);
+		Query(params, true);
 		break;
 	case drop:
 		Drop(params);
@@ -275,7 +275,7 @@ void Database::MakeRule(string params) {
 	}
 }
 
-void Database::Query(string params) {
+vector<map<string, string>> Database::Query(string params, bool top) {
 	cout << "Inference\n";
 	params.erase(0, 1);
 
@@ -292,10 +292,9 @@ void Database::Query(string params) {
 		printOutput = true;
 	}
 
-	//cout << "name: " << ruleName << "\n";
-	//if (printOutput == false) {
-	//cout << "fact: " << newFact << "\n";
-	//}
+
+	vector<map<string, string>> factMaps;
+	map<string, string> factMap;
 
 	//get the rule we are inferring from
 	vector<Rule*> ruleList = RB->getRule(ruleName);
@@ -308,48 +307,69 @@ void Database::Query(string params) {
 
 		//get each fact/rule
 		map <string, vector<string>> logic = thisRule->getParam();
-
 		for (auto it = logic.begin(); it != logic.end(); ++it) {
 			//get all facts with name
 			vector<Fact*> factList = KB->getFacts(it->first);
-			if (factList.empty()) {
-				cout << "not a fact";
-			}
-			//get things from each fact with that name
-			for (int f = 0; f < factList.size(); f++) {
-				Fact* thisFact = factList[f];
 
-				//take fact parameters and put them in rule parameters
-				vector<string> factThings = thisFact->GetThings();
-				//create a map from the $params of thisFact
-				map<string, string> factMap;
-				vector<string> factParamsInRule = it->second;
-				for (int i = 0; i < factThings.size(); i++) {
-					factMap[factParamsInRule[i]] = factThings[i];
+			//if not a fact, it is a rule
+			if (factList.empty()) {
+				//call a new query and get the results from this rule
+				string newQuery = it->first;
+				newQuery += " ";
+				if (!printOutput) {
+					newQuery += newFact;
 				}
+				factMaps = Query(newQuery, false);
 
 				//get params of rule
 				vector<string> ruleParams = thisRule->getRuleParams();
-
 				//read from factMap using the rule parameters
-				cout << "FACT " << newFact << "(";
-				for (int i = 0; i < factMap.size(); i++) {
-					cout << factMap[ruleParams[i]];
-					if (i < factMap.size() - 1) {
-						cout << ", ";
+				for (int fm = 0; fm < factMaps.size(); fm++) {
+					cout << "FACT " << newFact << "(";
+					factMap = factMaps[fm];
+					for (int i = 0; i < factMap.size(); i++) {
+						cout << factMap[ruleParams[i]];
+						if (i < factMap.size() - 1) {
+							cout << ", ";
+						}
+					}
+					cout << ")\n";
+				}
+			}
+			else {
+				//get things from each fact with that name
+				for (int f = 0; f < factList.size(); f++) {
+					Fact* thisFact = factList[f];
+
+					//take fact parameters and put them in rule parameters
+					vector<string> factThings = thisFact->GetThings();
+					//create a map from the $params of thisFact
+					vector<string> factParamsInRule = it->second;
+					for (int i = 0; i < factThings.size(); i++) {
+						factMap[factParamsInRule[i]] = factThings[i];
+					}
+
+					factMaps.push_back(factMap);
+
+					if (top) {
+						//get params of rule
+						vector<string> ruleParams = thisRule->getRuleParams();
+						//read from factMap using the rule parameters
+						cout << "FACT " << newFact << "(";
+						for (int i = 0; i < factMap.size(); i++) {
+							cout << factMap[ruleParams[i]];
+							if (i < factMap.size() - 1) {
+								cout << ", ";
+							}
+						}
+						cout << ")\n";
 					}
 				}
-				cout << ")\n";
 			}
 		}
 	}
 
-	//figure out if it is a fact or a rule
-	//if it is a rule, pass it recursively and get results for possible things
-	//if it is a fact, do this logic once for each instance of a fact with that name
-	//if AND, if any $params between rules/facts contradict one another, stop instance
-	//if OR, do it as if it was the only rule/fact, then add all results together
-	//put applicable $params into a CreateFact() call
+	return factMaps;
 }
 
 void Database::Drop(string params) {
