@@ -1,3 +1,5 @@
 FACT fact1(red, blue)
+FACT fact1(orange, purple)
 FACT fact2(yellow, green)
-RULE color($x, $y):- OR fact1($y, $x) fact2($y, $x)
+RULE color($x, $y):- OR rule2($y, $x) fact2($y, $x)
+RULE rule2($a, $b):- OR fact2($a, $b)
