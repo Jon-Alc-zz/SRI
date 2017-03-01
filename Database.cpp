@@ -46,14 +46,17 @@ void Database::Parse(string input) {
 		Drop(params);
 		break;
 	default:
-		cout << "command not recognized\n";
+		if(word != "") cout << "Command not recognized\n"; // if its not an empty line it will return error message
 		break;
 	}
 }
 
 void Database::Load(string fileName) {
-	cout << "Loading" << fileName << "\n";
+	cout << "Loading: " << fileName << "\n";
 	try {
+		//remove first space in params
+		fileName.erase(0, 1);
+
 		//open file
 		std::ifstream infile(fileName);
 
@@ -65,13 +68,16 @@ void Database::Load(string fileName) {
 		}
 	}
 	catch(...){
-		cout << "File could not be read\n";
+		cout << "Load Error: File could not be read\n";
 	}
 }
 
 void Database::Dump(string fileName) {
 	cout << "Dumping to " << fileName << "\n";
 	try {
+		//remove first space in params
+		fileName.erase(0, 1);
+
 		//open file for writing
 		ofstream SRIFile;
 		SRIFile.open(fileName);
@@ -145,7 +151,7 @@ void Database::Dump(string fileName) {
 		SRIFile.close();
 	}
 	catch (...) {
-		cout << "error writing to file";
+		cout << "Dump Error: Could not write file";
 	}
 }
 
@@ -172,7 +178,7 @@ void Database::MakeFact(string params) {
 		KB->CreateFact(factName, args);
 	}
 	catch (...) {
-		cout << "USAGE: FACT 'factname'(param1, param2, ...)";
+		cout << "FACT USAGE: FACT 'factname'(param1, param2, ...)";
 	}
 }
 
@@ -262,7 +268,7 @@ void Database::MakeRule(string params) {
 
 	// prints usage message if error found
 	if (error_caught) {
-		cout << "USAGE: Rule 'Name'($'arga', $'argz')"
+		cout << "RULE USAGE: Rule 'Name'($'arga', $'argz')"
 			<< " :- [-L] 'factNameA'($'arga', $'...')"
 			<< " ... 'factNameZ'($'...', $'argz')\n"
 			<< "[-L] = Logical operator, OR/AND\n";
@@ -288,7 +294,7 @@ void Database::Query(string params) {
 
 	//cout << "name: " << ruleName << "\n";
 	//if (printOutput == false) {
-		//cout << "fact: " << newFact << "\n";
+	//cout << "fact: " << newFact << "\n";
 	//}
 	//get the rule we are inferring from
 	vector<Rule*> ruleList = RB->getRule(ruleName);
@@ -337,7 +343,7 @@ void Database::Query(string params) {
 }
 
 void Database::Drop(string params) {
-	cout << "Drop" << params << "\n";
+	cout << "Droping " << params << "\n";
 	RB->deleteRule(params);
 	KB->DeleteFact(params);
 }

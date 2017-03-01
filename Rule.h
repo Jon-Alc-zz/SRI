@@ -18,9 +18,10 @@ class Rule {
 
 private:
 
-	string logic;                               // Either "and" or "or"
-	vector <string> rule_param;                 // The paramaters of the rule
-	map <string, vector <string> > params;      // contains all of the necessary params within the rule
+	// Variables
+	string logic;                                      // Either "and" or "or"
+	vector <string> rule_param;                        // The paramaters of the rule
+	map <string, vector <string> > params;             // contains all of the necessary params within the rule
 	map <string, vector <string> >::iterator it;
 
 	// Debug Method
