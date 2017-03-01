@@ -47,13 +47,13 @@ void Database::Parse(string input) {
 		Drop(params);
 		break;
 	default:
-		if(word != "") cout << "Command not recognized\n"; // if its not an empty line it will return error message
+		if (word != "") cout << "Command not recognized\n"; // if its not an empty line it will return error message
 		break;
 	}
 }
 
 void Database::Load(string fileName) {
-	
+
 	try {
 		//remove first space in params
 		fileName.erase(0, 1);
@@ -77,7 +77,7 @@ void Database::Load(string fileName) {
 			cout << "File " << fileName << " not found." << endl;
 		}
 	}
-	catch(...){
+	catch (...) {
 		cout << "Load Error: File could not be read\n";
 	}
 }
@@ -173,18 +173,18 @@ void Database::MakeFact(string params) {
 	try {
 		//remove first space in params
 		params.erase(0, 1);
-		
+
 		//the characters up to the first parentheses is the fact name
 		auto tail = params.find("(");
-		
+
 		//if no parentheses are found throw error
 		if (tail == std::string::npos) throw;
 		string factName = params.substr(0, tail);
-		
+
 		//starting at tail, find closing parentheses for end of arguments
 		auto head = params.find(")", tail);
 		if (tail == std::string::npos) throw;
-		
+
 		//put all arguments in string and send it to KB->CreateFact
 		string args = params.substr(tail + 1, head - tail - 1);
 		KB->CreateFact(factName, args);
@@ -226,14 +226,15 @@ void Database::MakeRule(string params) {
 			// erase whitespace from logic operator
 			int strPos = logic.find(" ");
 			logic.erase(strPos);
-		} else if (logic.compare("AND") != 0) throw 4; // throws error if logic != OR or AND
+		}
+		else if (logic.compare("AND") != 0) throw 4; // throws error if logic != OR or AND
 
 		string strTemp = params.substr(tail + 6);
 
 		// erase whitespace
 		while (strTemp.find(" ") != string::npos) {
-		 	int strPos = strTemp.find(" ");
-		 	strTemp.erase(strTemp.begin() + strPos);
+			int strPos = strTemp.find(" ");
+			strTemp.erase(strTemp.begin() + strPos);
 		}
 
 		string categories = ""; // will contain the categories used in the rule
@@ -255,7 +256,7 @@ void Database::MakeRule(string params) {
 			cout << "params: " << dollarParams << "\n";
 			*/
 		}
-		
+
 		// erases comma and whitespace at the end
 		categories.erase(categories.begin() + categories.length() - 2, categories.begin() + categories.length());
 		dollarParams.erase(dollarParams.begin() + dollarParams.length() - 2, dollarParams.begin() + dollarParams.length());
@@ -270,10 +271,12 @@ void Database::MakeRule(string params) {
 		if (errorNum == 3) cout << "':-' missing from argument\n";
 		if (errorNum == 4) cout << "Logical operator caused error\n";
 		error_caught = true;
-	} catch (out_of_range error) {
+	}
+	catch (out_of_range error) {
 		cout << "Arguments past ':-' caused error\n";
 		error_caught = true;
-	} catch (...) {
+	}
+	catch (...) {
 		cout << "Invalid rule syntax\n";
 		error_caught = true;
 	}
@@ -289,57 +292,199 @@ void Database::MakeRule(string params) {
 
 vector<map<string, string>> Database::Query(string params, vector<string> upperParams) {
 
-	//removes space from rule name
-	params.erase(0, 1);
-
-	//top determines if this is top layer of recursion
-	//lower layers should not create facts
-	bool top;
-	//the top is the only one to get empty parameters
-	if (upperParams.empty()) {
-		cout << "Making Inference" << endl;
-		top = true;
-	}
-	else {
-		top = false;
-	}
-
-	//get the name of the the rule being queried and the possible new fact name
-	string ruleName, newFact;
-	auto space = params.find(" ");
-	ruleName = params.substr(0, space);
-	//if no new fact name print output instead
-	bool printOutput = false;
-	if (space != std::string::npos) {
-		newFact = params.substr(space + 1, params.length());
-	}
-	else {
-		printOutput = true;
-	}
-
-	//fact maps are used to put results into the new facts
+	// Define it out of the scope of the try catch
 	vector<map<string, string>> factMaps;
-	map<string, string> factMap;
+	vector<map<string, string>> factMaps2;
 
-	//get the list of rules with the name we are querying
-	vector<Rule*> ruleList = RB->getRule(ruleName);
-	//for each rule with that name
-	for (int r = 0; r < ruleList.size(); r++) {
-		Rule* thisRule = ruleList[r];
+	try {
 
-		//get operator (AND/OR)
-		string operation = thisRule->getLogic();
+		//removes space from rule name
+		params.erase(0, 1);
 
-		map <int, vector<string>> logic = thisRule->getParam();
-		vector <string> name = thisRule->getParamName();
+		//top determines if this is top layer of recursion
+		//lower layers should not create facts
+		bool top;
 
-		if (operation == "OR") {
-			//get each fact/rule in this rule logic
-			for (int it = 0; it < name.size(); ++it) {
+		//the top is the only one to get empty parameters
+		if (upperParams.empty()) {
+			cout << "Making Inference:" << endl;
+			top = true;
+		}
+		else {
+			top = false;
+		}
+
+		//get the name of the the rule being queried and the possible new fact name
+		string ruleName, newFact;
+		auto space = params.find(" ");
+		ruleName = params.substr(0, space);
+
+		// Checks to see if the Rule exsists
+		if (RB->checkRule(ruleName) == -1) throw 1;
+
+		//if no new fact name print output instead
+		bool printOutput = false;
+		if (space != std::string::npos) {
+			newFact = params.substr(space + 1, params.length());
+		}
+		else {
+			printOutput = true;
+		}
+
+		//fact maps are used to put results into the new facts
+		map<string, string> factMap;
+		map<string, string> factMap2;
+
+		//get the list of rules with the name we are querying
+		vector<Rule*> ruleList = RB->getRule(ruleName);
+
+		//for each rule with that name
+		for (int r = 0; r < ruleList.size(); r++) {
+			Rule* thisRule = ruleList[r];
+
+			//get operator (AND/OR)
+			string operation = thisRule->getLogic();
+
+			map <int, vector<string>> logic = thisRule->getParam();
+			vector <string> name = thisRule->getParamName();
+
+			if (operation == "OR") {
+				//get each fact/rule in this rule logic
+				for (int it = 0; it < name.size(); ++it) {
+					vector<Fact*> factList = KB->getFacts(name[it]);
+
+					//if not a fact, it is a rule
+					if (factList.empty()) {
+
+						if (RB->checkRule(name[it]) == -1) throw 2;
+
+						//call a new query and get the results from this rule
+						string newQuery = " ";
+						newQuery += name[it];
+						newQuery += " ";
+						if (!printOutput) {
+							newQuery += newFact;
+						}
+						//recursively call query to get factmaps from it
+						factMaps = Query(newQuery, logic[it]);
+
+						//get params of this rule
+						vector<string> ruleParams = thisRule->getRuleParams();
+
+						//read from factMap using the rule parameters
+						//for each fact map from recursive query
+						if (top) {
+							if (printOutput) {
+
+								for (int fm = 0; fm < factMaps.size(); fm++) {
+									cout << ruleName << newFact << "(";
+									factMap = factMaps[fm];
+									//use the fact map to map things from the fact to the rule
+									for (int i = 0; i < factMap.size(); i++) {
+										cout << factMap[ruleParams[i]];
+										if (i < factMap.size() - 1) {
+											cout << ", ";
+										}
+									}
+									cout << ")\n";
+								}
+							}
+							else {
+
+								string str = "";
+
+								for (int fm = 0; fm < factMaps.size(); fm++) {
+									factMap = factMaps[fm];
+									//use the fact map to map things from the fact to the rule
+									for (int i = 0; i < factMap.size(); i++) {
+										str.append(factMap[ruleParams[i]]);
+										if (i < factMap.size() - 1) {
+											str.append(", ");
+										}
+									}
+								}
+
+								KB->CreateFact(newFact, str);
+
+							}
+						}
+					}
+					else {
+
+						//if it is a fact
+						//get things from each fact with that name
+						for (int f = 0; f < factList.size(); f++) {
+							Fact* thisFact = factList[f];
+
+							//take fact parameters and put them in rule parameters
+							vector<string> factThings = thisFact->GetThings();
+							//create a map from the $params of thisFact
+							vector<string> factParamsInRule = logic[it];
+
+							if (top) {
+								for (int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+									factMap[factParamsInRule[i]] = factThings[i];
+								}
+							}
+							else {
+								for (int i = 0; i < factThings.size() && i < upperParams.size(); i++) {
+									factMap[upperParams[i]] = factThings[i];
+								}
+							}
+
+							factMaps.push_back(factMap);
+
+							if (top) {
+								if (printOutput) {
+
+									//get params of rule
+									vector<string> ruleParams = thisRule->getRuleParams();
+									//read from factMap using the rule parameters
+									cout << ruleName << newFact << "(";
+									for (int i = 0; i < factMap.size(); i++) {
+										cout << factMap[ruleParams[i]];
+										if (i < factMap.size() - 1) {
+											cout << ", ";
+										}
+									}
+									cout << ")\n";
+
+								}
+								else {
+
+									// makes a string
+									string str = "";
+
+									//get params of rule
+									vector<string> ruleParams = thisRule->getRuleParams();
+
+									//read from factMap using the rule parameters
+									for (int i = 0; i < factMap.size(); i++) {
+										str.append(factMap[ruleParams[i]]);
+										if (i < factMap.size() - 1) {
+											str.append(", ");
+										}
+									}
+
+									KB->CreateFact(newFact, str);
+
+								}
+							}
+						}
+					}
+				}
+			}
+			else {
+				// the index value that will get the first rule/fact in the rule
+				int it = 0; 
+
 				vector<Fact*> factList = KB->getFacts(name[it]);
 
 				//if not a fact, it is a rule
 				if (factList.empty()) {
+
+					if (RB->checkRule(name[it]) == -1) throw 2;
+
 					//call a new query and get the results from this rule
 					string newQuery = " ";
 					newQuery += name[it];
@@ -352,14 +497,15 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 
 					//get params of this rule
 					vector<string> ruleParams = thisRule->getRuleParams();
-					
+
 					//read from factMap using the rule parameters
 					//for each fact map from recursive query
 					if (top) {
+
 						if (printOutput) {
 
 							for (int fm = 0; fm < factMaps.size(); fm++) {
-								cout << "FACT " << newFact << "(";
+								cout << ruleName << newFact << "(";
 								factMap = factMaps[fm];
 								//use the fact map to map things from the fact to the rule
 								for (int i = 0; i < factMap.size(); i++) {
@@ -392,6 +538,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 					}
 				}
 				else {
+
 					//if it is a fact
 					//get things from each fact with that name
 					for (int f = 0; f < factList.size(); f++) {
@@ -421,7 +568,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 								//get params of rule
 								vector<string> ruleParams = thisRule->getRuleParams();
 								//read from factMap using the rule parameters
-								cout << "FACT " << newFact << "(";
+								cout << ruleName << newFact << "(";
 								for (int i = 0; i < factMap.size(); i++) {
 									cout << factMap[ruleParams[i]];
 									if (i < factMap.size() - 1) {
@@ -452,21 +599,29 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 							}
 						}
 					}
+
+
+					//get left fact/rule
+					vector<Fact*> factList = KB->getFacts(name[it]);
+
+					//get left fact/rule params
+					vector<string> nextParams = logic[it];
+
 				}
 			}
 		}
-		else {
-			
-			int it = 1;
-			//get left fact/rule
-			vector<Fact*> factList = KB->getFacts(name[it]);
 
-			//get left fact/rule params
-			vector<string> leftParams = logic[it];
-		}
+		return factMaps;
+	}
+	catch (int e) {
+		if (e == 1) cout << "INFERENCE Error: Rule not found." << endl;
+		if (e == 2) cout << "INFERENCE Error: Parameter given is neither a rule or a fact." << endl;
+	}
+	catch (...) {
+		cout << "INFERENCE Error: Unknown." << endl;
 	}
 
-	return factMaps;
+	return factMaps; // If things fail something still get returned
 }
 
 void Database::Drop(string params) {

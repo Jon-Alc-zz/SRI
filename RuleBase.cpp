@@ -17,6 +17,7 @@ void RuleBase::createRule(string name, string param, string logic, string paramN
 		
 		vector <Rule*> newRule;
 		rules[name] = newRule;
+		names.push_back(name);
 
 	}
 
@@ -42,13 +43,8 @@ void RuleBase::deleteRule(string name) {
 
 vector<Rule*> RuleBase::getRule(string name) {
 
-	try {
-	    return rules[name];
-	}
-	catch (...) {
-
-		cout << "getRule Error: rule" << name << " not found." << endl;
-
+	if (checkRule(name) == 1) {
+		return rules[name];
 	}
 
 }
@@ -61,11 +57,11 @@ map < string, vector <Rule*> > RuleBase::getAllRules() {
 
 int RuleBase::checkRule(string name) {
 
-	auto it = rules.find(name);
+	for (int i = 0; i < names.size(); i++) {
+		if (names[i] == name) return 1;
+	}
 
-	if (it != rules.end()) return 1;
-	else return -1;
-
+	return -1;
 }
 
 

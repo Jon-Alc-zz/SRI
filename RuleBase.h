@@ -17,6 +17,7 @@ private:
 
 	// Variables
 	map < string, vector <Rule*> > rules;         // Stores all the rules in a map of vectors <Rules*>
+	vector <string> names;                        // Stores the names of the Rules
 	int numRules;                                 // Used to determine the number of rules in the Rule Base
 
 public:
