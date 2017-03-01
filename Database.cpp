@@ -72,20 +72,27 @@ void Database::Load(string fileName) {
 void Database::Dump(string fileName) {
 	cout << "Dumping to " << fileName << "\n";
 	try {
-
+		//open file for writing
 		ofstream SRIFile;
 		SRIFile.open(fileName);
 
+		//get the map of all facts
 		map<string, vector<Fact*> > facts;
 		facts = KB->GetAllFacts();
 
+		//get the map of all rules
 		map < string, vector <Rule*> > rules;
 		rules = RB->getAllRules();
 
+		//iterate through the map of facts and print them in correct format
 		for (map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
+			//for each fact in the vector of facts in each name
 			for (int i = 0; i < itf->second.size(); i++) {
+				//define as fact and put open parentheses
 				SRIFile << "FACT " << itf->first << "(";
+				//put each of the parameters of each fact into the parentheses
 				for (int j = 0; j < itf->second[i]->GetThings().size(); j++) {
+					//put a comma in between each parameter
 					if (j > 0) { SRIFile << ", "; }
 					SRIFile << itf->second[i]->GetThings()[j];
 				}
@@ -94,27 +101,37 @@ void Database::Dump(string fileName) {
 		}
 
 		for (map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
+			//for each rule in the vector of rules under a name
 			for (int i = 0; i < itr->second.size(); i++) {
+				//define as rule and open preantheses
 				SRIFile << "RULE " << itr->first << "(";
 
+				//get the parameters that are associated with the rule
 				vector <string> params = itr->second[i]->getRuleParams();
+				//print each of these parameters in the first set of parentheses
 				for (int j = 0; j < params.size(); j++) {
 					SRIFile << params[j];
+					//put a comma in between each parameter
 					if (j < params.size() - 1) {
 						SRIFile << ", ";
 					}
 				}
 
 				SRIFile << "):- ";
+				//print the logical operator for the rule (AND/OR)
 				SRIFile << itr->second[i]->getLogic() << " ";
 
+				//get the map of facts and rules in the logical part of the rule
 				map <string, vector <string> > logic;
 				logic = itr->second[i]->getParam();
+				//for each fact/rule in the logic
 				for (auto it = logic.begin(); it != logic.end(); ++it) {
 					SRIFile << it->first << "(";
 
+					//print the parameters of the fact/rule
 					for (int j = 0; j < logic[it->first].size(); j++) {
 						SRIFile << logic[it->first][j];
+						//with commas in between parameters
 						if (j < logic[it->first].size() - 1) {
 							SRIFile << ", ";
 						}
@@ -155,7 +172,7 @@ void Database::MakeFact(string params) {
 		KB->CreateFact(factName, args);
 	}
 	catch (...) {
-		cout << "Invalid fact syntax";
+		cout << "USAGE: FACT 'factname'(param1, param2, ...)";
 	}
 }
 
@@ -254,8 +271,14 @@ void Database::MakeRule(string params) {
 
 void Database::Query(string params) {
 	cout << "Inference\n";
+	//get the rule we are inferring from
+	Rule thisRule = RB->getRule(params);
 	//get operator
+	string operation = thisRule.getLogic();
 	//get left fact/rule
+	map <string, vector<string>> logic = thisRule.getParam();
+	auto it = logic.begin();
+	cout << it->first;
 	//figure out if it is a fact or a rule
 	//if it is a rule, pass it recursively and get results for possible things
 	//if it is a fact, do this logic once for each instance of a fact with that name
