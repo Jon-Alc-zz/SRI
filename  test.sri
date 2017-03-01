@@ -1,0 +1,3 @@
+FACT fact1(red, blue)
+FACT fact2(yellow, green)
+RULE color($x, $y):- OR fact1($x, $y) fact2($x, $y) 
