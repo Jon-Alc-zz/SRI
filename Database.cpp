@@ -295,6 +295,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 	// Define it out of the scope of the try catch
 	vector<map<string, string>> factMaps;
 	vector<map<string, string>> factMaps2;
+	vector<Fact*> factList;
 
 	try {
 
@@ -350,8 +351,8 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 
 			if (operation == "OR") {
 				//get each fact/rule in this rule logic
-				for (int it = 0; it < name.size(); ++it) {
-					vector<Fact*> factList = KB->getFacts(name[it]);
+				for (int it = 0; it < name.size(); it++) {
+					factList = KB->getFacts(name[it]);
 
 					//if not a fact, it is a rule
 					if (factList.empty()) {
@@ -411,7 +412,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 					}
 					else {
 
-						//if it is a fact
+						//if it is a fact (OR)
 						//get things from each fact with that name
 						for (int f = 0; f < factList.size(); f++) {
 							Fact* thisFact = factList[f];
@@ -475,10 +476,11 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 				}
 			}
 			else {
+				//It is AND
 				// the index value that will get the first rule/fact in the rule
 				int it = 0; 
 
-				vector<Fact*> factList = KB->getFacts(name[it]);
+				factList = KB->getFacts(name[it]);
 
 				//if not a fact, it is a rule
 				if (factList.empty()) {
@@ -539,7 +541,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 				}
 				else {
 
-					//if it is a fact
+					//if it is a fact (AND)
 					//get things from each fact with that name
 					for (int f = 0; f < factList.size(); f++) {
 						Fact* thisFact = factList[f];
@@ -599,14 +601,6 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 							}
 						}
 					}
-
-
-					//get left fact/rule
-					vector<Fact*> factList = KB->getFacts(name[it]);
-
-					//get left fact/rule params
-					vector<string> nextParams = logic[it];
-
 				}
 			}
 		}

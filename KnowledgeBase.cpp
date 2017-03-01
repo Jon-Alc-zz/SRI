@@ -35,6 +35,9 @@ vector<Fact*> KnowledgeBase::getFacts(string fact) {
 		if (CheckFact(fact) == 1) {
 			return KBmp[fact];
 		}
+		else {
+			return KBmp[fact];
+		}
 	}
 	catch (...) {
 		cout << "getFacts Error: fact" << fact << " not found." << endl;
