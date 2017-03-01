@@ -23,6 +23,9 @@ private:
 	map <string, vector <string> > params;      // contains all of the necessary params within the rule
 	map <string, vector <string> >::iterator it;
 
+	// Debug Method
+	void printRule();
+
 public:
 
 	// Constructor
@@ -32,9 +35,6 @@ public:
 	map <string, vector <string> > getParam();
 	vector <string> getRuleParams();
 	string getLogic();
-
-	// Debug Method
-	void printRule();
 
 	// Destructor
 	~Rule();
