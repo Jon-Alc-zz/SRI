@@ -21,8 +21,9 @@ private:
 	// Variables
 	string logic;                                      // Either "and" or "or"
 	vector <string> rule_param;                        // The paramaters of the rule
-	map <string, vector <string> > params;             // contains all of the necessary params within the rule
-	map <string, vector <string> >::iterator it;
+	vector <string> param_name;                        // The name of the parameters of the rule
+	map <int, vector <string> > params;             // contains all of the necessary params within the rule
+	map <int, vector <string> >::iterator it;
 
 	// Debug Method
 	void printRule();
@@ -33,7 +34,7 @@ public:
 	Rule(string newArg, string newLogic, string paramName, string paramArg);
 
 	// Methods
-	map <string, vector <string> > getParam();
+	map <int, vector <string> > getParam();
 	vector <string> getRuleParams();
 	string getLogic();
 

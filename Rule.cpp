@@ -7,6 +7,8 @@
 // Constructor
 Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
+	cout << paramName << endl;
+
 	int strPos = 0;
 	int strPos2 = 0;
 	int strPos3 = 0;
@@ -59,7 +61,7 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 		if (strPos != 0) { // catches "thing1,, thing2"
 
 			strTemp.assign(paramName, 0, strPos);
-			Temp.push_back(strTemp); // add to end of 'temp' vector
+			param_name.push_back(strTemp); // add to end of 'temp' vector
 			
 		}
 
@@ -91,12 +93,12 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 				if (strPos2 >= 0) {          // runs through here if there is a ','
 					strTemp.assign(newpArg, strPos3, strPos2);
-					params[Temp[index]].push_back(strTemp);
+					params[index].push_back(strTemp);
 					newpArg.erase(0, strPos2 + 1);
 				}
 				else if (strPos3 >= 0) {     // runs through here is there is '$' and there are no ','
 					strTemp.assign(newpArg, strPos3, strPos);
-					params[Temp[index]].push_back(strTemp);
+					params[index].push_back(strTemp);
 					newpArg.erase(0, strPos + 1);
 				}
 				else {                       // if there are no '$' or ',' store then it breaks
@@ -118,7 +120,7 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 // It gets the parameters of the rule
 
-map <string, vector <string> > Rule::getParam() {
+map <int, vector <string> > Rule::getParam() {
 	return params;
 }
 
