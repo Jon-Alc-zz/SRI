@@ -9,6 +9,9 @@ KnowledgeBase::KnowledgeBase(){
 	
 }
 
+//finds fact by name and sets value in accordance to what is found
+//1 if it is found before the end of the map is reached
+//-1 otherwise
 int KnowledgeBase::CheckFact(string fact) {
 	auto it = KBmp.find(fact);
 	if (it != KBmp.end()) {
@@ -19,10 +22,14 @@ int KnowledgeBase::CheckFact(string fact) {
 	}
 }
 
+//returns map of facts 
 map<string, vector<Fact*> > KnowledgeBase::GetAllFacts() {
 	return KBmp;
 }
 
+//uses fact name to return specific fact in map
+//try-catch  and uses CheckFact to see if the fact exists in the
+//first place, returns error message otherwise
 auto KnowledgeBase::getFacts(string fact) {
 	try {
 		if (CheckFact(fact) == 1) {
@@ -34,14 +41,30 @@ auto KnowledgeBase::getFacts(string fact) {
 	}
 }
 
+//if both string parameters are not empty, a new fact is put into
+//map, error message displayed otherwise
 void KnowledgeBase::CreateFact(string name, string things) {
-	Fact* newFact = new Fact(things);
-	KBmp[name].push_back(newFact);
+
+	if(name.empty() || things.empty()){
+		cout << "CreateFact Error: fact parameters" << name << " or" << things << "is empty." << endl;
+	}
+	else{
+		Fact* newFact = new Fact(things);
+		KBmp[name].push_back(newFact);
+	}
 }
 
+//finds fact by name and uses CheckFact to see if it exists
+//deletes fact from map if so, displays error message otherwise
 void KnowledgeBase::DeleteFact(string fact) {
 	it = KBmp.find(fact);
-	KBmp.erase(it);
+	if(CheckFact(fact) == -1){
+		cout << "DeleteFact Error: fact" << fact << "does not exist or is invalid." << endl;
+	}
+	else{
+		KBmp.erase(it);
+	}
 }
 
+//destructor
 KnowledgeBase::~KnowledgeBase() {};
