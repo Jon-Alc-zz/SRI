@@ -7,15 +7,12 @@
 // Constructor
 Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
-	cout << paramName << endl;
-
 	int strPos = 0;
 	int strPos2 = 0;
 	int strPos3 = 0;
 	int index = 0;
 	string strTemp = "";
 	string newpArg = "";
-	vector <string> Temp;
 
 	// removes all whitespace for new Arg
 	while (newArg.find(" ") != string::npos) {
@@ -25,16 +22,16 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 	do {
 
-		strPos = newArg.find(","); // searches for index of ','
+		strPos = newArg.find(",");                     // searches for index of ','
 
-		if (strPos != 0) { // catches "thing1,, thing2"
+		if (strPos != 0) { 
 
 			strTemp.assign(newArg, 0, strPos);
-			rule_param.push_back(strTemp); // add to end of 'rule_param' vector
+			rule_param.push_back(strTemp);            // add to end of 'rule_param' vector
 
 		}
 
-		newArg.erase(0, strPos + 1); // erases the added string
+		newArg.erase(0, strPos + 1);                  // erases the added string
 
 	} while (strPos != string::npos);
 
@@ -56,52 +53,49 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 	do {
 
-		strPos = paramName.find(","); // searches for index of ','
+		strPos = paramName.find(",");                // searches for index of ','
 
-		if (strPos != 0) { // catches "thing1,, thing2"
+		if (strPos != 0) { 
 
 			strTemp.assign(paramName, 0, strPos);
-			param_name.push_back(strTemp); // add to end of 'temp' vector
+			param_name.push_back(strTemp);           // add to end of 'param_name' vector
 			
 		}
 
-		paramName.erase(0, strPos + 1); // erases the added string
+		paramName.erase(0, strPos + 1);              // erases the added string
 
 	} while (strPos != string::npos);
 
 	do {
 
-		strPos = paramArg.find(")"); // searches for index of ')'
+		strPos = paramArg.find(")");                 // searches for index of ')'
 		
 		if (strPos != string::npos) {
 
 			newpArg.assign(paramArg, 0, strPos + 1); // one set of parameters are given to newpArg
-
-			paramArg.erase(0, strPos + 1); // the given part is deleted
-
-			strPos = newpArg.find("("); // searches for index of '('
-
-			newpArg.erase(0, strPos + 1); // everything up to and on '(' is deleted
+			paramArg.erase(0, strPos + 1);           // the given part is deleted
+			strPos = newpArg.find("(");              // searches for index of '('
+			newpArg.erase(0, strPos + 1);            // everything up to and on '(' is deleted
 
 
 			do {
 				
-				strPos = newpArg.find(')');  // new search position looking for '('
-				strPos2 = newpArg.find(","); // new search position looking for ','
-				strPos3 = newpArg.find("$"); // new search position looking for '$'
+				strPos = newpArg.find(')');          // new search position looking for '('
+				strPos2 = newpArg.find(",");         // new search position looking for ','
+				strPos3 = newpArg.find("$");         // new search position looking for '$'
 				
 
-				if (strPos2 >= 0) {          // runs through here if there is a ','
+				if (strPos2 >= 0) {                  // runs through here if there is a ','
 					strTemp.assign(newpArg, strPos3, strPos2);
 					params[index].push_back(strTemp);
 					newpArg.erase(0, strPos2 + 1);
 				}
-				else if (strPos3 >= 0) {     // runs through here is there is '$' and there are no ','
+				else if (strPos3 >= 0) {             // runs through here is there is '$' and there are no ','
 					strTemp.assign(newpArg, strPos3, strPos);
 					params[index].push_back(strTemp);
 					newpArg.erase(0, strPos + 1);
 				}
-				else {                       // if there are no '$' or ',' store then it breaks
+				else {                               // if there are no '$' or ',' store then it breaks
 					break;
 				}
 				
@@ -111,9 +105,10 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 		}
 
-	} while (Temp.size() > index);
+	} while (param_name.size() > index);
 
 	logic = newLogic;
+
 }
 
 // Methods
@@ -126,6 +121,10 @@ map <int, vector <string> > Rule::getParam() {
 
 vector <string> Rule::getRuleParams() {
 	return rule_param;
+}
+
+vector <string> Rule::getParamName() {
+	return param_name;
 }
 
 // It gets the logic of the rule
@@ -141,12 +140,11 @@ void Rule::printRule() {
 	cout << "\nLogic: " << logic << endl;
 	
 	cout << "Rule Params:\n";
-	vector<string> v;
-	for (it = params.begin(); it != params.end(); ++it) {
-		v.push_back(it->first);
-		cout << it->first << ": ";
 
-		for (int i = 0; i < params[it->first].size(); i++) cout << params[it->first][i] << " ";
+	for (int i = 0; i < param_name.size(); i++) {
+		cout << param_name[i] << ": ";
+
+		for (int ii = 0; ii < params[i].size(); ii++) cout << params[i][ii] << " ";
 
 		cout << "\n";
 	}

@@ -36,6 +36,7 @@ public:
 	// Methods
 	map <int, vector <string> > getParam();
 	vector <string> getRuleParams();
+	vector <string> getParamName();
 	string getLogic();
 
 	// Destructor

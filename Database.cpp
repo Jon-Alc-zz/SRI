@@ -53,7 +53,7 @@ void Database::Parse(string input) {
 }
 
 void Database::Load(string fileName) {
-	cout << "Loading: " << fileName << "\n";
+	
 	try {
 		//remove first space in params
 		fileName.erase(0, 1);
@@ -61,11 +61,20 @@ void Database::Load(string fileName) {
 		//open file
 		std::ifstream infile(fileName);
 
-		std::string line;
-		//read file line by line and execute lines as commands
-		while (std::getline(infile, line)) {
-			std::istringstream iss(line);
-			Parse(line);
+		if (infile.good()) {
+
+			cout << "Loading: " << fileName << endl;
+
+			std::string line;
+			//read file line by line and execute lines as commands
+			while (std::getline(infile, line)) {
+				std::istringstream iss(line);
+				Parse(line);
+			}
+
+		}
+		else {
+			cout << "File " << fileName << " not found." << endl;
 		}
 	}
 	catch(...){
@@ -74,7 +83,7 @@ void Database::Load(string fileName) {
 }
 
 void Database::Dump(string fileName) {
-	cout << "Dumping to " << fileName << "\n";
+	cout << "Dumping it in" << fileName << endl;
 	try {
 		//remove first space in params
 		fileName.erase(0, 1);
@@ -87,7 +96,7 @@ void Database::Dump(string fileName) {
 		map<string, vector<Fact*> > facts;
 		facts = KB->GetAllFacts();
 
-		//get the map of all rules
+		//get the map and vector of all rules
 		map < string, vector <Rule*> > rules;
 		rules = RB->getAllRules();
 
@@ -129,17 +138,19 @@ void Database::Dump(string fileName) {
 				SRIFile << itr->second[i]->getLogic() << " ";
 
 				//get the map of facts and rules in the logical part of the rule
-				map <string, vector <string> > logic;
+				map <int, vector <string> > logic;
+				vector <string> names;
 				logic = itr->second[i]->getParam();
+				names = itr->second[i]->getParamName();
 				//for each fact/rule in the logic
-				for (auto it = logic.begin(); it != logic.end(); ++it) {
-					SRIFile << it->first << "(";
+				for (int it = 0; it < names.size(); ++it) {
+					SRIFile << names[it] << "(";
 
 					//print the parameters of the fact/rule
-					for (int j = 0; j < logic[it->first].size(); j++) {
-						SRIFile << logic[it->first][j];
+					for (int j = 0; j < logic[it].size(); j++) {
+						SRIFile << logic[it][j];
 						//with commas in between parameters
-						if (j < logic[it->first].size() - 1) {
+						if (j < logic[it].size() - 1) {
 							SRIFile << ", ";
 						}
 					}
@@ -158,7 +169,7 @@ void Database::Dump(string fileName) {
 
 void Database::MakeFact(string params) {
 
-	cout << "MakeFact" << params << "\n";
+	cout << "Making Fact:" << params << "\n";
 	try {
 		//remove first space in params
 		params.erase(0, 1);
@@ -186,7 +197,7 @@ void Database::MakeFact(string params) {
 void Database::MakeRule(string params) {
 
 	bool error_caught = false;
-	cout << "MakeRule" << params << "\n";
+	cout << "Making Rule:" << params << "\n";
 	try {
 		//remove first space in params
 		params.erase(0, 1);
@@ -277,7 +288,7 @@ void Database::MakeRule(string params) {
 }
 
 vector<map<string, string>> Database::Query(string params, vector<string> upperParams) {
-	cout << "Inference\n";
+
 	//removes space from rule name
 	params.erase(0, 1);
 
@@ -286,6 +297,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 	bool top;
 	//the top is the only one to get empty parameters
 	if (upperParams.empty()) {
+		cout << "Making Inference" << endl;
 		top = true;
 	}
 	else {
@@ -318,41 +330,64 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 		//get operator (AND/OR)
 		string operation = thisRule->getLogic();
 
-		map <string, vector<string>> logic = thisRule->getParam();
+		map <int, vector<string>> logic = thisRule->getParam();
+		vector <string> name = thisRule->getParamName();
 
 		if (operation == "OR") {
 			//get each fact/rule in this rule logic
-			for (auto it = logic.begin(); it != logic.end(); ++it) {
-				vector<Fact*> factList = KB->getFacts(it->first);
+			for (int it = 0; it < name.size(); ++it) {
+				vector<Fact*> factList = KB->getFacts(name[it]);
 
 				//if not a fact, it is a rule
 				if (factList.empty()) {
 					//call a new query and get the results from this rule
 					string newQuery = " ";
-					newQuery += it->first;
+					newQuery += name[it];
 					newQuery += " ";
 					if (!printOutput) {
 						newQuery += newFact;
 					}
 					//recursively call query to get factmaps from it
-					factMaps = Query(newQuery, logic[it->first]);
+					factMaps = Query(newQuery, logic[it]);
 
 					//get params of this rule
 					vector<string> ruleParams = thisRule->getRuleParams();
+					
 					//read from factMap using the rule parameters
 					//for each fact map from recursive query
 					if (top) {
-						for (int fm = 0; fm < factMaps.size(); fm++) {
-							cout << "FACT " << newFact << "(";
-							factMap = factMaps[fm];
-							//use the fact map to map things from the fact to the rule
-							for (int i = 0; i < factMap.size(); i++) {
-								cout << factMap[ruleParams[i]];
-								if (i < factMap.size() - 1) {
-									cout << ", ";
+						if (printOutput) {
+
+							for (int fm = 0; fm < factMaps.size(); fm++) {
+								cout << "FACT " << newFact << "(";
+								factMap = factMaps[fm];
+								//use the fact map to map things from the fact to the rule
+								for (int i = 0; i < factMap.size(); i++) {
+									cout << factMap[ruleParams[i]];
+									if (i < factMap.size() - 1) {
+										cout << ", ";
+									}
+								}
+								cout << ")\n";
+							}
+						}
+						else {
+
+							string str = "";
+
+							for (int fm = 0; fm < factMaps.size(); fm++) {
+								factMap = factMaps[fm];
+								//use the fact map to map things from the fact to the rule
+								for (int i = 0; i < factMap.size(); i++) {
+									str.append(factMap[ruleParams[i]]);
+									if (i < factMap.size() - 1) {
+										str.append(", ");
+									}
 								}
 							}
-							cout << ")\n";
+
+							KB->CreateFact(newFact, str);
+
 						}
 					}
 				}
@@ -365,7 +400,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 						//take fact parameters and put them in rule parameters
 						vector<string> factThings = thisFact->GetThings();
 						//create a map from the $params of thisFact
-						vector<string> factParamsInRule = it->second;
+						vector<string> factParamsInRule = logic[it];
 
 						if (top) {
 							for (int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
@@ -381,29 +416,53 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 						factMaps.push_back(factMap);
 
 						if (top) {
-							//get params of rule
-							vector<string> ruleParams = thisRule->getRuleParams();
-							//read from factMap using the rule parameters
-							cout << "FACT " << newFact << "(";
-							for (int i = 0; i < factMap.size(); i++) {
-								cout << factMap[ruleParams[i]];
-								if (i < factMap.size() - 1) {
-									cout << ", ";
+							if (printOutput) {
+
+								//get params of rule
+								vector<string> ruleParams = thisRule->getRuleParams();
+								//read from factMap using the rule parameters
+								cout << "FACT " << newFact << "(";
+								for (int i = 0; i < factMap.size(); i++) {
+									cout << factMap[ruleParams[i]];
+									if (i < factMap.size() - 1) {
+										cout << ", ";
+									}
 								}
+								cout << ")\n";
+
 							}
-							cout << ")\n";
+							else {
+
+								// makes a string
+								string str = "";
+
+								//get params of rule
+								vector<string> ruleParams = thisRule->getRuleParams();
+
+								//read from factMap using the rule parameters
+								for (int i = 0; i < factMap.size(); i++) {
+									str.append(factMap[ruleParams[i]]);
+									if (i < factMap.size() - 1) {
+										str.append(", ");
+									}
+								}
+
+								KB->CreateFact(newFact, str);
+
+							}
 						}
 					}
 				}
 			}
 		}
 		else {
+			
+			int it = 1;
 			//get left fact/rule
-			auto it = logic.begin();
-			vector<Fact*> factList = KB->getFacts(it->first);
+			vector<Fact*> factList = KB->getFacts(name[it]);
 
 			//get left fact/rule params
-			vector<string> leftParams = logic[it->first];
+			vector<string> leftParams = logic[it];
 		}
 	}
 
@@ -411,7 +470,11 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 }
 
 void Database::Drop(string params) {
-	cout << "Droping " << params << "\n";
+	cout << "Droping" << params << endl;
+
+	//remove first space in params
+	params.erase(0, 1);
+
 	RB->deleteRule(params);
 	KB->DeleteFact(params);
 }
