@@ -59,7 +59,7 @@ void Database::Load(string fileName) {
 		fileName.erase(0, 1);
 
 		//open file
-		std::ifstream infile(fileName);
+		std::ifstream infile(fileName.c_str());
 
 		if (infile.good()) {
 
@@ -90,7 +90,7 @@ void Database::Dump(string fileName) {
 
 		//open file for writing
 		ofstream SRIFile;
-		SRIFile.open(fileName);
+		SRIFile.open(fileName.c_str());
 
 		//get the map of all facts
 		map<string, vector<Fact*> > facts;
@@ -175,14 +175,14 @@ void Database::MakeFact(string params) {
 		params.erase(0, 1);
 
 		//the characters up to the first parentheses is the fact name
-		auto tail = params.find("(");
+		int tail = params.find("(");
 
 		//if no parentheses are found throw error
 		if (tail == std::string::npos) throw;
 		string factName = params.substr(0, tail);
 
 		//starting at tail, find closing parentheses for end of arguments
-		auto head = params.find(")", tail);
+		int head = params.find(")", tail);
 		if (tail == std::string::npos) throw;
 
 		//put all arguments in string and send it to KB->CreateFact
@@ -203,14 +203,14 @@ void Database::MakeRule(string params) {
 		params.erase(0, 1);
 
 		//the characters up to the first parentheses is the fact name
-		auto tail = params.find("(");
+		int tail = params.find("(");
 
 		//if no parentheses are found throw error
 		if (tail == std::string::npos) throw 1;
 		string ruleName = params.substr(0, tail);
 
 		//starting at tail, find closing parentheses for end of stuff
-		auto head = params.find(")", tail);
+		int head = params.find(")", tail);
 		if (head == std::string::npos) throw 2;
 
 		//put fact stuff in string
@@ -290,11 +290,11 @@ void Database::MakeRule(string params) {
 	}
 }
 
-vector<map<string, string>> Database::Query(string params, vector<string> upperParams) {
+vector< map<string, string> > Database::Query(string params, vector<string> upperParams) {
 
 	// Define it out of the scope of the try catch
-	vector<map<string, string>> factMaps;
-	vector<map<string, string>> factMaps2;
+	vector<map <string, string> > factMaps;
+	vector<map <string, string> > factMaps2;
 	vector<Fact*> factList;
 
 	try {
@@ -317,7 +317,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 
 		//get the name of the the rule being queried and the possible new fact name
 		string ruleName, newFact;
-		auto space = params.find(" ");
+		int space = params.find(" ");
 		ruleName = params.substr(0, space);
 
 		// Checks to see if the Rule exsists
@@ -346,7 +346,7 @@ vector<map<string, string>> Database::Query(string params, vector<string> upperP
 			//get operator (AND/OR)
 			string operation = thisRule->getLogic();
 
-			map <int, vector<string>> logic = thisRule->getParam();
+			map <int, vector<string> > logic = thisRule->getParam();
 			vector <string> name = thisRule->getParamName();
 
 			if (operation == "OR") {
@@ -634,7 +634,7 @@ command Database::Command(string word) {
 		word[i] = tolower(word[i]);
 	}
 	//check if the command is valid
-	auto it = commandList.find(word);
+	map <string, command>::iterator it = commandList.find(word);
 	if (it != commandList.end()) {
 		//use commandList to get correct function to execute
 		return commandList[word];

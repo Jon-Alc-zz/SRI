@@ -12,6 +12,8 @@
 #include <iostream>
 #include <map>
 
+using namespace std;
+
 enum command {
 	load,
 	dump,
@@ -28,7 +30,7 @@ private:
 
 	KnowledgeBase* KB;
 	RuleBase* RB;
-	std::map <string, command> commandList;
+	map <string, command> commandList;
 
 public:
 
@@ -38,7 +40,7 @@ public:
 	void Dump(string fileName);
 	void MakeFact(string params);
 	void MakeRule(string params);
-	vector<map<string, string>> Query(string params, vector<string> upperParams);
+	vector< map< string, string> > Query(string params, vector<string> upperParams);
 	void Drop(string params);
 	command Command(string word);
 

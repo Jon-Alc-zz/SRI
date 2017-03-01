@@ -13,7 +13,7 @@ KnowledgeBase::KnowledgeBase(){
 //1 if it is found before the end of the map is reached
 //-1 otherwise
 int KnowledgeBase::CheckFact(string fact) {
-	auto it = KBmp.find(fact);
+    it = KBmp.find(fact);
 	if (it != KBmp.end()) {
 		return 1;
 	}
