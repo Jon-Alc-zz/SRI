@@ -314,7 +314,8 @@ vector<map<string, string>> Database::Query(string params, bool top) {
 			//if not a fact, it is a rule
 			if (factList.empty()) {
 				//call a new query and get the results from this rule
-				string newQuery = it->first;
+				string newQuery = " ";
+				newQuery += it->first;
 				newQuery += " ";
 				if (!printOutput) {
 					newQuery += newFact;
