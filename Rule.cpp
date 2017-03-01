@@ -79,7 +79,7 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 			strPos = newpArg.find("("); // searches for index of '('
 
-			newpArg.erase(0, strPos); // everything up to and on '(' is deleted
+			newpArg.erase(0, strPos + 1); // everything up to and on '(' is deleted
 
 
 			do {
@@ -89,18 +89,21 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 				strPos3 = newpArg.find("$"); // new search position looking for '$'
 				
 
-				if (strPos2 >= 0) {
-					strTemp.assign(newpArg, strPos3, strPos2 - 1);
+				if (strPos2 >= 0) {          // runs through here if there is a ','
+					strTemp.assign(newpArg, strPos3, strPos2);
 					params[Temp[index]].push_back(strTemp);
 					newpArg.erase(0, strPos2 + 1);
 				}
-				else if (strPos3 >= 0) {
+				else if (strPos3 >= 0) {     // runs through here is there is '$' and there are no ','
 					strTemp.assign(newpArg, strPos3, strPos);
 					params[Temp[index]].push_back(strTemp);
 					newpArg.erase(0, strPos + 1);
 				}
+				else {                       // if there are no '$' or ',' store then it breaks
+					break;
+				}
 				
-			} while (strPos > 0);
+			} while (true);
 
 			index++;
 
@@ -128,6 +131,7 @@ string Rule::getLogic() {
 	return logic;
 }
 
+// Debug tool
 void Rule::printRule() {
 	cout << "Rule Arguments: ";
 	for (int i = 0; i < rule_param.size(); i++) cout << rule_param[i] << " ";
