@@ -26,7 +26,7 @@ public:
 
 	KnowledgeBase();
 	int CheckFact(string fact);
-	auto getFacts(string fact);
+	vector<Fact*> getFacts(string fact);
 	map<string, vector<Fact*> > GetAllFacts();
 	void CreateFact(string name, string things);
 	void DeleteFact(string fact);

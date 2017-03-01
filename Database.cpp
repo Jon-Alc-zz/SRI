@@ -271,14 +271,63 @@ void Database::MakeRule(string params) {
 
 void Database::Query(string params) {
 	cout << "Inference\n";
+	params.erase(0, 1);
+
+	string ruleName, newFact;
+
+	auto space = params.find(" ");
+
+	ruleName = params.substr(0, space);
+	bool printOutput = false;
+	if (space != std::string::npos) {
+		newFact = params.substr(space + 1, params.length());
+	}
+	else {
+		printOutput = true;
+	}
+
+	//cout << "name: " << ruleName << "\n";
+	//if (printOutput == false) {
+		//cout << "fact: " << newFact << "\n";
+	//}
 	//get the rule we are inferring from
-	Rule thisRule = RB->getRule(params);
+	vector<Rule*> ruleList = RB->getRule(ruleName);
+	Rule* thisRule = ruleList[0];
+
 	//get operator
-	string operation = thisRule.getLogic();
-	//get left fact/rule
-	map <string, vector<string>> logic = thisRule.getParam();
-	auto it = logic.begin();
-	cout << it->first;
+	string operation = thisRule->getLogic();
+	//cout << "operator: " << operation << "\n";
+
+	//get each fact/rule
+	map <string, vector<string>> logic = thisRule->getParam();
+
+	for (auto it = logic.begin(); it != logic.end(); ++it) {
+		//get the things from the fact
+		vector<Fact*> factList = KB->getFacts(it->first);
+		Fact* thisFact = factList[0];
+
+		//take fact parameters and put them in rule parameters
+		vector<string> factThings = thisFact->GetThings();
+		//create a map from the $params of thisFact
+		map<string, string> factMap;
+		vector<string> factParamsInRule = it->second;
+		for (int i = 0; i < factThings.size(); i++) {
+			factMap[factParamsInRule[i]] = factThings[i];
+		}
+
+		//get params of rule
+		vector<string> ruleParams = thisRule->getRuleParams();
+
+		cout << "FACT " << newFact << "(";
+		for (int i = 0; i < factMap.size(); i++) {
+			cout << factMap[ruleParams[i]];
+			if (i < factMap.size() - 1) {
+				cout << ", ";
+			}
+		}
+		cout << ")\n";
+	}
+
 	//figure out if it is a fact or a rule
 	//if it is a rule, pass it recursively and get results for possible things
 	//if it is a fact, do this logic once for each instance of a fact with that name

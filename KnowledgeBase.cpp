@@ -30,7 +30,7 @@ map<string, vector<Fact*> > KnowledgeBase::GetAllFacts() {
 //uses fact name to return specific fact in map
 //try-catch  and uses CheckFact to see if the fact exists in the
 //first place, returns error message otherwise
-auto KnowledgeBase::getFacts(string fact) {
+vector<Fact*> KnowledgeBase::getFacts(string fact) {
 	try {
 		if (CheckFact(fact) == 1) {
 			return KBmp[fact];

@@ -40,17 +40,10 @@ void RuleBase::deleteRule(string name) {
 
 }
 
-auto RuleBase::getRule(string name) {
+vector<Rule*> RuleBase::getRule(string name) {
 
 	try {
-
-		if (checkRule(name) == 1) {
-			return rules[name];
-		}
-		else {
-			throw;
-			return rules[name];
-		}
+	    return rules[name];
 	}
 	catch (...) {
 
