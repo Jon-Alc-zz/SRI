@@ -52,7 +52,7 @@ void Database::Parse(string input) {
 }
 
 void Database::Load(string fileName) {
-	cout << "load";
+	cout << "Loading" << fileName << "\n";
 	try {
 		//open file
 		std::ifstream infile(fileName);
@@ -70,37 +70,71 @@ void Database::Load(string fileName) {
 }
 
 void Database::Dump(string fileName) {
-	cout << "Dump\n";
-	ofstream f;
-	f.open(fileName);
+	cout << "Dumping to " << fileName << "\n";
+	try {
 
-	map<string, vector<Fact*> > facts;
-	facts = KB->GetAllFacts();
+		ofstream SRIFile;
+		SRIFile.open(fileName);
 
-	map < string, vector <Rule*> > rules;
-	rules = RB->getAllRules();
+		map<string, vector<Fact*> > facts;
+		facts = KB->GetAllFacts();
 
-	for (map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
-		for (int i = 0; i < itf->second.size(); i++) {
-			cout << "FACT " << itf->first << "(";
-			for (int j = 0; j < itf->second[i]->GetThings().size(); j++) {
-				if (j > 0) { cout << ", "; }
-				cout << itf->second[i]->GetThings()[j];
+		map < string, vector <Rule*> > rules;
+		rules = RB->getAllRules();
+
+		for (map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
+			for (int i = 0; i < itf->second.size(); i++) {
+				SRIFile << "FACT " << itf->first << "(";
+				for (int j = 0; j < itf->second[i]->GetThings().size(); j++) {
+					if (j > 0) { SRIFile << ", "; }
+					SRIFile << itf->second[i]->GetThings()[j];
+				}
+				SRIFile << ")\n";
 			}
-			cout << ")\n";
 		}
-	}
 
-	for (map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
-		for (int i = 0; i < itr->second.size(); i++) {
-			cout << "RULE " << itr->first << " " << itr->second[i]->getLogic();
+		for (map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
+			for (int i = 0; i < itr->second.size(); i++) {
+				SRIFile << "RULE " << itr->first << "(";
+
+				vector <string> params = itr->second[i]->getRuleParams();
+				for (int j = 0; j < params.size(); j++) {
+					SRIFile << params[j];
+					if (j < params.size() - 1) {
+						SRIFile << ", ";
+					}
+				}
+
+				SRIFile << "):- ";
+				SRIFile << itr->second[i]->getLogic() << " ";
+
+				map <string, vector <string> > logic;
+				logic = itr->second[i]->getParam();
+				for (auto it = logic.begin(); it != logic.end(); ++it) {
+					SRIFile << it->first << "(";
+
+					for (int j = 0; j < logic[it->first].size(); j++) {
+						SRIFile << logic[it->first][j];
+						if (j < logic[it->first].size() - 1) {
+							SRIFile << ", ";
+						}
+					}
+					SRIFile << ") ";
+				}
+				SRIFile << "\n";
+			}
 		}
+
+		SRIFile.close();
+	}
+	catch (...) {
+		cout << "error writing to file";
 	}
 }
 
 void Database::MakeFact(string params) {
 
-	cout << "MakeFact\n";
+	cout << "MakeFact" << params << "\n";
 	try {
 		//remove first space in params
 		params.erase(0, 1);
@@ -128,7 +162,7 @@ void Database::MakeFact(string params) {
 void Database::MakeRule(string params) {
 
 	bool error_caught = false;
-	cout << "MakeRule\n";
+	cout << "MakeRule" << params << "\n";
 	try {
 		//remove first space in params
 		params.erase(0, 1);
@@ -231,13 +265,12 @@ void Database::Query(string params) {
 }
 
 void Database::Drop(string params) {
-	cout << "Drop\n";
+	cout << "Drop" << params << "\n";
 	RB->deleteRule(params);
 	KB->DeleteFact(params);
 }
 
 command Database::Command(string word) {
-	cout << "Command\n";
 	//change all characters in string to lowercase
 	for (unsigned int i = 0; i < word.length(); ++i) {
 		word[i] = tolower(word[i]);
