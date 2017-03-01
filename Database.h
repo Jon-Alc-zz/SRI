@@ -38,7 +38,7 @@ public:
 	void Dump(string fileName);
 	void MakeFact(string params);
 	void MakeRule(string params);
-	vector<map<string, string>> Query(string params, bool top);
+	vector<map<string, string>> Query(string params, vector<string> upperParams);
 	void Drop(string params);
 	command Command(string word);
 
