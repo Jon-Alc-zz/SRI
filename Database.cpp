@@ -61,7 +61,7 @@ void Database::Load(string fileName) {
 		//open file
 		std::ifstream infile(fileName.c_str());
 
-		if (infile.good()) {
+		if (infile.good() && fileName.find(".sri") != string::npos) {
 
 			cout << "Loading: " << fileName << endl;
 
@@ -73,6 +73,9 @@ void Database::Load(string fileName) {
 			}
 
 		}
+		else if(infile.good()){
+			cout << "File is not '.sri'";
+		}
 		else {
 			cout << "File " << fileName << " not found." << endl;
 		}
@@ -83,10 +86,14 @@ void Database::Load(string fileName) {
 }
 
 void Database::Dump(string fileName) {
-	cout << "Dumping it in" << fileName << endl;
+
 	try {
 		//remove first space in params
 		fileName.erase(0, 1);
+
+		if (fileName.find(".sri") == string::npos) fileName += ".sri";
+
+		cout << "Dumping it in " << fileName << endl;
 
 		//open file for writing
 		ofstream SRIFile;
@@ -625,7 +632,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 }
 
 void Database::Drop(string params) {
-	cout << "Droping" << params << endl;
+	cout << "Droping:" << params << endl;
 
 	//remove first space in params
 	params.erase(0, 1);
