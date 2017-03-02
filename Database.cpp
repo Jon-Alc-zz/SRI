@@ -103,11 +103,11 @@ void Database::Dump(string fileName) {
 		//iterate through the map of facts and print them in correct format
 		for (map<string, vector<Fact*> >::iterator itf = facts.begin(); itf != facts.end(); ++itf) {
 			//for each fact in the vector of facts in each name
-			for (int i = 0; i < itf->second.size(); i++) {
+			for (int unsigned i = 0; i < itf->second.size(); i++) {
 				//define as fact and put open parentheses
 				SRIFile << "FACT " << itf->first << "(";
 				//put each of the parameters of each fact into the parentheses
-				for (int j = 0; j < itf->second[i]->GetThings().size(); j++) {
+				for (int unsigned j = 0; j < itf->second[i]->GetThings().size(); j++) {
 					//put a comma in between each parameter
 					if (j > 0) { SRIFile << ", "; }
 					SRIFile << itf->second[i]->GetThings()[j];
@@ -118,14 +118,14 @@ void Database::Dump(string fileName) {
 
 		for (map< string, vector <Rule*> >::iterator itr = rules.begin(); itr != rules.end(); ++itr) {
 			//for each rule in the vector of rules under a name
-			for (int i = 0; i < itr->second.size(); i++) {
+			for (int unsigned i = 0; i < itr->second.size(); i++) {
 				//define as rule and open preantheses
 				SRIFile << "RULE " << itr->first << "(";
 
 				//get the parameters that are associated with the rule
 				vector <string> params = itr->second[i]->getRuleParams();
 				//print each of these parameters in the first set of parentheses
-				for (int j = 0; j < params.size(); j++) {
+				for (int unsigned j = 0; j < params.size(); j++) {
 					SRIFile << params[j];
 					//put a comma in between each parameter
 					if (j < params.size() - 1) {
@@ -143,11 +143,11 @@ void Database::Dump(string fileName) {
 				logic = itr->second[i]->getParam();
 				names = itr->second[i]->getParamName();
 				//for each fact/rule in the logic
-				for (int it = 0; it < names.size(); ++it) {
+				for (int unsigned it = 0; it < names.size(); ++it) {
 					SRIFile << names[it] << "(";
 
 					//print the parameters of the fact/rule
-					for (int j = 0; j < logic[it].size(); j++) {
+					for (int unsigned j = 0; j < logic[it].size(); j++) {
 						SRIFile << logic[it][j];
 						//with commas in between parameters
 						if (j < logic[it].size() - 1) {
@@ -175,7 +175,7 @@ void Database::MakeFact(string params) {
 		params.erase(0, 1);
 
 		//the characters up to the first parentheses is the fact name
-		int tail = params.find("(");
+		int unsigned tail = params.find("(");
 
 		//if no parentheses are found throw error
 		if (tail == std::string::npos) throw;
@@ -203,14 +203,14 @@ void Database::MakeRule(string params) {
 		params.erase(0, 1);
 
 		//the characters up to the first parentheses is the fact name
-		int tail = params.find("(");
+		unsigned int tail = params.find("(");
 
 		//if no parentheses are found throw error
 		if (tail == std::string::npos) throw 1;
 		string ruleName = params.substr(0, tail);
 
 		//starting at tail, find closing parentheses for end of stuff
-		int head = params.find(")", tail);
+		unsigned int head = params.find(")", tail);
 		if (head == std::string::npos) throw 2;
 
 		//put fact stuff in string
@@ -294,7 +294,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 	// Define it out of the scope of the try catch
 	//a sourceMaps is a vector of facts from the same source
-	vector<map<string, string>> sourceMaps;
+	vector<map<string, string> > sourceMaps;
 	vector<map <string, string> > factMaps;
 	vector<Fact*> factList;
 
@@ -318,7 +318,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 		//get the name of the the rule being queried and the possible new fact name
 		string ruleName, newFact;
-		int space = params.find(" ");
+		int unsigned space = params.find(" ");
 		ruleName = params.substr(0, space);
 
 		// Checks to see if the Rule exsists
@@ -341,7 +341,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 		vector<Rule*> ruleList = RB->getRule(ruleName);
 
 		//for each rule with that name
-		for (int r = 0; r < ruleList.size(); r++) {
+		for (int unsigned r = 0; r < ruleList.size(); r++) {
 			Rule* thisRule = ruleList[r];
 
 			//get operator (AND/OR)
@@ -352,7 +352,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 			if (operation == "OR") {
 				//get each fact/rule in this rule logic
-				for (int it = 0; it < name.size(); it++) {
+				for (int unsigned it = 0; it < name.size(); it++) {
 					factList = KB->getFacts(name[it]);
 
 					//if not a fact, it is a rule
@@ -378,11 +378,11 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 						if (top) {
 							if (printOutput) {
 
-								for (int fm = 0; fm < sourceMaps.size(); fm++) {
+								for (int unsigned fm = 0; fm < sourceMaps.size(); fm++) {
 									cout << ruleName << newFact << "(";
 									factMap = sourceMaps[fm];
 									//use the fact map to map things from the fact to the rule
-									for (int i = 0; i < factMap.size(); i++) {
+									for (int unsigned i = 0; i < factMap.size(); i++) {
 										cout << factMap[ruleParams[i]];
 										if (i < factMap.size() - 1) {
 											cout << ", ";
@@ -395,10 +395,10 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 								string str = "";
 
-								for (int fm = 0; fm < sourceMaps.size(); fm++) {
+								for (int unsigned fm = 0; fm < sourceMaps.size(); fm++) {
 									factMap = sourceMaps[fm];
 									//use the fact map to map things from the fact to the rule
-									for (int i = 0; i < factMap.size(); i++) {
+									for (int unsigned i = 0; i < factMap.size(); i++) {
 										str.append(factMap[ruleParams[i]]);
 										if (i < factMap.size() - 1) {
 											str.append(", ");
@@ -415,7 +415,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 						//if it is a fact (OR)
 						//get things from each fact with that name
-						for (int f = 0; f < factList.size(); f++) {
+						for (int unsigned f = 0; f < factList.size(); f++) {
 							Fact* thisFact = factList[f];
 
 							//take fact parameters and put them in rule parameters
@@ -424,12 +424,12 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 							vector<string> factParamsInRule = logic[it];
 
 							if (top) {
-								for (int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+								for (int unsigned i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
 									factMap[factParamsInRule[i]] = factThings[i];
 								}
 							}
 							else {
-								for (int i = 0; i < factThings.size() && i < upperParams.size(); i++) {
+								for (int unsigned i = 0; i < factThings.size() && i < upperParams.size(); i++) {
 									factMap[upperParams[i]] = factThings[i];
 								}
 							}
@@ -443,7 +443,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 									vector<string> ruleParams = thisRule->getRuleParams();
 									//read from factMap using the rule parameters
 									cout << ruleName << newFact << "(";
-									for (int i = 0; i < factMap.size(); i++) {
+									for (int unsigned i = 0; i < factMap.size(); i++) {
 										cout << factMap[ruleParams[i]];
 										if (i < factMap.size() - 1) {
 											cout << ", ";
@@ -461,7 +461,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 									vector<string> ruleParams = thisRule->getRuleParams();
 
 									//read from factMap using the rule parameters
-									for (int i = 0; i < factMap.size(); i++) {
+									for (int unsigned i = 0; i < factMap.size(); i++) {
 										str.append(factMap[ruleParams[i]]);
 										if (i < factMap.size() - 1) {
 											str.append(", ");
@@ -480,10 +480,10 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 				//It is AND
 
 				//Create a vector to hold all sourceMaps that will be used to compare sourceMaps together
-				vector<vector<map<string, string>>> allMaps;
+				vector< vector<map<string, string> > > allMaps;
 
 				//Combine each fact/rule into one FactMap
-				for (int it = 0; it < name.size(); it++) {
+				for (int unsigned it = 0; it < name.size(); it++) {
 					factList = KB->getFacts(name[it]);
 					sourceMaps.clear();
 					factMap.clear();
@@ -505,7 +505,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 					else {
 						//it is a fact (AND)
 						//get things from each fact with that name
-						for (int f = 0; f < factList.size(); f++) {
+						for (int unsigned f = 0; f < factList.size(); f++) {
 							Fact* thisFact = factList[f];
 
 							//take fact parameters and put them in rule parameters
@@ -514,12 +514,12 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 							vector<string> factParamsInRule = logic[it];
 
 							if (top) {
-								for (int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+								for (int unsigned i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
 									factMap[factParamsInRule[i]] = factThings[i];
 								}
 							}
 							else {
-								for (int i = 0; i < factThings.size() && i < upperParams.size(); i++) {
+								for (int unsigned i = 0; i < factThings.size() && i < upperParams.size(); i++) {
 									factMap[upperParams[i]] = factThings[i];
 								}
 							}
@@ -538,16 +538,16 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 				sourceMaps = allMaps[0];
 
 				//for each factmap in the first sourcemap
-				for (int f = 0; f < sourceMaps.size(); f++) {
+				for (int unsigned f = 0; f < sourceMaps.size(); f++) {
 					//for each factmap in the other sourceMap
-					vector<map<string, string>> sourceMaps2 = allMaps[1];
-					for (int s = 1; s < sourceMaps2.size(); s++) {
+					vector<map<string, string> > sourceMaps2 = allMaps[1];
+					for (int unsigned s = 1; s < sourceMaps2.size(); s++) {
 						factMap = sourceMaps[f];
 						map<string, string> factMap2 = sourceMaps2[s];
 
 						//for each thing in factMap2
 						for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
-							auto place = factMap.find(itf->first);
+							map<string, string>::iterator place = factMap.find(itf->first);
 							if (place == factMap.end()) {
 								//location is free in factMap
 								//put new thing in factMap
@@ -571,7 +571,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 									vector<string> ruleParams = thisRule->getRuleParams();
 									//read from factMap using the rule parameters
 									cout << ruleName << newFact << "(";
-									for (int i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
+									for (int unsigned i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
 										cout << factMap[ruleParams[i]];
 										if (i < factMap.size() - 1 && i < ruleParams.size() - 1) {
 											cout << ", ";
@@ -589,7 +589,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 									vector<string> ruleParams = thisRule->getRuleParams();
 
 									//read from factMap using the rule parameters
-									for (int i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
+									for (unsigned int i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
 										str.append(factMap[ruleParams[i]]);
 										if (i < factMap.size() - 1 && i < ruleParams.size() - 1) {
 											str.append(", ");

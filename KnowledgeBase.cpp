@@ -31,17 +31,17 @@ map<string, vector<Fact*> > KnowledgeBase::GetAllFacts() {
 //try-catch  and uses CheckFact to see if the fact exists in the
 //first place, returns error message otherwise
 vector<Fact*> KnowledgeBase::getFacts(string fact) {
+	vector <Fact*> emptyFacts;
 	try {
 		if (CheckFact(fact) == 1) {
-			return KBmp[fact];
-		}
-		else {
 			return KBmp[fact];
 		}
 	}
 	catch (...) {
 		cout << "getFacts Error: fact" << fact << " not found." << endl;
 	}
+
+	return emptyFacts;
 }
 
 //if both string parameters are not empty, a new fact is put into

@@ -7,10 +7,10 @@
 // Constructor
 Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
-	int strPos = 0;
-	int strPos2 = 0;
-	int strPos3 = 0;
-	int index = 0;
+	int unsigned strPos = 0;
+	int unsigned strPos2 = 0;
+	int unsigned strPos3 = 0;
+	int unsigned index = 0;
 	string strTemp = "";
 	string newpArg = "";
 
@@ -135,16 +135,16 @@ string Rule::getLogic() {
 // Debug tool
 void Rule::printRule() {
 	cout << "Rule Arguments: ";
-	for (int i = 0; i < rule_param.size(); i++) cout << rule_param[i] << " ";
+	for (unsigned int i = 0; i < rule_param.size(); i++) cout << rule_param[i] << " ";
 	
 	cout << "\nLogic: " << logic << endl;
 	
 	cout << "Rule Params:\n";
 
-	for (int i = 0; i < param_name.size(); i++) {
+	for (unsigned int i = 0; i < param_name.size(); i++) {
 		cout << param_name[i] << ": ";
 
-		for (int ii = 0; ii < params[i].size(); ii++) cout << params[i][ii] << " ";
+		for (unsigned int ii = 0; ii < params[i].size(); ii++) cout << params[i][ii] << " ";
 
 		cout << "\n";
 	}

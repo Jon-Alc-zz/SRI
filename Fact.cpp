@@ -7,7 +7,7 @@
 Fact::Fact(string thingString) {
 
 	int thingLength = 0;
-	int strPos = 0;
+	int unsigned strPos = 0;
 	string strTemp = "";
 
 	// removes all whitespace

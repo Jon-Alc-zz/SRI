@@ -42,11 +42,13 @@ void RuleBase::deleteRule(string name) {
 }
 
 vector<Rule*> RuleBase::getRule(string name) {
+	vector<Rule*> emptyRules;
 
 	if (checkRule(name) == 1) {
 		return rules[name];
 	}
 
+	return emptyRules;
 }
 
 map < string, vector <Rule*> > RuleBase::getAllRules() {
@@ -57,7 +59,7 @@ map < string, vector <Rule*> > RuleBase::getAllRules() {
 
 int RuleBase::checkRule(string name) {
 
-	for (int i = 0; i < names.size(); i++) {
+	for (unsigned int i = 0; i < names.size(); i++) {
 		if (names[i] == name) return 1;
 	}
 
