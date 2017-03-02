@@ -33,7 +33,7 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 		newArg.erase(0, strPos + 1);                  // erases the added string
 
-	} while (strPos != string::npos);
+	} while ( strPos != string::npos);
 
 	// reset position and Temp
 	strPos = 0;
@@ -70,7 +70,7 @@ Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
 		strPos = paramArg.find(")");                 // searches for index of ')'
 		
-		if (strPos != string::npos) {
+		if ( strPos != string::npos) {
 
 			newpArg.assign(paramArg, 0, strPos + 1); // one set of parameters are given to newpArg
 			paramArg.erase(0, strPos + 1);           // the given part is deleted
