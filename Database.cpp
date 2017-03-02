@@ -547,7 +547,9 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 						//for each thing in factMap2
 						for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
+
 							map<string, string>::iterator place = factMap.find(itf->first);
+
 							if (place == factMap.end()) {
 								//location is free in factMap
 								//put new thing in factMap
@@ -562,7 +564,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 								}
 							}
 						}
-						//write here if there is a factmap
+
+						//write here if there is a factmap and it is not the same factmap
 						if (!factMap.empty()) {
 							if (top) {
 								if (printOutput) {

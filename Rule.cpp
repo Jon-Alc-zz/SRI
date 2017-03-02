@@ -7,10 +7,10 @@
 // Constructor
 Rule::Rule(string newArg, string newLogic, string paramName, string paramArg) {
 
-	int unsigned strPos = 0;
-	int unsigned strPos2 = 0;
-	int unsigned strPos3 = 0;
-	int unsigned index = 0;
+	int strPos = 0;
+	int strPos2 = 0;
+	int strPos3 = 0;
+	int index = 0;
 	string strTemp = "";
 	string newpArg = "";
 

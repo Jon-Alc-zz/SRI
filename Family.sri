@@ -1,14 +1,10 @@
 FACT Father(Roger,John)
 FACT Mother(Marry,John)
-
 FACT Father(Roger,Juan)
 FACT Mother(Marry,Juan)
-
 FACT Mother(Roger,Albert)
 FACT Mother(Marry,Albert)
-
 FACT Father(Allen,Margret)
-
 FACT Mother(Margret,Robert)
 FACT Mother(Margret,Bob)
 
