@@ -66,7 +66,7 @@ void KnowledgeBase::CreateFact(string name, string things) {
 void KnowledgeBase::DeleteFact(string fact) {
 	it = KBmp.find(fact);
 	if(CheckFact(fact) == -1){
-		cout << "DeleteFact Error: fact" << fact << "does not exist or is invalid." << endl;
+		// cout << "DeleteFact Error: fact" << fact << "does not exist or is invalid." << endl;
 	}
 	else{
 		KBmp.erase(it);

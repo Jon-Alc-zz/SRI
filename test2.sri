@@ -1,0 +1,4 @@
+FACT Triple(A, B, C)
+FACT Tuple(A, B)
+RULE TripleRipple($X, $Y, $Z):- OR Triple($X, $Y, $Z) 
+RULE TupleRuple($X, $Y):- OR Tuple($X, $Y) 
