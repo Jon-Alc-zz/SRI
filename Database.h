@@ -41,6 +41,8 @@ public:
 	void MakeFact(string params);
 	void MakeRule(string params);
 	vector< map< string, string> > Query(string params, vector<string> upperParams);
+	void OR();
+	void printFact(bool printOut, string name, string fact, vector<string> ruleParams, map<string, string> factMap, unsigned int smSize);
 	void Drop(string params);
 	command Command(string word);
 

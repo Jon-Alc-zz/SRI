@@ -314,7 +314,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 		//the top is the only one to get empty parameters
 		if (upperParams.empty()) {
-			cout << "Making Inference: ";
+			cout << "Making Inference:";
 			top = true;
 		}
 		else {
@@ -333,11 +333,11 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 		bool printOutput = false;
 		if (space != std::string::npos) {
 			newFact = params.substr(space + 1, params.length());
-			cout << " in Knowlegebase under " << newFact << endl;
+			if(top) cout << " in Knowledgebase under " << newFact << endl;
 		}
 		else {
 			printOutput = true;
-			cout << " to the user." << endl;
+			if(top) cout << " to the user." << endl;
 		}
 
 		//fact maps are used to put results into the new facts
@@ -384,39 +384,12 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 						//read from factMap using the rule parameters
 						//for each fact map from recursive query
 						if (top) {
-							if (printOutput) {
 
-								for (unsigned int fm = 0; fm < sourceMaps.size(); fm++) {
-									cout << ruleName << newFact << "(";
-									factMap = sourceMaps[fm];
-									//use the fact map to map things from the fact to the rule
-									for (unsigned int i = 0; i < factMap.size(); i++) {
-										cout << factMap[ruleParams[i]];
-										if (i < factMap.size() - 1) {
-											cout << ", ";
-										}
-									}
-									cout << ")\n";
-								}
+							for (unsigned int fm = 0; fm < sourceMaps.size(); fm++) {
+								factMap = sourceMaps[fm];
+								printFact(printOutput, ruleName, newFact, ruleParams, factMap, factMap.size());
 							}
-							else {
-
-								string str = "";
-
-								for (unsigned int fm = 0; fm < sourceMaps.size(); fm++) {
-									factMap = sourceMaps[fm];
-									//use the fact map to map things from the fact to the rule
-									for (unsigned int i = 0; i < factMap.size(); i++) {
-										str.append(factMap[ruleParams[i]]);
-										if (i < factMap.size() - 1) {
-											str.append(", ");
-										}
-									}
-								}
-
-								KB->CreateFact(newFact, str);
-
-							}
+							
 						}
 					}
 					else {
@@ -444,42 +417,11 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 							sourceMaps.push_back(factMap);
 
-							if (top) {
-								if (printOutput) {
+							//get params of rule
+							vector<string> ruleParams = thisRule->getRuleParams();
 
-									//get params of rule
-									vector<string> ruleParams = thisRule->getRuleParams();
-									//read from factMap using the rule parameters
-									cout << ruleName << newFact << "(";
-									for (unsigned int i = 0; i < factMap.size(); i++) {
-										cout << factMap[ruleParams[i]];
-										if (i < factMap.size() - 1) {
-											cout << ", ";
-										}
-									}
-									cout << ")\n";
-
-								}
-								else {
-
-									// makes a string
-									string str = "";
-
-									//get params of rule
-									vector<string> ruleParams = thisRule->getRuleParams();
-
-									//read from factMap using the rule parameters
-									for (unsigned int i = 0; i < factMap.size(); i++) {
-										str.append(factMap[ruleParams[i]]);
-										if (i < factMap.size() - 1) {
-											str.append(", ");
-										}
-									}
-
-									KB->CreateFact(newFact, str);
-
-								}
-							}
+							if (top) printFact(printOutput, ruleName, newFact, ruleParams, factMap, factMap.size());
+							
 						}
 					}
 				}
@@ -632,6 +574,40 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 	}
 
 	return sourceMaps; // If things fail something still get returned
+}
+
+void Database::OR() {
+
+}
+
+void Database::printFact(bool printOut, string name, string fact, vector<string> rParams, map<string, string> factM, unsigned int smSize) {
+	if (printOut) {
+
+		cout << name << fact << "(";
+		//use the fact map to map things from the fact to the rule
+		for (unsigned int i = 0; i < factM.size(); i++) {
+			cout << factM[rParams[i]];
+			if (i < factM.size() - 1) {
+				cout << ", ";
+			}
+		}
+		cout << ")\n";
+	}
+	else {
+
+		string str = "";
+
+		//use the fact map to map things from the fact to the rule
+		for (unsigned int i = 0; i < factM.size(); i++) {
+			str.append(factM[rParams[i]]);
+			if (i < factM.size() - 1) {
+				str.append(", ");
+			}
+		}
+
+		KB->CreateFact(fact, str);
+
+	}
 }
 
 void Database::Drop(string params) {
