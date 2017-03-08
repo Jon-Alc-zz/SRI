@@ -465,15 +465,9 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 							//create a map from the $params of thisFact
 							vector<string> factParamsInRule = logic[it];
 
-							if (top) {
-								for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
-									factMap[factParamsInRule[i]] = factThings[i];
-								}
-							}
-							else {
-								for (unsigned int i = 0; i < factThings.size() && i < upperParams.size(); i++) {
-									factMap[upperParams[i]] = factThings[i];
-								}
+
+							for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+								factMap[factParamsInRule[i]] = factThings[i];
 							}
 
 							tempSourceMap.push_back(factMap);
@@ -481,6 +475,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 					}
 
 					allMaps.push_back(tempSourceMap);
+					
 				}
 				//find a right match for each left rule
 				//vector<vector<map<string, string>>>
@@ -491,8 +486,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 				//for each factmap in the first sourcemap
 				for (unsigned int f = 0; f < tempSourceMap.size(); f++) {
-					//for each factmap in the other sourceMap
 					vector<map<string, string> > sourceMaps2 = allMaps[1];
+					//for each factmap in the other sourceMap
 					for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
 						factMap = tempSourceMap[f];
 						map<string, string> factMap2 = sourceMaps2[s];
@@ -512,15 +507,13 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 								//only continue with current factMap2 if the things are the same
 								if (factMap[itf->first].compare(itf->second) != 0) {
 									factMap.clear();
-									continue;
+									break;
 								}
 							}
 						}
 
-						//write here if there is a factmap and it is not the same factmap
+						//write here if there is a factmap that is not empty
 						if (!factMap.empty()) {
-							//return facts found for recursive function
-							sourceMaps.push_back(factMap);
 							if (top) {
 								if (printOutput) {
 
@@ -556,6 +549,18 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 									KB->CreateFact(newFact, str);
 
 								}
+							}
+							else {
+								map<string, string> newFactMap;
+								vector<string> ruleParams = thisRule->getRuleParams();
+
+								//read from factMap using the upper parameters
+								for (unsigned int i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
+									newFactMap[upperParams[i]] = factMap[ruleParams[i]];
+								}
+
+								sourceMaps.push_back(newFactMap);
+								
 							}
 						}
 					}

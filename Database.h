@@ -46,7 +46,6 @@ public:
 	void Drop(string params);
 	command Command(string word);
 
-protected:
 
 };
 
