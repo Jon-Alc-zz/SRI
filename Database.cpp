@@ -375,7 +375,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 							newQuery += newFact;
 						}
 						//recursively call query to get sourceMaps from it
-						sourceMaps = Query(newQuery, logic[it]);
+						vector<map<string, string> > tempSourceMap = Query(newQuery, logic[it]);
+						sourceMaps.insert(sourceMaps.end(), tempSourceMap.begin(), tempSourceMap.end());
 
 						//get params of this rule
 						vector<string> ruleParams = thisRule->getRuleParams();
@@ -509,6 +510,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 						}
 						//recursively call query to get sourceMaps from it
 						tempSourceMap = Query(newQuery, logic[it]);
+						sourceMaps.insert(sourceMaps.end(), tempSourceMap.begin(), tempSourceMap.end());
 					}
 					else {
 						//it is a fact (AND)
