@@ -492,7 +492,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 				//Combine each fact/rule into one FactMap
 				for (unsigned int it = 0; it < name.size(); it++) {
 					vector<Fact*> factList = KB->getFacts(name[it]);
-					sourceMaps.clear();
+					vector<map<string, string> > tempSourceMap;
+					//sourceMaps.clear();
 					factMap.clear();
 
 					if (factList.empty()) {
@@ -507,7 +508,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 							newQuery += newFact;
 						}
 						//recursively call query to get sourceMaps from it
-						sourceMaps = Query(newQuery, logic[it]);
+						tempSourceMap = Query(newQuery, logic[it]);
 					}
 					else {
 						//it is a fact (AND)
@@ -531,11 +532,12 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 								}
 							}
 
-							sourceMaps.push_back(factMap);
+							tempSourceMap.push_back(factMap);
 						}
 					}
 
-					allMaps.push_back(sourceMaps);
+					allMaps.push_back(tempSourceMap);
+					sourceMaps = tempSourceMap;
 				}
 				//find a right match for each left rule
 				//vector<vector<map<string, string>>>
