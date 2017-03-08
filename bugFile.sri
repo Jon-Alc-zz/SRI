@@ -1,0 +1,5 @@
+FACT nen(A, B)
+FACT nen(B, C)
+FACT nen(C, D)
+RULE partA($X, $Y):- AND nen($X, $Z) nen($Z, $Y) 
+RULE partB($X, $Y):- AND partA($X, $Z) nen($Z, $Y) 
