@@ -9,7 +9,9 @@ int main() {
 
 		getline(cin, input);
 		if (input == "exit") break;
-		DB->Parse(input);
+		else if (input == "clear" || input == "CLS") cout << string(70, '\n');
+		else DB->Parse(input);
+		
 
 	}
 }
