@@ -302,8 +302,6 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 	// Define it out of the scope of the try catch
 	//a sourceMaps is a vector of facts from the same source
 	vector<map<string, string> > sourceMaps;
-	vector<map <string, string> > factMaps;
-	vector<Fact*> factList;
 
 	try {
 
@@ -362,7 +360,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 			if (operation == "OR") {
 				//get each fact/rule in this rule logic
 				for (unsigned int it = 0; it < name.size(); it++) {
-					factList = KB->getFacts(name[it]);
+					vector<Fact*> factList = KB->getFacts(name[it]);
 
 					//if not a fact, it is a rule
 					if (factList.empty()) {
@@ -493,7 +491,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 				//Combine each fact/rule into one FactMap
 				for (unsigned int it = 0; it < name.size(); it++) {
-					factList = KB->getFacts(name[it]);
+					vector<Fact*> factList = KB->getFacts(name[it]);
 					sourceMaps.clear();
 					factMap.clear();
 
