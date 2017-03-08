@@ -326,7 +326,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 		int space = params.find(" ");
 		ruleName = params.substr(0, space);
 
-		// Checks to see if the Rule exsists
+		// Checks to see if the Rule exists
 		if (RB->checkRule(ruleName) == -1) throw 1;
 
 		//if no new fact name print output instead
