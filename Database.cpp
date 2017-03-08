@@ -537,21 +537,20 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 					}
 
 					allMaps.push_back(tempSourceMap);
-					sourceMaps = tempSourceMap;
 				}
 				//find a right match for each left rule
 				//vector<vector<map<string, string>>>
 				//allMaps->sourceMaps->factmap
 
 				//start at first source for finding matches
-				sourceMaps = allMaps[0];
+				vector<map<string, string> > tempSourceMap = allMaps[0];
 
 				//for each factmap in the first sourcemap
-				for (unsigned int f = 0; f < sourceMaps.size(); f++) {
+				for (unsigned int f = 0; f < tempSourceMap.size(); f++) {
 					//for each factmap in the other sourceMap
 					vector<map<string, string> > sourceMaps2 = allMaps[1];
 					for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
-						factMap = sourceMaps[f];
+						factMap = tempSourceMap[f];
 						map<string, string> factMap2 = sourceMaps2[s];
 
 						//for each thing in factMap2
@@ -576,6 +575,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 						//write here if there is a factmap and it is not the same factmap
 						if (!factMap.empty()) {
+							//return facts found for recursive function
+							sourceMaps.push_back(factMap);
 							if (top) {
 								if (printOutput) {
 
