@@ -385,8 +385,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 							newQuery += newFact;
 						}
 						//recursively call query to get sourceMaps from it
-						sourceMaps = Query(newQuery, logic[it]);
-						//sourceMaps.insert(sourceMaps.end(), tempSourceMap.begin(), tempSourceMap.end());
+						tempSourceMap = Query(newQuery, logic[it]);
+						sourceMaps.insert(sourceMaps.end(), tempSourceMap.begin(), tempSourceMap.end());
 					}
 					else {
 						//it is a fact (AND)
