@@ -349,44 +349,63 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 		//for each rule with that name
 		vector<thread*> joinThreads;
+
 		for (unsigned int r = 0; r < ruleList.size(); r++) {
 			Rule* thisRule = ruleList[r];
 
 			//get operator (AND/OR)
 			string operation = thisRule->getLogic();
 
+			//gets Param of rule
 			map <int, vector<string> > logic = thisRule->getParam();
 			vector <string> name = thisRule->getParamName();
 
 			if (operation == "OR") {
-
-				vector<thread* > orThreads;
+				
+				//Manages Threads for OR
 				thread* temp;
-
+				vector<thread*> orThreads;
+				
+				//Loops through all the Facts used
 				for (unsigned int it = 0; it < name.size(); it++) {
+
+					//gets fact
 					vector<Fact*> factList = KB->getFacts(name[it]);
-
-					//OR( printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, sourceMaps, logic, factMap);
 					
+					//makes temporary OR function to be threaded
 					auto tempOR = bind(&Database::OR, this, printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, ref(sourceMaps), logic, factMap);
-
+					cout << "OR Thread " << it << " has started." << endl;
 					temp = new thread(tempOR);
 
+					//pushes the threads to the vector
 					orThreads.push_back(temp);
+					
 				}
 
-				for (unsigned int i = 0; i < orThreads.size(); i++) orThreads[i]->join();
+				//joins all the threads together
+				for (unsigned int i = 0; i < orThreads.size(); i++) {
+
+					orThreads[i]->join();
+					cout << "OR Thread " << i << " has ended" << endl;
+				}
+
+
+				for (unsigned int i = 0; i < orThreads.size(); i++) delete(orThreads[i]);
+				orThreads.clear();
 			}
 			else {
-				//It is AND
-				auto tempOR = bind(&Database::AND, this, printOutput, thisRule, ruleName, newFact, name, upperParams, ref(sourceMaps), logic);
 
-				joinThreads.push_back(new thread(tempOR));
+				//It is AND
+				auto tempAND = bind(&Database::AND, this, printOutput, thisRule, ruleName, newFact, name, upperParams, ref(sourceMaps), logic);
+
+				joinThreads.push_back(new thread(tempAND));
 
 				//AND(printOutput, thisRule, ruleName, newFact, name, upperParams, sourceMaps, logic);
 			}
 		}
 		for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+		for (unsigned int i = 0; i < joinThreads.size(); i++) delete(joinThreads[i]);
+		joinThreads.clear();
 
 		return sourceMaps;
 	}
@@ -474,7 +493,6 @@ void Database::OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string
 
 	}
 
-	//return sM;
 }
 
 void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string newFact, vector <string> name, vector<string> upperParams, vector<map<string, string> > &sourceMaps, map <int, vector<string> > logic) {
@@ -499,7 +517,7 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	vector<map<string, string> > mapsToPrint = allMaps[0];
 
 	//comapare each argument to the next to find what facts are valid to print
-	for (int tsm = 1; tsm < allMaps.size(); tsm++) {
+	for (unsigned int tsm = 1; tsm < allMaps.size(); tsm++) {
 		//pipelineing previous loop happens here
 		vector<map<string, string> > tempSourceMap = mapsToPrint;
 		mapsToPrint.clear();
@@ -517,12 +535,13 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 				//ANDCompare(mapsToPrint, tempSourceMap[f], sourceMaps2[s]);
 			}
 			for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+			for (unsigned int i = 0; i < joinThreads.size(); i++) delete(joinThreads[i]);
 			joinThreads.clear();
 		}
 	}
 
 	//write all matching factmaps
-	for (int a = 0; a < mapsToPrint.size(); a++) {
+	for (unsigned int a = 0; a < mapsToPrint.size(); a++) {
 		vector<string> ruleParams = thisRule->getRuleParams();
 
 		auto tempOR = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
@@ -531,6 +550,7 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 		//ANDPrintAll(upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], sourceMaps);
 	}
 	for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+	for (unsigned int i = 0; i < joinThreads.size(); i++) delete(joinThreads[i]);
 	joinThreads.clear();
 }
 
@@ -619,16 +639,17 @@ void Database::ANDPrintAll(vector<string> upperParams, bool printOutput, string 
 
 void Database::printFact(bool printOut, string name, string fact, vector<string> rParams, map<string, string> factM, unsigned int smSize) {
 	if (printOut) {
-
-		cout << name << fact << "(";
+		string out = "";
+		out = out + name + fact + "(";
 		//use the fact map to map things from the fact to the rule
 		for (unsigned int i = 0; i < factM.size() && i < rParams.size(); i++) {
-			cout << factM[rParams[i]];
+			out = out + factM[rParams[i]];
 			if (i < factM.size() - 1 && i < rParams.size() - 1) {
-				cout << ", ";
+				out = out + ", ";
 			}
 		}
-		cout << ")\n";
+		out = out + ")\n";
+		cout << out;
 	}
 	else {
 
@@ -646,6 +667,7 @@ void Database::printFact(bool printOut, string name, string fact, vector<string>
 
 	}
 }
+
 
 void Database::Drop(string params) {
 	cout << "Droping:" << params << endl;
@@ -672,4 +694,12 @@ command Database::Command(string word) {
 		//return invalid command if not recognized
 		return fail;
 	}
+}
+
+Database::~Database() {
+	//cout << "Database is gone." << endl;
+
+	delete(KB);
+	delete(RB);
+
 }

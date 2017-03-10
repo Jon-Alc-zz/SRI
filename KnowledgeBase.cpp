@@ -69,9 +69,30 @@ void KnowledgeBase::DeleteFact(string fact) {
 		// cout << "DeleteFact Error: fact" << fact << "does not exist or is invalid." << endl;
 	}
 	else{
-		KBmp.erase(it);
+		
+		vector <Fact*> tempFacts = KBmp[fact];
+		for (unsigned int i = 0; i < tempFacts.size(); i++) {
+			delete(tempFacts[i]);
+		}
+
+		KBmp[fact].clear();
 	}
 }
 
 //destructor
-KnowledgeBase::~KnowledgeBase() {};
+KnowledgeBase::~KnowledgeBase() {
+	//cout << "Knowledge base is gone." << endl;
+
+	map < string, vector <Fact*> > tempMap = GetAllFacts();
+	vector <Fact*> tempFacts;
+
+	for (map < string, vector <Fact*> >::iterator it = tempMap.begin(); it != tempMap.end(); ++it) {
+
+		tempFacts = tempMap[it->first];
+
+		for (unsigned int i = 0; i < tempFacts.size(); i++) {
+			delete(tempFacts[i]);
+		}
+
+	}
+};

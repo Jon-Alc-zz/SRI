@@ -14,4 +14,8 @@ int main() {
 		
 
 	}
+
+	delete(DB);
+
+	return(0);
 }

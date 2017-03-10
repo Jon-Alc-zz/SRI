@@ -40,5 +40,5 @@ vector <string> Fact::GetThings() {
 }
 
 Fact::~Fact() {
-
+	//cout << "Fact is gone" << endl;
 }

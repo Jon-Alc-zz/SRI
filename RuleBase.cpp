@@ -6,8 +6,6 @@
 
 RuleBase::RuleBase() {
 
-	numRules = 0;
-
 }
 
 
@@ -25,7 +23,6 @@ void RuleBase::createRule(string name, string param, string logic, string paramN
 
 	rules[name].push_back(A);
 
-	numRules++;
 }
 
 void RuleBase::deleteRule(string name) {
@@ -35,8 +32,13 @@ void RuleBase::deleteRule(string name) {
 	}
 	else {
 
-		rules.erase(name);
-		numRules--;
+		vector <Rule*> tempRules = rules[name];
+
+		for (unsigned int i = 0; i < tempRules.size(); i++) {
+			delete(tempRules[i]);
+		}
+		
+		rules[name].clear();
 	}
 
 }
@@ -69,5 +71,19 @@ int RuleBase::checkRule(string name) {
 
 
 RuleBase::~RuleBase() {
+	//cout << "Rulebase is gone." << endl;
+
+	map < string, vector <Rule*> > tempMap = getAllRules();
+	vector <Rule*> tempRules;
+
+	for (map < string, vector <Rule*> >::iterator it = tempMap.begin(); it != tempMap.end(); ++it) {
+		
+		tempRules = tempMap[it->first];
+
+		for (unsigned int i = 0; i < tempRules.size(); i++) {
+			delete(tempRules[i]);
+		}
+
+	}
 
 }

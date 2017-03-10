@@ -153,5 +153,5 @@ void Rule::printRule() {
 
 // Destructor
 Rule::~Rule() {
-
+	//cout << "Rule is gone." << endl;
 }

@@ -1,8 +1,8 @@
 OBJS = Main.o Database.o KnowledgeBase.o RuleBase.o Fact.o Rule.o
 CC = g++
 DEBUG = -g
-CFLAGS = -Wall -c $(DEBUG)
-LFLAGS = -Wall $(DEBUG)
+CFLAGS = -Wall -std=c++11 -lpthread -c $(DEBUG)
+LFLAGS = -Wall -std=c++11 -lpthread $(DEBUG)
 
 sriTest : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o sriTest
