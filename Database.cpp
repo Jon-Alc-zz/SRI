@@ -484,13 +484,13 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	vector<thread*> joinThreads;
 	//Combine each fact/rule into one FactMap
 	for (unsigned int it = 0; it < name.size(); it++) {
-		auto tempOR = bind(&Database::ANDCombine, this, name[it], newFact, logic[it], ref(allMaps));
+		//auto tempOR = bind(&Database::ANDCombine, this, name[it], newFact, logic[it], ref(allMaps));
 
-		joinThreads.push_back(new thread(tempOR));
-		//ANDCombine(name[it], newFact, logic[it], allMaps);
+		//joinThreads.push_back(new thread(tempOR));
+		ANDCombine(name[it], newFact, logic[it], allMaps);
 	}
-	for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
-	joinThreads.clear();
+	//for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+	//joinThreads.clear();
 
 	//find a right match for each left rule
 	//allMaps->sourceMaps->factmap
