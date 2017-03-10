@@ -363,6 +363,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 			else {
 				//It is AND
 
+				AND(printOutput, thisRule, ruleName, newFact, name, upperParams, sourceMaps, logic);
+				/*
 				//Create a vector to hold all sourceMaps that will be used to compare sourceMaps together
 				vector< vector<map<string, string> > > allMaps;
 
@@ -416,11 +418,11 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 				//allMaps->sourceMaps->factmap
 
 				//start at first source for finding matches
-
 				vector<map<string, string> > mapsToPrint = allMaps[0];
 
-				//pipelineing happens here
+				//comapare each argument to the next to find what facts are valid to print
 				for (int tsm = 1; tsm < allMaps.size(); tsm++) {
+					//pipelineing previous loop happens here
 					vector<map<string, string> > tempSourceMap = mapsToPrint;
 					mapsToPrint.clear();
 
@@ -464,40 +466,8 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 				for (int a = 0; a < mapsToPrint.size(); a++) {
 					if (!mapsToPrint[a].empty()) {
 						if (top) {
-							if (printOutput) {
-
-								//get params of rule
-								vector<string> ruleParams = thisRule->getRuleParams();
-								//read from factMap using the rule parameters
-								cout << ruleName << newFact << "(";
-								for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
-									cout << mapsToPrint[a][ruleParams[i]];
-									if (i < mapsToPrint[a].size() - 1 && i < ruleParams.size() - 1) {
-										cout << ", ";
-									}
-								}
-								cout << ")\n";
-
-							}
-							else {
-
-								// makes a string
-								string str = "";
-
-								//get params of rule
-								vector<string> ruleParams = thisRule->getRuleParams();
-
-								//read from factMap using the rule parameters
-								for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
-									str.append(mapsToPrint[a][ruleParams[i]]);
-									if (i < mapsToPrint[a].size() - 1 && i < ruleParams.size() - 1) {
-										str.append(", ");
-									}
-								}
-
-								KB->CreateFact(newFact, str);
-
-							}
+							vector<string> ruleParams = thisRule->getRuleParams();
+							printFact(printOutput, ruleName, newFact, ruleParams, mapsToPrint[a], mapsToPrint[a].size());
 						}
 						else {
 							map<string, string> newFactMap;
@@ -512,7 +482,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 						}
 					}
-				}
+				}*/
 			}
 		}
 
@@ -603,14 +573,132 @@ vector<map<string, string> > Database::OR(bool printOut, bool t, Rule* rule, str
 	return sM;
 }
 
+void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string newFact, vector <string> name, vector<string> upperParams, vector<map<string, string> > &sourceMaps, map <int, vector<string> > logic) {
+	//Create a vector to hold all sourceMaps that will be used to compare sourceMaps together
+	vector< vector<map<string, string> > > allMaps;
+
+	//Combine each fact/rule into one FactMap
+	for (unsigned int it = 0; it < name.size(); it++) {
+		vector<Fact*> factList = KB->getFacts(name[it]);
+		vector<map<string, string> > tempSourceMap;
+
+		if (factList.empty()) {
+			//it is a rule (AND)
+			if (RB->checkRule(name[it]) == -1) throw 2;
+
+			//call a new query and get the results from this rule
+			string newQuery = " ";
+			newQuery += name[it];
+			newQuery += " ";
+			if (!printOutput) {
+				newQuery += newFact;
+			}
+			//recursively call query to get sourceMaps from it
+			tempSourceMap = Query(newQuery, logic[it]);
+		}
+		else {
+			//it is a fact (AND)
+			//get things from each fact with that name
+			for (unsigned int f = 0; f < factList.size(); f++) {
+				Fact* thisFact = factList[f];
+
+				//take fact parameters and put them in rule parameters
+				vector<string> factThings = thisFact->GetThings();
+				//create a map from the $params of thisFact
+				vector<string> factParamsInRule = logic[it];
+
+				map<string, string> factMap;
+				for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+					factMap[factParamsInRule[i]] = factThings[i];
+				}
+
+				tempSourceMap.push_back(factMap);
+			}
+		}
+
+		allMaps.push_back(tempSourceMap);
+
+	}
+	//find a right match for each left rule
+	//vector<vector<map<string, string>>>
+	//allMaps->sourceMaps->factmap
+
+	//start at first source for finding matches
+	vector<map<string, string> > mapsToPrint = allMaps[0];
+
+	//comapare each argument to the next to find what facts are valid to print
+	for (int tsm = 1; tsm < allMaps.size(); tsm++) {
+		//pipelineing previous loop happens here
+		vector<map<string, string> > tempSourceMap = mapsToPrint;
+		mapsToPrint.clear();
+
+		//for each factmap in the first sourcemap
+		for (unsigned int f = 0; f < tempSourceMap.size(); f++) {
+			vector<map<string, string> > sourceMaps2 = allMaps[tsm];
+
+			//for each factmap in the next sourceMap
+			for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
+				map<string, string> factMap = tempSourceMap[f];
+				map<string, string> factMap2 = sourceMaps2[s];
+
+				//for each thing in factMap2
+				for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
+
+					map<string, string>::iterator place = factMap.find(itf->first);
+
+					if (place == factMap.end()) {
+						//location is free in factMap
+						//put new thing in factMap
+						factMap[itf->first] = itf->second;
+					}
+					else {
+						//that location is already taken
+						//only continue with current factMap2 if the things are the same
+						if (factMap[itf->first].compare(itf->second) != 0) {
+							factMap.clear();
+							break;
+						}
+					}
+				}
+
+				if (!factMap.empty()) {
+					mapsToPrint.push_back(factMap);
+				}
+			}
+		}
+	}
+
+	//write all matching factmaps
+	for (int a = 0; a < mapsToPrint.size(); a++) {
+		if (!mapsToPrint[a].empty()) {
+			if (upperParams.empty()) {
+				vector<string> ruleParams = thisRule->getRuleParams();
+				printFact(printOutput, ruleName, newFact, ruleParams, mapsToPrint[a], mapsToPrint[a].size());
+			}
+			else {
+				map<string, string> newFactMap;
+				vector<string> ruleParams = thisRule->getRuleParams();
+
+				//read from factMap using the upper parameters
+				for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
+					newFactMap[upperParams[i]] = mapsToPrint[a][ruleParams[i]];
+				}
+
+				sourceMaps.push_back(newFactMap);
+
+			}
+		}
+	}
+}
+
 void Database::printFact(bool printOut, string name, string fact, vector<string> rParams, map<string, string> factM, unsigned int smSize) {
 	if (printOut) {
 
 		cout << name << fact << "(";
 		//use the fact map to map things from the fact to the rule
-		for (unsigned int i = 0; i < factM.size(); i++) {
+		for (unsigned int i = 0; i < factM.size() && i < rParams.size(); i++) {
 			cout << factM[rParams[i]];
-			if (i < factM.size() - 1) {
+			if (i < factM.size() - 1 && i < rParams.size() - 1) {
 				cout << ", ";
 			}
 		}
@@ -621,9 +709,9 @@ void Database::printFact(bool printOut, string name, string fact, vector<string>
 		string str = "";
 
 		//use the fact map to map things from the fact to the rule
-		for (unsigned int i = 0; i < factM.size(); i++) {
+		for (unsigned int i = 0; i < factM.size() && i < rParams.size(); i++) {
 			str.append(factM[rParams[i]]);
-			if (i < factM.size() - 1) {
+			if (i < factM.size() - 1 && i < rParams.size() - 1) {
 				str.append(", ");
 			}
 		}
