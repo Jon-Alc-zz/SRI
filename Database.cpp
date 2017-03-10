@@ -601,7 +601,7 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	for (unsigned int it = 0; it < name.size(); it++) {
 		//thread newThread = thread(Query, "Hello");
 		//joinThreads.push_back(newThread);
-		//ANDCombine(name[it], newFact, logic[it], allMaps);
+		ANDCombine(name[it], newFact, logic[it], allMaps);
 		/*vector<Fact*> factList = KB->getFacts(name[it]);
 		vector<map<string, string> > tempSourceMap;
 
