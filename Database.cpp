@@ -397,13 +397,14 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 				//It is AND
 				auto tempAND = bind(&Database::AND, this, printOutput, thisRule, ruleName, newFact, name, upperParams, ref(sourceMaps), logic);
-
 				joinThreads.push_back(new thread(tempAND));
 
 				//AND(printOutput, thisRule, ruleName, newFact, name, upperParams, sourceMaps, logic);
 			}
 		}
-		for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+		for (unsigned int i = 0; i < joinThreads.size(); i++) {
+			joinThreads[i]->join();
+		}
 		for (unsigned int i = 0; i < joinThreads.size(); i++) delete(joinThreads[i]);
 		joinThreads.clear();
 
@@ -496,19 +497,41 @@ void Database::OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string
 }
 
 void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string newFact, vector <string> name, vector<string> upperParams, vector<map<string, string> > &sourceMaps, map <int, vector<string> > logic) {
+	thread::id this_id = this_thread::get_id();
+	mtx.lock();
+	cout << "AND thread " << this_id << " started\n";
+	mtx.unlock();
 	//Create a vector to hold all sourceMaps that will be used to compare sourceMaps together
 	vector< vector<map<string, string> > > allMaps;
 
 	vector<thread*> joinThreads;
 	//Combine each fact/rule into one FactMap
 	for (unsigned int it = 0; it < name.size(); it++) {
-		//auto tempOR = bind(&Database::ANDCombine, this, name[it], newFact, logic[it], ref(allMaps));
 
-		//joinThreads.push_back(new thread(tempOR));
-		ANDCombine(name[it], newFact, logic[it], allMaps);
+		if (KB->getFacts(name[it]).empty()) {
+			//it is a rule (AND)
+			if (RB->checkRule(name[it]) == -1) throw 2;
+
+			//call a new query and get the results from this rule
+			string newQuery = " ";
+			newQuery += name[it];
+			newQuery += " ";
+			newQuery += newFact;
+			//recursively call query to get sourceMaps from it
+			allMaps.push_back(Query(newQuery, logic[it]));
+		}
+		else {
+			auto tempAND = bind(&Database::ANDCombine, this, name[it], logic[it], ref(allMaps));
+
+			joinThreads.push_back(new thread(tempAND));
+			//ANDCombine(name[it], newFact, logic[it], allMaps);
+		}
 	}
-	//for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
-	//joinThreads.clear();
+	for (unsigned int i = 0; i < joinThreads.size(); i++) {
+		joinThreads[i]->join();
+		delete(joinThreads[i]);
+	}
+	joinThreads.clear();
 
 	//find a right match for each left rule
 	//allMaps->sourceMaps->factmap
@@ -529,12 +552,13 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 			//for each factmap in the next sourceMap
 			for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
 
-				auto tempOR = bind(&Database::ANDCompare, this, ref(mapsToPrint), tempSourceMap[f], sourceMaps2[s]);
-
-				joinThreads.push_back(new thread(tempOR));
+				auto tempAND = bind(&Database::ANDCompare, this, ref(mapsToPrint), tempSourceMap[f], sourceMaps2[s]);
+				joinThreads.push_back(new thread(tempAND));
 				//ANDCompare(mapsToPrint, tempSourceMap[f], sourceMaps2[s]);
 			}
-			for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+			for (unsigned int i = 0; i < joinThreads.size(); i++) {
+				joinThreads[i]->join();
+			}
 			for (unsigned int i = 0; i < joinThreads.size(); i++) delete(joinThreads[i]);
 			joinThreads.clear();
 		}
@@ -544,55 +568,57 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	for (unsigned int a = 0; a < mapsToPrint.size(); a++) {
 		vector<string> ruleParams = thisRule->getRuleParams();
 
-		auto tempOR = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
-
-		joinThreads.push_back(new thread(tempOR));
+		auto tempAND = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
+		joinThreads.push_back(new thread(tempAND));
 		//ANDPrintAll(upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], sourceMaps);
 	}
-	for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+	for (unsigned int i = 0; i < joinThreads.size(); i++) {
+		joinThreads[i]->join();
+	}
 	for (unsigned int i = 0; i < joinThreads.size(); i++) delete(joinThreads[i]);
 	joinThreads.clear();
+	mtx.lock();
+	cout << "AND thread " << this_id << " ended\n";
+	mtx.unlock();
 }
 
-void Database::ANDCombine(string name, string newFact, vector<string> logic, vector< vector<map<string, string> > > &allMaps) {
+void Database::ANDCombine(string name, vector<string> logic, vector< vector<map<string, string> > > &allMaps) {
+	thread::id this_id = this_thread::get_id();
+	mtx.lock();
+	cout << "ANDCombine thread " << this_id << " started\n";
+	mtx.unlock();
+
 	vector<Fact*> factList = KB->getFacts(name);
 	vector<map<string, string> > tempSourceMap;
 
-	if (factList.empty()) {
-		//it is a rule (AND)
-		if (RB->checkRule(name) == -1) throw 2;
+	//it is a fact (AND)
+	//get things from each fact with that name
+	for (unsigned int f = 0; f < factList.size(); f++) {
+		Fact* thisFact = factList[f];
 
-		//call a new query and get the results from this rule
-		string newQuery = " ";
-		newQuery += name;
-		newQuery += " ";
-		newQuery += newFact;
-		//recursively call query to get sourceMaps from it
-		tempSourceMap = Query(newQuery, logic);
-	}
-	else {
-		//it is a fact (AND)
-		//get things from each fact with that name
-		for (unsigned int f = 0; f < factList.size(); f++) {
-			Fact* thisFact = factList[f];
+		//take fact parameters and put them in rule parameters
+		vector<string> factThings = thisFact->GetThings();
+		//create a map from the $params of thisFact
+		vector<string> factParamsInRule = logic;
 
-			//take fact parameters and put them in rule parameters
-			vector<string> factThings = thisFact->GetThings();
-			//create a map from the $params of thisFact
-			vector<string> factParamsInRule = logic;
-
-			map<string, string> factMap;
-			for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
-				factMap[factParamsInRule[i]] = factThings[i];
-			}
-
-			tempSourceMap.push_back(factMap);
+		map<string, string> factMap;
+		for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+			factMap[factParamsInRule[i]] = factThings[i];
 		}
+
+		tempSourceMap.push_back(factMap);
 	}
 	allMaps.push_back(tempSourceMap);
+	mtx.lock();
+	cout << "ANDCombine thread " << this_id << " ended\n";
+	mtx.unlock();
 }
 
 void Database::ANDCompare(vector<map<string, string> > &mapsToPrint, map<string, string> factMap, map<string, string> factMap2) {
+	thread::id this_id = this_thread::get_id();
+	mtx.lock();
+	cout << "ANDCompare thread " << this_id << " started\n";
+	mtx.unlock();
 	//for each thing in factMap2
 	for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
 
@@ -616,9 +642,17 @@ void Database::ANDCompare(vector<map<string, string> > &mapsToPrint, map<string,
 	if (!factMap.empty()) {
 		mapsToPrint.push_back(factMap);
 	}
+	mtx.lock();
+	cout << "ANDCompare thread " << this_id << " ended\n";
+	mtx.unlock();
 }
 
 void Database::ANDPrintAll(vector<string> upperParams, bool printOutput, string ruleName, string newFact, Rule* thisRule, vector<string> ruleParams, map<string, string> factMap, vector<map<string, string> > &sourceMaps) {
+	thread::id this_id = this_thread::get_id();
+	mtx.lock();
+	cout << "ANDPrintAll thread " << this_id << " started\n";
+	mtx.unlock();
+	
 	if (upperParams.empty()) {
 		mtx.lock();
 		printFact(printOutput, ruleName, newFact, ruleParams, factMap, factMap.size());
@@ -635,6 +669,9 @@ void Database::ANDPrintAll(vector<string> upperParams, bool printOutput, string 
 
 		sourceMaps.push_back(newFactMap);
 	}
+	mtx.lock();
+	cout << "ANDPrintAll thread " << this_id << " ended\n";
+	mtx.unlock();
 }
 
 void Database::printFact(bool printOut, string name, string fact, vector<string> rParams, map<string, string> factM, unsigned int smSize) {

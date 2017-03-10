@@ -47,7 +47,7 @@ public:
 	vector< map< string, string> > Query(string params, vector<string> upperParams);
 	void OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string rName, string fName, vector <string> n, unsigned int it, vector<string> uP, vector<map<string, string> > &sM, map <int, vector<string> > l, map<string, string> fM);
 	void AND(bool printOutput, Rule* thisRule, string ruleName, string newFact, vector <string> name, vector<string> upperParams, vector<map<string, string> > &sourceMaps, map <int, vector<string> > logic);
-	void ANDCombine(string name, string newFact, vector<string> logic, vector< vector<map<string, string> > > &allMaps);
+	void ANDCombine(string name, vector<string> logic, vector< vector<map<string, string> > > &allMaps);
 	void ANDCompare(vector<map<string, string> > &mapsToPrint, map<string, string> factMap, map<string, string> factMap2);
 	void ANDPrintAll(vector<string> upperParams, bool printOutput, string ruleName, string newFact, Rule* thisRule, vector<string> ruleParams, map<string, string> factMap, vector<map<string, string> > &sourceMaps);
 	void printFact(bool printOut, string name, string fact, vector<string> ruleParams, map<string, string> factMap, unsigned int smSize);
