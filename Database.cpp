@@ -1,4 +1,5 @@
 #include "Database.h"
+#include <thread>
 
 using namespace std;
 
@@ -577,9 +578,12 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	//Create a vector to hold all sourceMaps that will be used to compare sourceMaps together
 	vector< vector<map<string, string> > > allMaps;
 
+	vector<thread> joinThreads;
 	//Combine each fact/rule into one FactMap
 	for (unsigned int it = 0; it < name.size(); it++) {
-		ANDCombine(name[it], newFact, logic[it], allMaps);
+		//thread newThread = thread(Query, "Hello");
+		//joinThreads.push_back(newThread);
+		//ANDCombine(name[it], newFact, logic[it], allMaps);
 		/*vector<Fact*> factList = KB->getFacts(name[it]);
 		vector<map<string, string> > tempSourceMap;
 
@@ -619,6 +623,11 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 
 		allMaps.push_back(tempSourceMap);*/
 	}
+
+	//for (int t = 0; t < joinThreads.size(); t++) {
+		//joinThreads[t].join();
+	//}
+
 	//find a right match for each left rule
 	//allMaps->sourceMaps->factmap
 
