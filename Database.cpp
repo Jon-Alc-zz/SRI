@@ -374,7 +374,6 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 					
 					//makes temporary OR function to be threaded
 					auto tempOR = bind(&Database::OR, this, printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, ref(sourceMaps), logic, factMap);
-					cout << "OR Thread " << it << " has started." << endl;
 					temp = new thread(tempOR);
 
 					//pushes the threads to the vector
@@ -384,9 +383,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 				//joins all the threads together
 				for (unsigned int i = 0; i < orThreads.size(); i++) {
-
 					orThreads[i]->join();
-					cout << "OR Thread " << i << " has ended" << endl;
 				}
 
 
@@ -422,7 +419,11 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 }
 
 void Database::OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string rName, string fName, vector <string> n, unsigned int it, vector<string> uP, vector<map<string, string> > &sM, map <int, vector<string> > l, map<string, string> fM) {
-	
+	thread::id this_id = this_thread::get_id();
+	mtx.lock();
+	cout << "OR thread " << this_id << " started\n";
+	mtx.unlock();
+
 	//if not a fact, it is a rule
 	if (facts.empty()) {
 
@@ -494,6 +495,9 @@ void Database::OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string
 
 	}
 
+	mtx.lock();
+	cout << "OR thread " << this_id << " ended\n";
+	mtx.unlock();
 }
 
 void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string newFact, vector <string> name, vector<string> upperParams, vector<map<string, string> > &sourceMaps, map <int, vector<string> > logic) {
