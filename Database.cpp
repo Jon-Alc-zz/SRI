@@ -301,7 +301,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 	// Define it out of the scope of the try catch
 	//a sourceMaps is a vector of facts from the same source
-	vector<map<string, string> > sourceMaps;
+	 vector< map<string, string> > sourceMaps;
 
 	try {
 
@@ -358,7 +358,23 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 			vector <string> name = thisRule->getParamName();
 
 			if (operation == "OR") {
-				sourceMaps = OR(printOutput, top, thisRule, ruleName, newFact, name, upperParams, sourceMaps, logic, factMap);
+
+				vector<thread* > orThreads;
+				thread* temp;
+
+				for (unsigned int it = 0; it < name.size(); it++) {
+					vector<Fact*> factList = KB->getFacts(name[it]);
+
+					//OR( printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, sourceMaps, logic, factMap);
+					
+					auto tempOR = bind(&Database::OR, this, printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, sourceMaps, logic, factMap);
+
+					temp = new thread(tempOR);
+
+					orThreads.push_back(temp);
+				}
+
+				for (unsigned int i = 0; i < orThreads.size(); i++) orThreads[i]->join();
 			}
 			else {
 				//It is AND
@@ -515,78 +531,80 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 	return sourceMaps; // If things fail something still get returned
 }
 
-vector<map<string, string> > Database::OR(bool printOut, bool t, Rule* rule, string rName, string fName, vector <string> n, vector<string> uP, vector<map<string, string> > sM, map <int, vector<string> > l, map<string, string> fM) {
-	//get each fact/rule in this rule logic
-	for (unsigned int it = 0; it < n.size(); it++) {
-		vector<Fact*> factList = KB->getFacts(n[it]);
+void Database::OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string rName, string fName, vector <string> n, unsigned int it, vector<string> uP, vector<map<string, string> > &sM, map <int, vector<string> > l, map<string, string> fM) {
+	
+	//if not a fact, it is a rule
+	if (facts.empty()) {
 
-		//if not a fact, it is a rule
-		if (factList.empty()) {
+		if (RB->checkRule(n[it]) == -1) throw 2;
 
-			if (RB->checkRule(n[it]) == -1) throw 2;
+		//call a new query and get the results from this rule
+		string newQuery = " ";
+		newQuery += n[it];
+		newQuery += " ";
+		if (!printOut) {
+			newQuery += fName;
+		}
+		//recursively call query to get sourceMaps from it
+		vector<map<string, string> > tempSourceMap = Query(newQuery, l[it]);
+		sM.insert(sM.end(), tempSourceMap.begin(), tempSourceMap.end());
 
-			//call a new query and get the results from this rule
-			string newQuery = " ";
-			newQuery += n[it];
-			newQuery += " ";
-			if (!printOut) {
-				newQuery += fName;
+		//get params of this rule
+		vector<string> ruleParams = rule->getRuleParams();
+
+		//read from factMap using the rule parameters
+		//for each fact map from recursive query
+		if (t) {
+
+			for (unsigned int fm = 0; fm < sM.size(); fm++) {
+				fM = sM[fm];
+				mtx.lock();
+				printFact(printOut, rName, fName, ruleParams, fM, fM.size());
+				mtx.unlock();
 			}
-			//recursively call query to get sourceMaps from it
-			vector<map<string, string> > tempSourceMap = Query(newQuery, l[it]);
-			sM.insert(sM.end(), tempSourceMap.begin(), tempSourceMap.end());
 
-			//get params of this rule
+		}
+
+	}
+	else {
+
+		//if it is a fact (OR)
+		//get things from each fact with that name
+		for (unsigned int f = 0; f < facts.size(); f++) {
+			Fact* thisFact = facts[f];
+
+			//take fact parameters and put them in rule parameters
+			vector<string> factThings = thisFact->GetThings();
+			//create a map from the $params of thisFact
+			vector<string> factParamsInRule = l[it];
+
+			if (t) {
+				for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
+					fM[factParamsInRule[i]] = factThings[i];
+				}
+			}
+			else {
+				for (unsigned int i = 0; i < factThings.size() && i < uP.size(); i++) {
+					fM[uP[i]] = factThings[i];
+				}
+			}
+
+			sM.push_back(fM);
+
+			//get params of rule
 			vector<string> ruleParams = rule->getRuleParams();
 
-			//read from factMap using the rule parameters
-			//for each fact map from recursive query
 			if (t) {
-
-				for (unsigned int fm = 0; fm < sM.size(); fm++) {
-					fM = sM[fm];
-					printFact(printOut, rName, fName, ruleParams, fM, fM.size());
-				}
-
+				mtx.lock();
+				printFact(printOut, rName, fName, ruleParams, fM, fM.size());
+				mtx.unlock();
 			}
 
 		}
-		else {
 
-			//if it is a fact (OR)
-			//get things from each fact with that name
-			for (unsigned int f = 0; f < factList.size(); f++) {
-				Fact* thisFact = factList[f];
-
-				//take fact parameters and put them in rule parameters
-				vector<string> factThings = thisFact->GetThings();
-				//create a map from the $params of thisFact
-				vector<string> factParamsInRule = l[it];
-
-				if (t) {
-					for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
-						fM[factParamsInRule[i]] = factThings[i];
-					}
-				}
-				else {
-					for (unsigned int i = 0; i < factThings.size() && i < uP.size(); i++) {
-						fM[uP[i]] = factThings[i];
-					}
-				}
-
-				sM.push_back(fM);
-
-				//get params of rule
-				vector<string> ruleParams = rule->getRuleParams();
-
-				if (t) printFact(printOut, rName, fName, ruleParams, fM, fM.size());
-
-			}
-
-		}
 	}
 
-	return sM;
+	//return sM;
 }
 
 void Database::printFact(bool printOut, string name, string fact, vector<string> rParams, map<string, string> factM, unsigned int smSize) {
