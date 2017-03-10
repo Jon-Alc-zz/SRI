@@ -1,5 +1,4 @@
 #include "Database.h"
-#include <thread>
 
 using namespace std;
 
@@ -349,6 +348,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 		vector<Rule*> ruleList = RB->getRule(ruleName);
 
 		//for each rule with that name
+		vector<thread*> joinThreads;
 		for (unsigned int r = 0; r < ruleList.size(); r++) {
 			Rule* thisRule = ruleList[r];
 
@@ -368,7 +368,7 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 
 					//OR( printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, sourceMaps, logic, factMap);
 					
-					auto tempOR = bind(&Database::OR, this, printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, sourceMaps, logic, factMap);
+					auto tempOR = bind(&Database::OR, this, printOutput, top, thisRule, factList, ruleName, newFact, name, it, upperParams, ref(sourceMaps), logic, factMap);
 
 					temp = new thread(tempOR);
 
@@ -379,129 +379,14 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 			}
 			else {
 				//It is AND
+				auto tempOR = bind(&Database::AND, this, printOutput, thisRule, ruleName, newFact, name, upperParams, ref(sourceMaps), logic);
 
-				AND(printOutput, thisRule, ruleName, newFact, name, upperParams, sourceMaps, logic);
-				/*
-				//Create a vector to hold all sourceMaps that will be used to compare sourceMaps together
-				vector< vector<map<string, string> > > allMaps;
+				joinThreads.push_back(new thread(tempOR));
 
-				//Combine each fact/rule into one FactMap
-				for (unsigned int it = 0; it < name.size(); it++) {
-					vector<Fact*> factList = KB->getFacts(name[it]);
-					vector<map<string, string> > tempSourceMap;
-					//sourceMaps.clear();
-					factMap.clear();
-
-					if (factList.empty()) {
-						//it is a rule (AND)
-						if (RB->checkRule(name[it]) == -1) throw 2;
-
-						//call a new query and get the results from this rule
-						string newQuery = " ";
-						newQuery += name[it];
-						newQuery += " ";
-						if (!printOutput) {
-							newQuery += newFact;
-						}
-						//recursively call query to get sourceMaps from it
-						tempSourceMap = Query(newQuery, logic[it]);
-						sourceMaps.insert(sourceMaps.end(), tempSourceMap.begin(), tempSourceMap.end());
-					}
-					else {
-						//it is a fact (AND)
-						//get things from each fact with that name
-						for (unsigned int f = 0; f < factList.size(); f++) {
-							Fact* thisFact = factList[f];
-
-							//take fact parameters and put them in rule parameters
-							vector<string> factThings = thisFact->GetThings();
-							//create a map from the $params of thisFact
-							vector<string> factParamsInRule = logic[it];
-
-
-							for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
-								factMap[factParamsInRule[i]] = factThings[i];
-							}
-
-							tempSourceMap.push_back(factMap);
-						}
-					}
-
-					allMaps.push_back(tempSourceMap);
-					
-				}
-				//find a right match for each left rule
-				//vector<vector<map<string, string>>>
-				//allMaps->sourceMaps->factmap
-
-				//start at first source for finding matches
-				vector<map<string, string> > mapsToPrint = allMaps[0];
-
-				//comapare each argument to the next to find what facts are valid to print
-				for (int tsm = 1; tsm < allMaps.size(); tsm++) {
-					//pipelineing previous loop happens here
-					vector<map<string, string> > tempSourceMap = mapsToPrint;
-					mapsToPrint.clear();
-
-					//for each factmap in the first sourcemap
-					for (unsigned int f = 0; f < tempSourceMap.size(); f++) {
-						vector<map<string, string> > sourceMaps2 = allMaps[tsm];
-
-						//for each factmap in the next sourceMap
-						for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
-							factMap = tempSourceMap[f];
-							map<string, string> factMap2 = sourceMaps2[s];
-
-							//for each thing in factMap2
-							for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
-
-								map<string, string>::iterator place = factMap.find(itf->first);
-
-								if (place == factMap.end()) {
-									//location is free in factMap
-									//put new thing in factMap
-									factMap[itf->first] = itf->second;
-								}
-								else {
-									//that location is already taken
-									//only continue with current factMap2 if the things are the same
-									if (factMap[itf->first].compare(itf->second) != 0) {
-										factMap.clear();
-										break;
-									}
-								}
-							}
-
-							if (!factMap.empty()) {
-								mapsToPrint.push_back(factMap);
-							}
-						}
-					}
-				}
-
-				//write all matching factmaps
-				for (int a = 0; a < mapsToPrint.size(); a++) {
-					if (!mapsToPrint[a].empty()) {
-						if (top) {
-							vector<string> ruleParams = thisRule->getRuleParams();
-							printFact(printOutput, ruleName, newFact, ruleParams, mapsToPrint[a], mapsToPrint[a].size());
-						}
-						else {
-							map<string, string> newFactMap;
-							vector<string> ruleParams = thisRule->getRuleParams();
-
-							//read from factMap using the upper parameters
-							for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
-								newFactMap[upperParams[i]] = mapsToPrint[a][ruleParams[i]];
-							}
-
-							sourceMaps.push_back(newFactMap);
-
-						}
-					}
-				}*/
+				//AND(printOutput, thisRule, ruleName, newFact, name, upperParams, sourceMaps, logic);
 			}
 		}
+		for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
 
 		return sourceMaps;
 	}
@@ -596,55 +481,16 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	//Create a vector to hold all sourceMaps that will be used to compare sourceMaps together
 	vector< vector<map<string, string> > > allMaps;
 
-	vector<thread> joinThreads;
+	vector<thread*> joinThreads;
 	//Combine each fact/rule into one FactMap
 	for (unsigned int it = 0; it < name.size(); it++) {
-		//thread newThread = thread(Query, "Hello");
-		//joinThreads.push_back(newThread);
-		ANDCombine(name[it], newFact, logic[it], allMaps);
-		/*vector<Fact*> factList = KB->getFacts(name[it]);
-		vector<map<string, string> > tempSourceMap;
+		auto tempOR = bind(&Database::ANDCombine, this, name[it], newFact, logic[it], ref(allMaps));
 
-		if (factList.empty()) {
-			//it is a rule (AND)
-			if (RB->checkRule(name[it]) == -1) throw 2;
-
-			//call a new query and get the results from this rule
-			string newQuery = " ";
-			newQuery += name[it];
-			newQuery += " ";
-			if (!printOutput) {
-				newQuery += newFact;
-			}
-			//recursively call query to get sourceMaps from it
-			tempSourceMap = Query(newQuery, logic[it]);
-		}
-		else {
-			//it is a fact (AND)
-			//get things from each fact with that name
-			for (unsigned int f = 0; f < factList.size(); f++) {
-				Fact* thisFact = factList[f];
-
-				//take fact parameters and put them in rule parameters
-				vector<string> factThings = thisFact->GetThings();
-				//create a map from the $params of thisFact
-				vector<string> factParamsInRule = logic[it];
-
-				map<string, string> factMap;
-				for (unsigned int i = 0; i < factThings.size() && i < factParamsInRule.size(); i++) {
-					factMap[factParamsInRule[i]] = factThings[i];
-				}
-
-				tempSourceMap.push_back(factMap);
-			}
-		}
-
-		allMaps.push_back(tempSourceMap);*/
+		joinThreads.push_back(new thread(tempOR));
+		//ANDCombine(name[it], newFact, logic[it], allMaps);
 	}
-
-	//for (int t = 0; t < joinThreads.size(); t++) {
-		//joinThreads[t].join();
-	//}
+	for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+	joinThreads.clear();
 
 	//find a right match for each left rule
 	//allMaps->sourceMaps->factmap
@@ -664,56 +510,28 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 
 			//for each factmap in the next sourceMap
 			for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
-				ANDCompare(mapsToPrint, tempSourceMap[f], sourceMaps2[s]);
-				/*map<string, string> factMap = tempSourceMap[f];
-				map<string, string> factMap2 = sourceMaps2[s];
 
-				//for each thing in factMap2
-				for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
+				auto tempOR = bind(&Database::ANDCompare, this, ref(mapsToPrint), tempSourceMap[f], sourceMaps2[s]);
 
-					map<string, string>::iterator place = factMap.find(itf->first);
-
-					if (place == factMap.end()) {
-						//location is free in factMap
-						//put new thing in factMap
-						factMap[itf->first] = itf->second;
-					}
-					else {
-						//that location is already taken
-						//only continue with current factMap2 if the things are the same
-						if (factMap[itf->first].compare(itf->second) != 0) {
-							factMap.clear();
-							break;
-						}
-					}
-				}
-
-				if (!factMap.empty()) {
-					mapsToPrint.push_back(factMap);
-				}*/
+				joinThreads.push_back(new thread(tempOR));
+				//ANDCompare(mapsToPrint, tempSourceMap[f], sourceMaps2[s]);
 			}
+			for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+			joinThreads.clear();
 		}
 	}
 
 	//write all matching factmaps
 	for (int a = 0; a < mapsToPrint.size(); a++) {
 		vector<string> ruleParams = thisRule->getRuleParams();
-		ANDPrintAll(upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], sourceMaps);
-		/*if (upperParams.empty()) {
-			printFact(printOutput, ruleName, newFact, ruleParams, mapsToPrint[a], mapsToPrint[a].size());
-		}
-		else {
-			map<string, string> newFactMap;
-			vector<string> ruleParams = thisRule->getRuleParams();
 
-			//read from factMap using the upper parameters
-			for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
-				newFactMap[upperParams[i]] = mapsToPrint[a][ruleParams[i]];
-			}
+		auto tempOR = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
 
-			sourceMaps.push_back(newFactMap);
-		}*/
+		joinThreads.push_back(new thread(tempOR));
+		//ANDPrintAll(upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], sourceMaps);
 	}
+	for (unsigned int i = 0; i < joinThreads.size(); i++) joinThreads[i]->join();
+	joinThreads.clear();
 }
 
 void Database::ANDCombine(string name, string newFact, vector<string> logic, vector< vector<map<string, string> > > &allMaps) {
@@ -751,7 +569,6 @@ void Database::ANDCombine(string name, string newFact, vector<string> logic, vec
 			tempSourceMap.push_back(factMap);
 		}
 	}
-
 	allMaps.push_back(tempSourceMap);
 }
 
@@ -783,7 +600,9 @@ void Database::ANDCompare(vector<map<string, string> > &mapsToPrint, map<string,
 
 void Database::ANDPrintAll(vector<string> upperParams, bool printOutput, string ruleName, string newFact, Rule* thisRule, vector<string> ruleParams, map<string, string> factMap, vector<map<string, string> > &sourceMaps) {
 	if (upperParams.empty()) {
+		mtx.lock();
 		printFact(printOutput, ruleName, newFact, ruleParams, factMap, factMap.size());
+		mtx.unlock();
 	}
 	else {
 		map<string, string> newFactMap;
