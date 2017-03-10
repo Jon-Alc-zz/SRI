@@ -416,86 +416,100 @@ vector< map<string, string> > Database::Query(string params, vector<string> uppe
 				//allMaps->sourceMaps->factmap
 
 				//start at first source for finding matches
-				vector<map<string, string> > tempSourceMap = allMaps[0];
 
-				//for each factmap in the first sourcemap
-				for (unsigned int f = 0; f < tempSourceMap.size(); f++) {
-					vector<map<string, string> > sourceMaps2 = allMaps[1];
-					//for each factmap in the other sourceMap
-					for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
-						factMap = tempSourceMap[f];
-						map<string, string> factMap2 = sourceMaps2[s];
+				vector<map<string, string> > mapsToPrint = allMaps[0];
 
-						//for each thing in factMap2
-						for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
+				//pipelineing happens here
+				for (int tsm = 1; tsm < allMaps.size(); tsm++) {
+					vector<map<string, string> > tempSourceMap = mapsToPrint;
+					mapsToPrint.clear();
 
-							map<string, string>::iterator place = factMap.find(itf->first);
+					//for each factmap in the first sourcemap
+					for (unsigned int f = 0; f < tempSourceMap.size(); f++) {
+						vector<map<string, string> > sourceMaps2 = allMaps[tsm];
 
-							if (place == factMap.end()) {
-								//location is free in factMap
-								//put new thing in factMap
-								factMap[itf->first] = itf->second;
-							}
-							else {
-								//that location is already taken
-								//only continue with current factMap2 if the things are the same
-								if (factMap[itf->first].compare(itf->second) != 0) {
-									factMap.clear();
-									break;
-								}
-							}
-						}
+						//for each factmap in the next sourceMap
+						for (unsigned int s = 1; s < sourceMaps2.size(); s++) {
+							factMap = tempSourceMap[f];
+							map<string, string> factMap2 = sourceMaps2[s];
 
-						//write here if there is a factmap that is not empty
-						if (!factMap.empty()) {
-							if (top) {
-								if (printOutput) {
+							//for each thing in factMap2
+							for (map<string, string >::iterator itf = factMap2.begin(); itf != factMap2.end(); ++itf) {
 
-									//get params of rule
-									vector<string> ruleParams = thisRule->getRuleParams();
-									//read from factMap using the rule parameters
-									cout << ruleName << newFact << "(";
-									for (unsigned int i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
-										cout << factMap[ruleParams[i]];
-										if (i < factMap.size() - 1 && i < ruleParams.size() - 1) {
-											cout << ", ";
-										}
-									}
-									cout << ")\n";
+								map<string, string>::iterator place = factMap.find(itf->first);
 
+								if (place == factMap.end()) {
+									//location is free in factMap
+									//put new thing in factMap
+									factMap[itf->first] = itf->second;
 								}
 								else {
-
-									// makes a string
-									string str = "";
-
-									//get params of rule
-									vector<string> ruleParams = thisRule->getRuleParams();
-
-									//read from factMap using the rule parameters
-									for (unsigned int i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
-										str.append(factMap[ruleParams[i]]);
-										if (i < factMap.size() - 1 && i < ruleParams.size() - 1) {
-											str.append(", ");
-										}
+									//that location is already taken
+									//only continue with current factMap2 if the things are the same
+									if (factMap[itf->first].compare(itf->second) != 0) {
+										factMap.clear();
+										break;
 									}
-
-									KB->CreateFact(newFact, str);
-
 								}
+							}
+
+							if (!factMap.empty()) {
+								mapsToPrint.push_back(factMap);
+							}
+						}
+					}
+				}
+
+				//write all matching factmaps
+				for (int a = 0; a < mapsToPrint.size(); a++) {
+					if (!mapsToPrint[a].empty()) {
+						if (top) {
+							if (printOutput) {
+
+								//get params of rule
+								vector<string> ruleParams = thisRule->getRuleParams();
+								//read from factMap using the rule parameters
+								cout << ruleName << newFact << "(";
+								for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
+									cout << mapsToPrint[a][ruleParams[i]];
+									if (i < mapsToPrint[a].size() - 1 && i < ruleParams.size() - 1) {
+										cout << ", ";
+									}
+								}
+								cout << ")\n";
+
 							}
 							else {
-								map<string, string> newFactMap;
+
+								// makes a string
+								string str = "";
+
+								//get params of rule
 								vector<string> ruleParams = thisRule->getRuleParams();
 
-								//read from factMap using the upper parameters
-								for (unsigned int i = 0; i < factMap.size() && i < ruleParams.size(); i++) {
-									newFactMap[upperParams[i]] = factMap[ruleParams[i]];
+								//read from factMap using the rule parameters
+								for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
+									str.append(mapsToPrint[a][ruleParams[i]]);
+									if (i < mapsToPrint[a].size() - 1 && i < ruleParams.size() - 1) {
+										str.append(", ");
+									}
 								}
 
-								sourceMaps.push_back(newFactMap);
-								
+								KB->CreateFact(newFact, str);
+
 							}
+						}
+						else {
+							map<string, string> newFactMap;
+							vector<string> ruleParams = thisRule->getRuleParams();
+
+							//read from factMap using the upper parameters
+							for (unsigned int i = 0; i < mapsToPrint[a].size() && i < ruleParams.size(); i++) {
+								newFactMap[upperParams[i]] = mapsToPrint[a][ruleParams[i]];
+							}
+
+							sourceMaps.push_back(newFactMap);
+
 						}
 					}
 				}
