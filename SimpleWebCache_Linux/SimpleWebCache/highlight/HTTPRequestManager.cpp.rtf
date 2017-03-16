@@ -1,0 +1,29 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPRequestManager.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPMethodNotAllowedExceptionHandler.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i //Constructor: A Factory Manager class to avail different request method objects based on the request method type\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPRequestManager}}{\cf11{::}}{\cf2{}}{\cf16{HTTPRequestManager}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    methods}} {\cf11{[}}{\cf2{}}{\cf3{"GET"}}{\cf2{}}{\cf11{] =}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPGETRequest}}{\cf2{}}{\cf11{(}}{\cf2{NULL}}{\cf11{);}} {\cf2{}}{\cf5{\i // Instantiating HTTPGETRequest cloner\i0 }}}\par\pard
+\cbpat1{{\cf2{    methods}} {\cf11{[}}{\cf2{}}{\cf3{"POST"}}{\cf2{}}{\cf11{] =}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPPOSTRequest}}{\cf2{}}{\cf11{(}}{\cf2{NULL}}{\cf11{);}} {\cf2{}}{\cf5{\i // Instantiating HTTPPOSTRequest cloner\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return a service whose type is based on the method. If the methodis not supported an exception is thrown\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPRequest}} {\cf11{*}} {\cf2{HTTPRequestManager}}{\cf11{::}}{\cf2{}}{\cf16{getService}} {\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{,}}{\cf2{string p_method}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Throw an exception if the method corresponding entry in the map cannot be found\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{methods}}{\cf11{[}}{\cf2{p_method}}{\cf11{]==}}{\cf2{NULL}}{\cf11{)}} {\cf2{}}{\cf13{\b throw\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{HTTPMethodNotAllowedExceptionHandler}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{methods}}{\cf11{[}}{\cf2{p_method}}{\cf11{]->}}{\cf2{}}{\cf16{clone}}{\cf2{}}{\cf11{(}}{\cf2{p_tcpSocket}}{\cf11{);}} {\cf2{}}{\cf5{\i // else clone and return the object\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPRequestManager}}{\cf11{::~}}{\cf2{}}{\cf16{HTTPRequestManager}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // A for_each iterator based loop with lambda function to deallocat all the cloner objects\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{for_each}} {\cf2{}}{\cf11{(}}{\cf2{methods}}{\cf11{.}}{\cf2{}}{\cf16{begin}}{\cf2{}}{\cf11{(),}}{\cf2{methods}}{\cf11{.}}{\cf2{}}{\cf16{end}}{\cf2{}}{\cf11{(),[](}}{\cf2{}}{\cf14{const}} {\cf2{std}}{\cf11{::}}{\cf2{pair}}{\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{HTTPRequest}} {\cf11{*>&}} {\cf2{it}}{\cf11{) ->}} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{        HTTPRequest}} {\cf11{*}} {\cf2{httpRequest}} {\cf11{=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b delete\b0 }}{\cf2{}}{\cf11{(}}{\cf2{httpRequest}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}   {\cf11{\});}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

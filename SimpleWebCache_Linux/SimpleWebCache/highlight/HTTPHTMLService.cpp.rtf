@@ -1,0 +1,47 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPHTMLService.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPResponseHeader.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPNotFoundExceptionHandler.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{HTTPHTMLService}}{\cf11{::}}{\cf2{}}{\cf16{HTTPHTMLService}}{\cf2{}}{\cf11{(}}{\cf2{FileCache}} {\cf11{*}} {\cf2{p_fileCache}}{\cf11{,}}{\cf2{}}{\cf14{bool}} {\cf2{p_clean_cache}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{:}}{\cf2{}}{\cf16{HTTPService}}{\cf2{}}{\cf11{(}}{\cf2{p_fileCache}}{\cf11{,}}{\cf2{p_clean_cache}}{\cf11{) \{\}}} {\cf2{}}{\cf5{\i // Constructor setting data members using initialization list\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{bool}} {\cf2{HTTPHTMLService}}{\cf11{::}}{\cf2{}}{\cf16{execute}}{\cf2{}}{\cf11{(}}{\cf2{HTTPRequest}} {\cf11{*}} {\cf2{p_httpRequest}}{\cf11{,}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b try\b0 }} {\cf2{}}{\cf11{\{}} {\cf2{}}{\cf5{\i // Try the following block and look for exceptions\i0 }}}\par\pard
+\cbpat1{{\cf2{        string resource}} {\cf11{=}} {\cf2{p_httpRequest}}{\cf11{->}}{\cf2{}}{\cf16{getResource}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Fetching the resource from the HTTPRequest object\i0 }}}\par\pard
+\cbpat1{{\cf2{        FileCacheItem}} {\cf11{*}} {\cf2{fileCacheItem}} {\cf11{=}} {\cf2{fileCache}}{\cf11{->}}{\cf2{}}{\cf16{getFile}}{\cf2{}}{\cf11{(}}{\cf2{resource}}{\cf11{);}} {\cf2{}}{\cf5{\i // fetching the resource cache item\i0 }}}\par\pard
+\cbpat1{{\cf2{        fileCacheItem}} {\cf11{=}} {\cf2{fileCacheItem}}{\cf11{->}}{\cf2{}}{\cf16{fetchContent}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // update cache item if needed and return a clone\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Instantiate an HTTPresponse object and set up its header attributes\i0 }}}\par\pard
+\cbpat1{{\cf2{        HTTPResponseHeader}} {\cf11{*}} {\cf2{httpResponseHeader}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPResponseHeader}}{\cf2{}}{\cf11{(}}{\cf2{p_tcpSocket}}{\cf11{,}}{\cf2{}}{\cf3{"OK"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{2}{0}{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf3{"HTTP/{1}.{1}"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{        httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Content-Type"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf3{"text/html"}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Set content type\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Fetch the date/time string of the last modified attribute and set it to the header\i0 }}}\par\pard
+\cbpat1{{\cf2{        httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Last-Modified"}}{\cf2{}}{\cf11{,}}{\cf2{fileCacheItem}}{\cf11{->}}{\cf2{}}{\cf16{getLastUpdateTime}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // This implies that the connection terminates after service the request; i.e. keep-alive is not supported\i0 }}}\par\pard
+\cbpat1{{\cf2{        httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Connection"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf3{"close"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{        httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Content-Length"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf16{to_string}}{\cf2{}}{\cf11{(}}{\cf2{fileCacheItem}}{\cf11{->}}{\cf2{}}{\cf16{getSize}}{\cf2{}}{\cf11{()));}}}\par\pard
+\cbpat1{{\cf2{        httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{respond}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Write back the response to the client through the TCPSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Write back the file to the client through the TCPSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{        p_tcpSocket}}{\cf11{->}}{\cf2{}}{\cf16{writeToSocket}}{\cf2{}}{\cf11{(}}{\cf2{fileCacheItem}}{\cf11{->}}{\cf2{}}{\cf16{getStream}}{\cf2{}}{\cf11{(),}}{\cf2{fileCacheItem}}{\cf11{->}}{\cf2{}}{\cf16{getSize}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b delete\b0 }} {\cf2{}}{\cf11{(}}{\cf2{httpResponseHeader}}{\cf11{);}} {\cf2{}}{\cf5{\i // Delete the HTTP Response\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b delete\b0 }} {\cf2{}}{\cf11{(}}{\cf2{fileCacheItem}}{\cf11{);}} {\cf2{}}{\cf5{\i // delete the cache item clone\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // return true\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b catch\b0 }} {\cf2{}}{\cf11{(}}{\cf2{HTTPNotFoundExceptionHandler httpNotFoundExceptionHandler}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}} {\cf2{}}{\cf5{\i // Exception occurred and caught\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Handle the exception and send back the corresponding HTTP status response to client\i0 }}}\par\pard
+\cbpat1{{\cf2{        httpNotFoundExceptionHandler}}{\cf11{.}}{\cf2{}}{\cf16{handle}}{\cf2{}}{\cf11{(}}{\cf2{p_tcpSocket}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return false\b0 }}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // return false\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Clone a new identical object and return it to the caller\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPService}} {\cf11{*}} {\cf2{HTTPHTMLService}}{\cf11{::}}{\cf2{}}{\cf16{clone}} {\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Instantiate an HTTPHTMLService object and set it up with the same fileCache. \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Notice that the clean flag is set to false as the current object will be carrying this out.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return new\b0 }} {\cf2{}}{\cf16{HTTPHTMLService}}{\cf2{}}{\cf11{(}}{\cf2{fileCache}}{\cf11{,}}{\cf2{}}{\cf13{\b false\b0 }}{\cf2{}}{\cf11{);}}  }\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{HTTPHTMLService}}{\cf11{::~}}{\cf2{}}{\cf16{HTTPHTMLService}}{\cf2{}}{\cf11{()}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

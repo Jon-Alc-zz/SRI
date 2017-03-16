@@ -1,0 +1,39 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPPOSTRequest.h"}}{\cf8{ }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Constructor: handling the HTTP POST method\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPPOSTRequest}}{\cf11{::}}{\cf2{}}{\cf16{HTTPPOSTRequest}}{\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{):}} {\cf2{}}{\cf16{HTTPRequest}}{\cf2{}}{\cf11{(}}{\cf2{p_tcpSocket}}{\cf11{) \{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Overriding the base class readAndParse method\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{HTTPPOSTRequest}}{\cf11{::}}{\cf2{}}{\cf16{readAndParse}}{\cf2{}}{\cf11{(}}{\cf2{string initial_header}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // invoke the base class readAndParse\i0 }}}\par\pard
+\cbpat1{{\cf2{    HTTPRequest}}{\cf11{::}}{\cf2{}}{\cf16{readAndParse}}{\cf2{}}{\cf11{(}}{\cf2{initial_header}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Notice that while reading the header from the socket, more data that the header might be read from the socket; parts of the body.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Any extrea data read from the body after the end of header indicator "\\r\\n\\r\\n" will be saved in the body data member\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Get the body size stored in the header field "content-length" and store it in stdin_size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{long}} {\cf2{stdin_size}} {\cf11{=}} {\cf2{}}{\cf16{atol}}{\cf2{}}{\cf11{(}}{\cf2{header}}{\cf11{[}}{\cf2{}}{\cf3{"content-length"}}{\cf2{}}{\cf11{].}}{\cf2{}}{\cf16{c_str}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}    }\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Keep on reading from the socket until the length of body is equal to stdin_size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b for\b0 }} {\cf2{}}{\cf11{( ;}}{\cf2{body}}{\cf11{.}}{\cf2{}}{\cf16{length}}{\cf2{}}{\cf11{() <}} {\cf2{stdin_size}}{\cf11{; )}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{char}} {\cf2{buffer}}{\cf11{[}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{];}} {\cf2{}}{\cf5{\i // temporary buffer for reading\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Initialize buffer to zeros\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // read from socket and leave one character empty to identify the end of the string\i0 }}}\par\pard
+\cbpat1{{\cf2{        tcpSocket}}{\cf11{->}}{\cf2{}}{\cf16{readFromSocket}}{\cf2{}}{\cf11{(}}{\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{1}{0}{2}{3}}}{\cf2{}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Append buffer to body\i0 }}}\par\pard
+\cbpat1{{\cf2{        body}} {\cf11{+=}}{\cf2{buffer}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // A cloner method\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPRequest}} {\cf11{*}} {\cf2{HTTPPOSTRequest}}{\cf11{::}}{\cf2{}}{\cf16{clone}} {\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Creates a new object of the same type and return it to the caller\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return new\b0 }} {\cf2{}}{\cf16{HTTPPOSTRequest}}{\cf2{}}{\cf11{(}}{\cf2{p_tcpSocket}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPPOSTRequest}}{\cf11{::~}}{\cf2{}}{\cf16{HTTPPOSTRequest}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

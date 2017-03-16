@@ -1,0 +1,20 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef HTTPHTMLSERVICE_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define HTTPHTMLSERVICE_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPService.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // An HTTP Service that serves HTML files\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{HTTPHTMLService}}{\cf11{:}} {\cf2{}}{\cf15{\b public\b0 }} {\cf2{HTTPService}} {\cf5{\i // Inherit from HTTPService Base class\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Constructor, receiving file cache, resources to serve and a flag that enabled deleting the cache in the destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{HTTPHTMLService}}{\cf2{}}{\cf11{(}}{\cf2{FileCache}} {\cf11{*}} {\cf2{p_fileCache}}{\cf11{,}}{\cf2{}}{\cf14{bool}} {\cf2{p_clean_cache}} {\cf11{=}} {\cf2{}}{\cf13{\b true\b0 }}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Execute the service and write back the results to the TCPSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf15{\b virtual\b0 }} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf16{execute}}{\cf2{}}{\cf11{(}}{\cf2{HTTPRequest}} {\cf11{*}} {\cf2{p_httpRequest}}{\cf11{,}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf15{\b virtual\b0 }} {\cf2{HTTPService}} {\cf11{*}} {\cf2{}}{\cf16{clone}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Clone and create a new object\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{~}}{\cf2{}}{\cf16{HTTPHTMLService}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // HTTPHTMLSERVICE_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

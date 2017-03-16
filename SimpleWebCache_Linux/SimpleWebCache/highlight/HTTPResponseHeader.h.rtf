@@ -1,0 +1,26 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef HTTPRESPONSEHEADER_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define HTTPRESPONSEHEADER_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"common.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"TCPSocket.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{HTTPResponseHeader}} {\cf5{\i // A class represening an HTTP response header\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{        std}}{\cf11{::}}{\cf2{map}} {\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{string}}{\cf11{,}}{\cf2{ignorecase}}{\cf11{>}} {\cf2{header}}{\cf11{;}} {\cf2{}}{\cf5{\i //A map to store header tuples \i0 }}}\par\pard
+\cbpat1{{\cf2{        string status}}{\cf11{;}} {\cf2{}}{\cf5{\i // Respose header status string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{int}} {\cf2{status_code}}{\cf11{;}} {\cf2{}}{\cf5{\i // Response header status code\i0 }}}\par\pard
+\cbpat1{{\cf2{        string protocol}}{\cf11{;}} {\cf2{}}{\cf5{\i // HTTP protocol user\i0 }}}\par\pard
+\cbpat1{{\cf2{        TCPSocket}} {\cf11{*}} {\cf2{tcpSocket}}{\cf11{;}} {\cf2{}}{\cf5{\i // A pointer to the TCPsocket object of the current connections\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Constructor seeting up the differen data members \i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{HTTPResponseHeader}}{\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{,}}{\cf2{string p_status}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{p_status_code}}{\cf11{,}}{\cf2{string p_protocol}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{string p_key}}{\cf11{,}}{\cf2{string p_value}}{\cf11{);}} {\cf2{}}{\cf5{\i // Setting a header tuple\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf16{respond}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // responding to the client with the header over the tcpSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{~}}{\cf2{}}{\cf16{HTTPResponseHeader}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // HTTPRESPONSEHEADER_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

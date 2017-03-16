@@ -1,0 +1,22 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef GARBAGECOLLECTOR_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define GARBAGECOLLECTOR_H}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPTransaction.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // A class to manage expired HTTPTransaction Objects and dispose them one by one\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{GarbageCollector}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}} {\cf2{}}{\cf5{\i // It manages vector of pointers to HTTP Transactions \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // A vector for storing pointers to HTTP Transactions\i0 }}}\par\pard
+\cbpat1{{\cf2{        vector}} {\cf11{<}}{\cf2{HTTPTransaction}} {\cf11{*>}} {\cf2{http_transaction_store}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{GarbageCollector}}{\cf2{}}{\cf11{();}}{\cf2{}}{\cf5{\i // Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf16{addHTTPTransaction}}{\cf2{}}{\cf11{(}}{\cf2{HTTPTransaction}} {\cf11{*}} {\cf2{p_http_transaction}}{\cf11{);}} {\cf2{}}{\cf5{\i // Add a connection\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf16{cleanup}}{\cf2{}}{\cf11{();}}	{\cf2{}}{\cf5{\i // Perform a clean up by disposing expired connections.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{void}} {\cf2{}}{\cf16{terminate}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Wait for all thread connections to terminate and cleanup all\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{~}}{\cf2{}}{\cf16{GarbageCollector}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // GARBAGECOLLECTOR_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

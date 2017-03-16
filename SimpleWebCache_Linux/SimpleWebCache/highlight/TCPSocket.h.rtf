@@ -1,0 +1,51 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#ifndef TCPSOCKET_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TCPSOCKET_H}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"includes.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{TCPSocket}} {\cf5{\i // TCP Socket Class\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{char}} {\cf2{remote_address}}{\cf11{[}}{\cf2{}}{\cf4{{1}{2}{8}}}{\cf2{}}{\cf11{];}} {\cf2{}}{\cf5{\i // Remote IP address of socket connection.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{char}} {\cf2{my_address}}{\cf11{[}}{\cf2{}}{\cf4{{1}{2}{8}}}{\cf2{}}{\cf11{];}} {\cf2{}}{\cf5{\i // The local IP address of the socket connection.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{struct}} {\cf2{sockaddr_in myAddr}}{\cf11{;}} {\cf2{}}{\cf5{\i // Socket connection structure.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{int}} {\cf2{port}}{\cf11{;}}   {\cf2{}}{\cf5{\i // TCP socket port number.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{int}} {\cf2{sock}}{\cf11{;}}   {\cf2{}}{\cf5{\i // Socket Descriptor.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{bool}} {\cf2{peerDisconnected}}{\cf11{;}} {\cf2{}}{\cf5{\i // A flag indicating the socket peer status.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{bool}} {\cf2{rshutdown}}{\cf11{;}}     {\cf2{}}{\cf5{\i // A flag indicating that a read shutdown was performed.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{bool}} {\cf2{wshutdown}}{\cf11{;}}     {\cf2{}}{\cf5{\i // A flag indicating that a write shutdown was performed.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{long}} {\cf2{stream_out_size}}{\cf11{;}}  {\cf2{}}{\cf5{\i // An integer representing the accumulated amount of data sent so far.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // A constructor that allows creating a socket object after socket is created.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{TCPSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{int}} {\cf2{_sock}} {\cf11{,}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{_address}}{\cf11{=}}{\cf2{NULL}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{_port}}{\cf11{=}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{readBufferSize}}{\cf11{=}}{\cf2{}}{\cf4{{6}{5}{5}{3}{6}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{writeBufferSize}}{\cf11{=}}{\cf2{}}{\cf4{{6}{5}{5}{3}{6}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // A constructor that performs all the client connection initialization to a server socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{TCPSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{_address}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{port}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{readBufferSize}}{\cf11{=}}{\cf2{}}{\cf4{{6}{5}{5}{3}{6}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{writeBufferSize}}{\cf11{=}}{\cf2{}}{\cf4{{6}{5}{5}{3}{6}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getRemoteAddress}}{\cf2{}}{\cf11{();}}  {\cf2{}}{\cf5{\i // Selector returning remote IP address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getMyAddress}}{\cf2{}}{\cf11{();}}      {\cf2{}}{\cf5{\i // Selector returning local IP address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{int}} {\cf2{}}{\cf16{readFromSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{);}}  {\cf2{}}{\cf5{\i // Blocking read data from socket with an upperbound size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Blocking read data from socket with an upperbound size with a maximum timeout sec.milli-sec\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{int}} {\cf2{}}{\cf16{readFromSocketWithTimeout}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf14{long}} {\cf2{timeoutSec}}{\cf11{,}} {\cf2{}}{\cf14{long}} {\cf2{timeoutMilli}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Write data to a socket with a specified size.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{int}} {\cf2{}}{\cf16{writeToSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{const char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{long}} {\cf2{maxBytes}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Set the status of the socket peer as disconnected\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{void}} {\cf2{}}{\cf16{setPeerDisconnected}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{bool}} {\cf2{value}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Check if the socket peer is connected\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{bool}} {\cf2{}}{\cf16{isPeerDisconnected}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Perform a read shutdown\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{void}} {\cf2{}}{\cf16{shutDownRead}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Perform a write shutdown\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{void}} {\cf2{}}{\cf16{shutDownWrite}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Perform a bidirectional (Read/Write) shutdown\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{void}} {\cf2{}}{\cf16{shutDown}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Get the amount of data written to a socket after invoking the writeToSocket method.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{long}} {\cf2{}}{\cf16{getStreamOutSize}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf11{~}}{\cf2{}}{\cf16{TCPSocket}} {\cf2{}}{\cf11{( );}} {\cf2{}}{\cf5{\i // Destructor: shutdown the target socket and deallocate all its resources\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // TCPSOCKET_H\i0 }}}\par\pard
+\cbpat1{{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

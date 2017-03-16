@@ -1,0 +1,20 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef HTTPPOSTREQUEST_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define HTTPPOSTREQUEST_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPRequest.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // A class representing an HTTP POST Method Request Header\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{HTTPPOSTRequest}} {\cf11{:}} {\cf2{}}{\cf15{\b public\b0 }} {\cf2{HTTPRequest}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i //        void readAndParseBody(); // Parse and add a header item to the header map\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{HTTPPOSTRequest}}{\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{);}} {\cf2{}}{\cf5{\i // Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf15{\b virtual\b0 }} {\cf2{}}{\cf14{void}} {\cf2{}}{\cf16{readAndParse}}{\cf2{}}{\cf11{(}}{\cf2{string initial_header}}{\cf11{);}} {\cf2{}}{\cf5{\i // Read header from socket and parse it\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf15{\b virtual\b0 }} {\cf2{HTTPRequest}} {\cf11{*}} {\cf2{}}{\cf16{clone}} {\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{);}} {\cf2{}}{\cf5{\i // Clone and create new object \i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{~}}{\cf2{}}{\cf16{HTTPPOSTRequest}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // HTTPPOSTREQUEST_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

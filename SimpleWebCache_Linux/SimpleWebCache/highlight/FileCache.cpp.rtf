@@ -1,0 +1,26 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"FileCache.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Default Constructor setting the cache root directory\i0 }}}\par\pard
+\cbpat1{{\cf2{FileCache}}{\cf11{::}}{\cf2{}}{\cf16{FileCache}}{\cf2{}}{\cf11{(}}{\cf2{string p_root}}{\cf11{) \{}} {\cf2{root}} {\cf11{=}} {\cf2{p_root}}{\cf11{; \}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Get the most updated version of the Cache File Item with p_file_name \i0 }}}\par\pard
+\cbpat1{{\cf2{FileCacheItem}} {\cf11{*}} {\cf2{FileCache}}{\cf11{::}}{\cf2{}}{\cf16{getFile}}{\cf2{}}{\cf11{(}}{\cf2{string p_file_name}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    string file_name}} {\cf11{=}} {\cf2{root}}{\cf11{+}}{\cf2{p_file_name}}{\cf11{;}} {\cf2{}}{\cf5{\i // Add the root directory to the file\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{cache}}{\cf11{[}}{\cf2{file_name}}{\cf11{] ==}} {\cf2{NULL}}{\cf11{) \{}} {\cf2{}}{\cf5{\i // file does not exit in the cache\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Create a new file item\i0 }}}\par\pard
+\cbpat1{{\cf2{        FileCacheItem}} {\cf11{*}} {\cf2{fileCacheItem}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{FileCacheItem}}{\cf2{}}{\cf11{(}}{\cf2{file_name}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{        cache}}{\cf11{[}}{\cf2{file_name}}{\cf11{] =}} {\cf2{fileCacheItem}}{\cf11{;}} {\cf2{}}{\cf5{\i // Add to Map\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return\b0 }} {\cf2{fileCacheItem}}{\cf11{;}}{\cf2{}}{\cf5{\i // return a pointer \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{cache}}{\cf11{[}}{\cf2{file_name}}{\cf11{];}} {\cf2{}}{\cf5{\i // return a pointer to the FileCacheItem object\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{FileCache}}{\cf11{::~}}{\cf2{}}{\cf16{FileCache}} {\cf2{}}{\cf11{() \{}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Loop through iterator to delete all FileCacheItem objects\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{for_each}} {\cf2{}}{\cf11{(}}{\cf2{cache}}{\cf11{.}}{\cf2{}}{\cf16{begin}}{\cf2{}}{\cf11{(),}}{\cf2{cache}}{\cf11{.}}{\cf2{}}{\cf16{end}}{\cf2{}}{\cf11{(),[](}}{\cf2{}}{\cf14{const}} {\cf2{std}}{\cf11{::}}{\cf2{pair}}{\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{FileCacheItem}} {\cf11{*>&}} {\cf2{it}}{\cf11{) ->}} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{            FileCacheItem}} {\cf11{*}} {\cf2{fileCacheItem}} {\cf11{=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}} {\cf2{}}{\cf5{\i // Fetch Pair value: FileCacheItem *\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b delete\b0 }}{\cf2{}}{\cf11{(}}{\cf2{fileCacheItem}}{\cf11{);}} {\cf2{}}{\cf5{\i // delete FileCacheItem object\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // return true for lambda\i0 }}}\par\pard
+\cbpat1{{\cf2{}}       {\cf11{\});}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

@@ -1,0 +1,38 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPServiceManager.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPNotAcceptableExceptionHandler.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Constructor:  building up the factory map\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPServiceManager}}{\cf11{::}}{\cf2{}}{\cf16{HTTPServiceManager}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // adding the html and form service cloners\i0 }}}\par\pard
+\cbpat1{{\cf2{    services}} {\cf11{[}}{\cf2{}}{\cf3{"html"}}{\cf2{}}{\cf11{] =}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPHTMLService}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{FileCache}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"/Users/kmsobh/www"}}{\cf2{}}{\cf11{),}}{\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{    services}} {\cf11{[}}{\cf2{}}{\cf3{"form"}}{\cf2{}}{\cf11{] =}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPFORMService}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Compare the file extention to the map key first and if not found compare the whole file name\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPService}} {\cf11{*}} {\cf2{HTTPServiceManager}}{\cf11{::}}{\cf2{}}{\cf16{getService}} {\cf2{}}{\cf11{(}}{\cf2{string p_resource}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // extract extentions\i0 }}}\par\pard
+\cbpat1{{\cf2{    string ext}} {\cf11{=}} {\cf2{p_resource}}{\cf11{.}}{\cf2{}}{\cf16{substr}}{\cf2{}}{\cf11{(}}{\cf2{p_resource}}{\cf11{.}}{\cf2{}}{\cf16{find_last_of}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"."}}{\cf2{}}{\cf11{) +}} {\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{services}}{\cf11{[}}{\cf2{ext}}{\cf11{]==}}{\cf2{NULL}}{\cf11{)}}  {\cf2{}}{\cf5{\i // if not found\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Extract file base noame\i0 }}}\par\pard
+\cbpat1{{\cf2{        string base_name}} {\cf11{=}} {\cf2{p_resource}}{\cf11{.}}{\cf2{}}{\cf16{substr}}{\cf2{}}{\cf11{(}}{\cf2{p_resource}}{\cf11{.}}{\cf2{}}{\cf16{find_last_of}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"/"}}{\cf2{}}{\cf11{) +}} {\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // If not found also throw and exception\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{services}}{\cf11{[}}{\cf2{base_name}}{\cf11{]==}}{\cf2{NULL}}{\cf11{)}} {\cf2{}}{\cf13{\b throw\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{HTTPNotAcceptableExceptionHandler}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b else return\b0 }} {\cf2{services}}{\cf11{[}}{\cf2{base_name}}{\cf11{]->}}{\cf2{}}{\cf16{clone}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // else clone service based on base file name\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b else return\b0 }} {\cf2{services}}{\cf11{[}}{\cf2{ext}}{\cf11{]->}}{\cf2{}}{\cf16{clone}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // clone service based on extension\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPServiceManager}}{\cf11{::~}}{\cf2{}}{\cf16{HTTPServiceManager}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // A for_each iterator based loop with lambda function to deallocate all the cloner objects\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{for_each}} {\cf2{}}{\cf11{(}}{\cf2{services}}{\cf11{.}}{\cf2{}}{\cf16{begin}}{\cf2{}}{\cf11{(),}}{\cf2{services}}{\cf11{.}}{\cf2{}}{\cf16{end}}{\cf2{}}{\cf11{(),[](}}{\cf2{}}{\cf14{const}} {\cf2{std}}{\cf11{::}}{\cf2{pair}}{\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{HTTPService}} {\cf11{*>&}} {\cf2{it}}{\cf11{) ->}} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{        HTTPService}} {\cf11{*}} {\cf2{httpService}} {\cf11{=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b delete\b0 }}{\cf2{}}{\cf11{(}}{\cf2{httpService}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}   {\cf11{\});}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

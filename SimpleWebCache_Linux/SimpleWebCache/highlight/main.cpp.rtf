@@ -1,0 +1,49 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf6{\i /* \i0 }}}\par\pard
+\cbpat1{{\cf6{\i  * File:   main.cpp\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  * Author: kmsobh\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  *\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  * Created on October {2}{1}, {2}{0}{1}{6}, {1}{2}:{2}{0} PM\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  */\i0 }}{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"TCPServerSocket.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"Thread.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPTransaction.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"GarbageCollector.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPRequestManager.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf13{\b using namespace\b0 }} {\cf2{std}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{}}{\cf16{main}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{int}} {\cf2{argc}}{\cf11{,}} {\cf2{}}{\cf14{char}}{\cf2{}}{\cf11{**}} {\cf2{argv}}{\cf11{) \{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Instantiate a garbage collector object\i0 }}}\par\pard
+\cbpat1{{\cf2{    GarbageCollector}} {\cf11{*}} {\cf2{garbageCollector}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{GarbageCollector}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Instantiate an HTTPServiceManager Factory\i0 }}}\par\pard
+\cbpat1{{\cf2{    HTTPServiceManager}} {\cf11{*}} {\cf2{httpServiceManager}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPServiceManager}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Instantiate an HTTPRequestManager Factory  \i0 }}}\par\pard
+\cbpat1{{\cf2{    HTTPRequestManager}} {\cf11{*}} {\cf2{httpRequestManager}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPRequestManager}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Create a TCP socket that listens on the localhost loopback address and port {9}{9}{9}{9}\i0 }}}\par\pard
+\cbpat1{{\cf2{    TCPServerSocket}} {\cf11{*}} {\cf2{tcpServerSocket}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{TCPServerSocket}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"{1}{2}{7}.{0}.{0}.{1}"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{9}{9}{9}{9}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{1}{0}{0}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{    tcpServerSocket}}{\cf11{->}}{\cf2{}}{\cf16{initializeSocket}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Initialize the server socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b while\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf13{\b true\b0 }}{\cf2{}}{\cf11{)}} {\cf2{}}{\cf5{\i // loop until socket errors\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Wait for connection indefinitely\i0 }}}\par\pard
+\cbpat1{{\cf2{        TCPSocket}} {\cf11{*}} {\cf2{tcpSocket}} {\cf11{=}} {\cf2{tcpServerSocket}}{\cf11{->}}{\cf2{}}{\cf16{getConnection}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,-}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{,-}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{tcpSocket}} {\cf11{==}}{\cf2{NULL}}{\cf11{)}} {\cf2{}}{\cf13{\b break\b0 }}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // if returns a NULL break the loop and exist\i0 }}}\par\pard
+\cbpat1{{\cf2{        garbageCollector}}{\cf11{->}}{\cf2{}}{\cf16{cleanup}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Apply garbage collection cleanup\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Instantiate a new HTTPTransaction Object and pass the TCPSocket pointer and different factories to it\i0 }}}\par\pard
+\cbpat1{{\cf2{        HTTPTransaction}} {\cf11{*}} {\cf2{httpTransaction}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPTransaction}}{\cf2{}}{\cf11{(}}{\cf2{tcpSocket}}{\cf11{,}}{\cf2{httpServiceManager}}{\cf11{,}}{\cf2{httpRequestManager}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Add the HTTPTransaction just created to the garbage collector for clean up\i0 }}}\par\pard
+\cbpat1{{\cf2{        garbageCollector}}{\cf11{->}}{\cf2{}}{\cf16{addHTTPTransaction}}{\cf2{}}{\cf11{(}}{\cf2{httpTransaction}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Start the HTTPTransaction thread\i0 }}}\par\pard
+\cbpat1{{\cf2{        httpTransaction}}{\cf11{->}}{\cf2{}}{\cf16{start}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    }\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b delete\b0 }} {\cf2{}}{\cf11{(}}{\cf2{tcpServerSocket}}{\cf11{);}} {\cf2{}}{\cf5{\i // Delete the TCPServerSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b delete\b0 }} {\cf2{}}{\cf11{(}}{\cf2{httpServiceManager}}{\cf11{);}} {\cf2{}}{\cf5{\i // Delete the HTTPServiceManager\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b delete\b0 }} {\cf2{}}{\cf11{(}}{\cf2{httpRequestManager}}{\cf11{);}} {\cf2{}}{\cf5{\i // Delete the HTTPRequestManager\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b delete\b0 }} {\cf2{}}{\cf11{(}}{\cf2{garbageCollector}}{\cf11{);}} {\cf2{}}{\cf5{\i // Delete the Garbage Collector\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}}
