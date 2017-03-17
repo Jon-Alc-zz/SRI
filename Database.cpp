@@ -480,15 +480,31 @@ void Database::OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string
 				}
 			}
 
-			sM.push_back(fM);
-
 			//get params of rule
 			vector<string> ruleParams = rule->getRuleParams();
 
-			if (t) {
-				mtx.lock();
-				printFact(printOut, rName, fName, ruleParams, fM, fM.size());
-				mtx.unlock();
+			bool valid = true;
+
+			//replace parameters without $ with their literal value
+			for (int i = 0; i < ruleParams.size(); i++) {
+				if (ruleParams[i][0] != '$') {
+					if (!ruleParams[i].compare(factThings[i])) {
+						fM[ruleParams[i]] = ruleParams[i];
+					}
+					else {
+						valid = false;
+					}
+				}
+			}
+
+			if (valid) {
+				sM.push_back(fM);
+
+				if (t) {
+					mtx.lock();
+					printFact(printOut, rName, fName, ruleParams, fM, fM.size());
+					mtx.unlock();
+				}
 			}
 
 		}
