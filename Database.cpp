@@ -588,8 +588,21 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	for (unsigned int a = 0; a < mapsToPrint.size(); a++) {
 		vector<string> ruleParams = thisRule->getRuleParams();
 
-		auto tempAND = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
-		joinThreads.push_back(new thread(tempAND));
+		bool valid = true;
+
+		//replace parameters without $ with their literal value
+		for (int i = 0; i < ruleParams.size(); i++) {
+			if (ruleParams[i][0] != '$') {
+				if (ruleParams[i].compare(mapsToPrint[i][ruleParams[i]])) {
+					valid = false;
+				}
+			}
+		}
+
+		if (valid) {
+			auto tempAND = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
+			joinThreads.push_back(new thread(tempAND));
+		}
 		//ANDPrintAll(upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], sourceMaps);
 	}
 	for (unsigned int i = 0; i < joinThreads.size(); i++) {
