@@ -1,0 +1,25 @@
+client should give server a file
+the file should be family.sri
+client loads file and gives to server, then dumps back onto client
+^ filecache is for that
+
+Client needs to send a file or message
+Client should have all commands in server, but sends message to Server
+main file is client
+receives messages from server and files
+
+> Client_Stream unix.ucsc.edu
+takes you to main
+
+take client_stream.cpp and modify it
+
+Server is always running, never exits/stops?
+Each client is on separate thread, takes command String or file String and gives to server
+server processes everything
+
+send only takes constant
+
+never have to free const char* because it will always have the same address
+^ implies no memory leak
+
+sending "EXIT" to server makes the server quit
