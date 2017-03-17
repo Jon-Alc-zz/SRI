@@ -71,12 +71,9 @@ void Thread::start()
 void * Thread::run(void * arg)
 {
 	Thread * me = (Thread *) arg; // Cast the arg to Thread * which is the current thread
-        // Push the cleanup static function to the cleanup functions stack to be invoked within pthread_exit
-        // Notice the close curly bracket that substitute for the complementary pthread_cleanup_pop
-//   	pthread_detach (me->pthread); 
 	me->threadMainBody(arg); //Invoke the thread main function body
-        me->cleanup(me);
-        pthread_exit(NULL); // Invoke pthread_exit to terminate and invoke the cleanup functions.
+    me->cleanup(me);  // This is instead of push and pop
+    pthread_exit(NULL); // Invoke pthread_exit to terminate and invoke the cleanup functions.
 }
 
 // Block until thread finishes execution
