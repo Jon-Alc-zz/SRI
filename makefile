@@ -4,9 +4,18 @@ DEBUG = -g
 CFLAGS = -Wall -std=c++11 -lpthread -lsocket -c $(DEBUG)
 LFLAGS = -Wall -std=c++11 -lpthread $(DEBUG)
 
+all: sriServer sriClient
+
 sriServer : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o sriServer
 	
+
+sriClient: sriClient.o
+	$(CC) client.o -o client
+
+sriClient.o: client.cpp
+	$(CC) $(CFLAGS) -c client.cpp
+
 sriServer.o : sriServer.cpp SRI.cpp Connection.cpp Thread.cpp GarbageCollector.cpp TCPServerSocket.cpp TCPSocket.cpp Database.h Database.cpp KnowledgeBase.h KnowledgeBase.cpp RuleBase.h RuleBase.cpp Fact.h Fact.cpp Rule.h Rule.cpp
 	$(CC) $(CFLAGS) sriServer.cpp
 
@@ -44,4 +53,4 @@ Fact.o : Fact.h Fact.cpp
 	$(CC) $(CFLAGS) Fact.cpp
 	
 clean:
-	\rm *.o sriTest
+	\rm *.o sriServer sriClient
