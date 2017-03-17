@@ -1,0 +1,112 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"FileCacheItem.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPNotFoundExceptionHandler.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Load file content of the target file\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf16{load}} {\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{FILE}} {\cf2{}}{\cf11{*}} {\cf2{f}} {\cf11{=}} {\cf2{}}{\cf16{fopen}} {\cf2{}}{\cf11{(}}{\cf2{file_name}}{\cf11{.}}{\cf2{}}{\cf16{c_str}}{\cf2{}}{\cf11{(),}}{\cf2{}}{\cf3{"r"}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Open file\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Failed to open file, throe an exception\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{f}} {\cf11{==}}{\cf2{NULL}}{\cf11{)}} {\cf2{}}{\cf13{\b throw\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{HTTPNotFoundExceptionHandler}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{fseek}}{\cf2{}}{\cf11{(}}{\cf2{f}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{2}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Seek end of the file\i0 }}}\par\pard
+\cbpat1{{\cf2{    cache_item_size}} {\cf11{=}} {\cf2{}}{\cf16{ftell}}{\cf2{}}{\cf11{(}}{\cf2{f}}{\cf11{);}} {\cf2{}}{\cf5{\i // Get current position which represents the size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{fseek}}{\cf2{}}{\cf11{(}}{\cf2{f}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // See start of the file\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Free the cache_item_stream buffer if already allocated\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{cache_item_stream}} {\cf11{!=}} {\cf2{NULL}}{\cf11{)}} {\cf2{}}{\cf16{free}} {\cf2{}}{\cf11{(}}{\cf2{cache_item_stream}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Allocate buffer for the file content\i0 }}}\par\pard
+\cbpat1{{\cf2{    cache_item_stream}} {\cf11{= (}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*)}} {\cf2{}}{\cf16{calloc}}{\cf2{}}{\cf11{(}}{\cf2{cache_item_size}}{\cf11{,}}{\cf2{}}{\cf13{\b sizeof\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}}{\cf2{}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Read whole file\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{fread}} {\cf2{}}{\cf11{(}}{\cf2{cache_item_stream}}{\cf11{,}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{,}}{\cf2{cache_item_size}}{\cf11{,}}{\cf2{f}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Record the stats of the file.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{stat}}{\cf2{}}{\cf11{(}}{\cf2{file_name}}{\cf11{.}}{\cf2{}}{\cf16{c_str}}{\cf2{}}{\cf11{(), &}}{\cf2{cache_item_stat}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{fclose}}{\cf2{}}{\cf11{(}}{\cf2{f}}{\cf11{);}} {\cf2{}}{\cf5{\i // Close file\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf16{FileCacheItem}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    file_name}} {\cf11{=}} {\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set file name\i0 }}}\par\pard
+\cbpat1{{\cf2{    cache_item_stream}} {\cf11{=}} {\cf2{NULL}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set cache_item_stream to NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_init}} {\cf2{}}{\cf11{(&}}{\cf2{mutex}}{\cf11{,}}{\cf2{NULL}}{\cf11{);}} {\cf2{}}{\cf5{\i // initialize fetchContent mutex\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_init}} {\cf2{}}{\cf11{(&}}{\cf2{assign_mutex}}{\cf11{,}}{\cf2{NULL}}{\cf11{);}} {\cf2{}}{\cf5{\i // Initialize assignment operator mutex\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Parameterized Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf16{FileCacheItem}}{\cf2{}}{\cf11{(}}{\cf2{string p_file_name}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    file_name}} {\cf11{=}} {\cf2{p_file_name}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set file name\i0 }}}\par\pard
+\cbpat1{{\cf2{    cache_item_stream}} {\cf11{=}} {\cf2{NULL}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set cache_item_stream to NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{load}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Load file contents\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_init}} {\cf2{}}{\cf11{(&}}{\cf2{mutex}}{\cf11{,}}{\cf2{NULL}}{\cf11{);}} {\cf2{}}{\cf5{\i // initialize fetchContent mutex\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_init}} {\cf2{}}{\cf11{(&}}{\cf2{assign_mutex}}{\cf11{,}}{\cf2{NULL}}{\cf11{);}} {\cf2{}}{\cf5{\i // Initialize assignment operator mutex\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Create another FileCacheItem with the latest content of the target file. This is done to be able to decouple the main object in the cache from instances that is returned to the service engines\i0 }}}\par\pard
+\cbpat1{{\cf2{FileCacheItem}} {\cf11{*}} {\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf16{fetchContent}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_lock}}{\cf2{}}{\cf11{(&}}{\cf2{mutex}}{\cf11{);}} {\cf2{}}{\cf5{\i // Lock mutex (Critical Section)\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b try\b0 }}{\cf2{}}{\cf11{\{}} {\cf2{}}{\cf5{\i // Try executing the following code block looking from exceptions thrown\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{struct}} {\cf2{stat attrib}}{\cf11{;}} {\cf2{}}{\cf5{\i // A file attribute structure\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{stat}}{\cf2{}}{\cf11{(}}{\cf2{file_name}}{\cf11{.}}{\cf2{}}{\cf16{c_str}}{\cf2{}}{\cf11{(), &}}{\cf2{attrib}}{\cf11{) == -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{)}} {\cf2{}}{\cf5{\i // Retrieve file attributes\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}} {\cf2{}}{\cf5{\i // Could not fetch file attribute\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{pthread_mutex_unlock}}{\cf2{}}{\cf11{(&}}{\cf2{mutex}}{\cf11{);}} {\cf2{}}{\cf5{\i // Unlock\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b throw\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{HTTPNotFoundExceptionHandler}}{\cf2{}}{\cf11{());}} {\cf2{}}{\cf5{\i // Throw exception\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Check if file modified since the last load\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{attrib}}{\cf11{.}}{\cf2{st_mtimespec}}{\cf11{.}}{\cf2{tv_nsec}} {\cf11{!=}} {\cf2{cache_item_stat}}{\cf11{.}}{\cf2{st_mtimespec}}{\cf11{.}}{\cf2{tv_nsec}} {\cf11{||}}}\par\pard
+\cbpat1{{\cf2{            attrib}}{\cf11{.}}{\cf2{st_mtimespec}}{\cf11{.}}{\cf2{tv_sec}} {\cf11{!=}} {\cf2{cache_item_stat}}{\cf11{.}}{\cf2{st_mtimespec}}{\cf11{.}}{\cf2{tv_sec}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{load}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Load if so\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Create a new cache item\i0 }}}\par\pard
+\cbpat1{{\cf2{        FileCacheItem}} {\cf11{*}} {\cf2{fileCacheItem}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{FileCacheItem}}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{*}}{\cf2{fileCacheItem}} {\cf11{= *}}{\cf2{}}{\cf13{\b this\b0 }}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // Copy the current into it\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{pthread_mutex_unlock}}{\cf2{}}{\cf11{(&}}{\cf2{mutex}}{\cf11{);}} {\cf2{}}{\cf5{\i // unlock mutex\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return\b0 }} {\cf2{fileCacheItem}}{\cf11{;}} {\cf2{}}{\cf5{\i // return cache item\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}{\cf2{}}{\cf13{\b catch\b0 }} {\cf2{}}{\cf11{(}}{\cf2{HTTPNotFoundExceptionHandler httpNotFoundExceptionHandler}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}} {\cf2{}}{\cf5{\i // Exception caught indicating that the target file could not be found\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{pthread_mutex_unlock}}{\cf2{}}{\cf11{(&}}{\cf2{mutex}}{\cf11{);}} {\cf2{}}{\cf5{\i // Unlock\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b throw\b0 }}{\cf2{}}{\cf11{(}}{\cf2{httpNotFoundExceptionHandler}}{\cf11{);}} {\cf2{}}{\cf5{\i // Propagate Exception\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b return\b0 }} {\cf2{NULL}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return a pointer to the time_string representing the last update date/time\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf16{getLastUpdateTime}} {\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memset}} {\cf2{}}{\cf11{(}}{\cf2{time_string}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{1}{0}{0}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Initialize the time_string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Convert stat update time from timespec to tm\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{struct}} {\cf2{tm tm}} {\cf11{= *}}{\cf2{}}{\cf16{gmtime}}{\cf2{}}{\cf11{(((}}{\cf2{}}{\cf14{time_t}} {\cf2{}}{\cf11{*) &}}{\cf2{cache_item_stat}}{\cf11{.}}{\cf2{st_mtimespec}}{\cf11{.}}{\cf2{tv_sec}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Format date string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{strftime}}{\cf2{}}{\cf11{(}}{\cf2{time_string}}{\cf11{,}} {\cf2{}}{\cf4{{1}{0}{0}}}{\cf2{}}{\cf11{,}} {\cf2{}}{\cf3{"%a, %d %b %Y %H:%M:%S %Z"}}{\cf2{}}{\cf11{, &}}{\cf2{tm}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{time_string}}{\cf11{;}} {\cf2{}}{\cf5{\i // return a pointer to the update time string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return a pointer to the current stream\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf16{getStream}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{cache_item_stream}}{\cf11{;}} {\cf2{}}{\cf5{\i // return a pointer to the cache buffer\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return the cache buffer size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{long}} {\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf16{getSize}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{cache_item_size}}{\cf11{;}} {\cf2{}}{\cf5{\i // return the cache buffer size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Assignment operator\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{FileCacheItem}}{\cf11{::}}{\cf2{}}{\cf15{\b operator\b0 }}{\cf2{}}{\cf11{=(}}{\cf2{}}{\cf14{const}} {\cf2{FileCacheItem}} {\cf11{&}} {\cf2{p_fileCacheItem}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_lock}}{\cf2{}}{\cf11{(&}}{\cf2{assign_mutex}}{\cf11{);}} {\cf2{}}{\cf5{\i // Lock for assignment\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Dispose the buffer if already allocated\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{cache_item_stream}} {\cf11{!=}} {\cf2{NULL}}{\cf11{)}} {\cf2{}}{\cf16{free}} {\cf2{}}{\cf11{(}}{\cf2{cache_item_stream}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Allocate buffer for the file content to copy from the passed parameter\i0 }}}\par\pard
+\cbpat1{{\cf2{    cache_item_stream}} {\cf11{= (}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*)}} {\cf2{}}{\cf16{calloc}}{\cf2{}}{\cf11{(}}{\cf2{p_fileCacheItem}}{\cf11{.}}{\cf2{cache_item_size}}{\cf11{,}}{\cf2{}}{\cf13{\b sizeof\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}}{\cf2{}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{    cache_item_size}}{\cf11{=}}{\cf2{p_fileCacheItem}}{\cf11{.}}{\cf2{cache_item_size}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set buffer size\i0 }}}\par\pard
+\cbpat1{{\cf2{    cache_item_stat}} {\cf11{=}} {\cf2{p_fileCacheItem}}{\cf11{.}}{\cf2{cache_item_stat}}{\cf11{;}} {\cf2{}}{\cf5{\i // set states\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Copy data \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memcpy}} {\cf2{}}{\cf11{(}}{\cf2{cache_item_stream}}{\cf11{,}}{\cf2{p_fileCacheItem}}{\cf11{.}}{\cf2{cache_item_stream}}{\cf11{,}}{\cf2{cache_item_size}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_unlock}}{\cf2{}}{\cf11{(&}}{\cf2{assign_mutex}}{\cf11{);}} {\cf2{}}{\cf5{\i // Unlock\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{FileCacheItem}}{\cf11{::~}}{\cf2{}}{\cf16{FileCacheItem}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // If cache_item_stream buffer is allocated free it.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{cache_item_stream}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf16{free}} {\cf2{}}{\cf11{(}}{\cf2{cache_item_stream}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_destroy}} {\cf2{}}{\cf11{(&}}{\cf2{mutex}}{\cf11{);}}  {\cf2{}}{\cf5{\i // Destroy the fetchContent mutex \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{pthread_mutex_destroy}} {\cf2{}}{\cf11{(&}}{\cf2{assign_mutex}}{\cf11{);}} {\cf2{}}{\cf5{\i // Destroy the assign mutex\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

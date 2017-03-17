@@ -1,0 +1,208 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"UDPSocket.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{UDPSocket}} {\cf2{}}{\cf11{( )}} {\cf2{}}{\cf5{\i // Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Initialize all data memvbers to unusable values and set socket to be disabled\i0 }}}\par\pard
+\cbpat1{{\cf2{    myAddress}} {\cf11{=}} {\cf2{NULL}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    peerAddress}} {\cf11{=}} {\cf2{NULL}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    myPort}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    peerPort}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    sock}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    filterAddress}}{\cf11{=}}{\cf2{NULL}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    enabled}} {\cf11{=}}{\cf2{}}{\cf13{\b false\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Set the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{setFilterAddress}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{_filterAddress}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // If the filter address is already allocted then deallocate it\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{filterAddress}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf16{free}} {\cf2{}}{\cf11{(}}{\cf2{filterAddress}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{_filterAddress}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf5{\i // if the provided filter address is not NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Allocate space for the filter address and copy to it the provided filter address parameter\i0 }}}\par\pard
+\cbpat1{{\cf2{            filterAddress}} {\cf11{= (}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*)}} {\cf2{}}{\cf16{calloc}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{strlen}}{\cf2{}}{\cf11{(}}{\cf2{_filterAddress}}{\cf11{)+}}{\cf2{}}{\cf4{{5}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf13{\b sizeof\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}}{\cf2{}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{memset}} {\cf2{}}{\cf11{(}}{\cf2{filterAddress}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf16{strlen}}{\cf2{}}{\cf11{(}}{\cf2{_filterAddress}}{\cf11{)+}}{\cf2{}}{\cf4{{5}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{strcpy}} {\cf2{}}{\cf11{(}}{\cf2{filterAddress}}{\cf11{,}}{\cf2{_filterAddress}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}} {\cf2{}}{\cf13{\b else\b0 }} {\cf2{filterAddress}} {\cf11{=}} {\cf2{NULL}}{\cf11{;}} {\cf2{}}{\cf5{\i // else set filter address to NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i //Write data to socket as a packet. maxBytes need to fit into a packet\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{writeToSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{() )}} {\cf2{}}{\cf5{\i // If socket is not enabled return -{1} and print an error message\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{printf}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Write: This socket is not enabled (writeToSocket): %d}}{\cf7{\\n}}{\cf3{"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf16{getPeerPort}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return\b0 }} {\cf2{}}{\cf11{-}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Send packet to the current peerAddress (set by the client or the server classes) and return the number of bytes returned by the sendto\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{}}{\cf16{sendto}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}}{\cf2{buffer}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,(}}{\cf2{sockaddr}} {\cf11{* ) &}}{\cf2{peerAddr}}{\cf11{,}}{\cf2{}}{\cf13{\b sizeof\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{struct}} {\cf2{sockaddr_in}}{\cf11{));}} }\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i //Write data to socket as a packet and wait for micorSec before returning. maxBytes need to fit into a packet\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{writeToSocketAndWait}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{microSec}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{() )}} {\cf2{}}{\cf5{\i // If socket is not enabled return -{1} and print an error message\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{printf}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Write: This socket is not enabled (writeToSocketAndWait)}}{\cf7{\\n}}{\cf3{"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return\b0 }} {\cf2{}}{\cf11{-}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{int}} {\cf2{wrote}} {\cf11{=}} {\cf2{}}{\cf16{writeToSocket}} {\cf2{}}{\cf11{(}}{\cf2{buffer}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}} {\cf2{}}{\cf5{\i // Invoke write to socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{wrote}} {\cf11{>}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{&&}} {\cf2{microSec}} {\cf11{>}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{)}} {\cf2{}}{\cf16{usleep}} {\cf2{}}{\cf11{(}}{\cf2{microSec}}{\cf11{);}} {\cf2{}}{\cf5{\i // Sleep for micorSec\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{wrote}}{\cf11{;}} {\cf2{}}{\cf5{\i //return the number of bytes sent\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Check if socket has data from the filter address and return right away\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{readFromSocketWithNoBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{() )}} {\cf2{}}{\cf13{\b return\b0 }} {\cf2{}}{\cf11{-}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // Return -{1} if socket is not enabled\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{int}} {\cf2{read}}  {\cf11{=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // Initialize number of read bytes to zero\i0 }}}\par\pard
+\cbpat1{{\cf2{    socklen_t size}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Read packet for socket and load the sender address details into peerAddr. Notice the MSG_DONTWAIT flag that makes the recvfrom return right away\i0 }}}\par\pard
+\cbpat1{{\cf2{    read}} {\cf11{=}} {\cf2{}}{\cf16{recvfrom}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}}{\cf2{buffer}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{,}}{\cf2{MSG_DONTWAIT}}{\cf11{,(}}{\cf2{sockaddr}} {\cf11{* ) &}}{\cf2{peerAddr}}{\cf11{,&}}{\cf2{size}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{read}} {\cf11{>}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{)}} {\cf2{}}{\cf5{\i // If bytes read\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{filterAddress}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf5{\i // Check if the address filter is not NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Check if the sender address is equal to the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{}}{\cf16{strcmp}} {\cf2{}}{\cf11{(}} {\cf2{filterAddress}}{\cf11{,}}{\cf2{}}{\cf16{inet_ntoa}} {\cf2{}}{\cf11{(}}{\cf2{peerAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{)) !=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf11{\{}}   {\cf2{}}{\cf5{\i // If not reset read and the buffer\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{                read}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}} {\cf2{}}{\cf5{\i // If NULL it will accept a packet from any source address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}} {\cf2{}}{\cf5{\i // else error with receive\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b else\b0 }} {\cf2{}}{\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{read}}{\cf11{;}}  {\cf2{}}{\cf5{\i // Return number of bytes read\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Block for a maximum of timeout for a packet from the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{readFromSocketWithTimeout}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutSec}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutMilli}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{() )}} {\cf2{}}{\cf13{\b return\b0 }} {\cf2{}}{\cf11{-}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // return -{1} if socket is not enabled\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{int}} {\cf2{read}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    socklen_t size}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Set timeval and file descriptors set and add sock to it \i0 }}}\par\pard
+\cbpat1{{\cf2{    fd_set fds}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{struct}} {\cf2{timeval tv}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    tv}}{\cf11{.}}{\cf2{tv_sec}} {\cf11{=}} {\cf2{timeoutSec}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    tv}}{\cf11{.}}{\cf2{tv_usec}} {\cf11{=}} {\cf2{timeoutMilli}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{FD_ZERO}}{\cf2{}}{\cf11{(&}}{\cf2{fds}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{FD_SET}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, &}}{\cf2{fds}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{select}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{+}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{, &}}{\cf2{fds}}{\cf11{,}} {\cf2{NULL}}{\cf11{,}} {\cf2{NULL}}{\cf11{, &}}{\cf2{tv}}{\cf11{);}} {\cf2{}}{\cf5{\i //Block for activity\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{FD_ISSET}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, &}}{\cf2{fds}}{\cf11{))}} {\cf2{}}{\cf5{\i // If activity occurs fetch packet\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Read packet for socket and load the sender address details into peerAddr. If we are here we are sure that there is an available packet\i0 }}}\par\pard
+\cbpat1{{\cf2{        read}} {\cf11{=}} {\cf2{}}{\cf16{recvfrom}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}} {\cf2{buffer}}{\cf11{,}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,(}}{\cf2{sockaddr}} {\cf11{* ) &}}{\cf2{peerAddr}}{\cf11{,&}}{\cf2{size}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{read}} {\cf11{>}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{filterAddress}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf5{\i // Check if the address filter is not NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // Check if the sender address is equal to the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{}}{\cf16{strcmp}} {\cf2{}}{\cf11{(}} {\cf2{filterAddress}}{\cf11{,}}{\cf2{}}{\cf16{inet_ntoa}} {\cf2{}}{\cf11{(}}{\cf2{peerAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{)) !=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}                    {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{                    read}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf11{\}}} {\cf2{}}{\cf5{\i // If NULL it will accept a packet from any source address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}  {\cf2{}}{\cf5{\i // Else an error occurred and thus we set read to -{1}\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b else\b0 }} {\cf2{read}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{read}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Block reading a packet from the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{readFromSocketWithBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{() )}} {\cf2{}}{\cf13{\b return\b0 }} {\cf2{}}{\cf11{-}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // return -{1} if socket is not enabled    \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{int}} {\cf2{read}}  {\cf11{=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    socklen_t size}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // block on recvfrom to read a packet and load sender information info peerAddr\i0 }}}\par\pard
+\cbpat1{{\cf2{    read}} {\cf11{=}} {\cf2{}}{\cf16{recvfrom}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}} {\cf2{buffer}}{\cf11{,}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,(}}{\cf2{sockaddr}} {\cf11{* ) &}}{\cf2{peerAddr}}{\cf11{,&}}{\cf2{size}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{filterAddress}} {\cf11{!=}} {\cf2{NULL}} {\cf11{&&}} {\cf2{read}} {\cf11{>}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Check if the sender address is equal to the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{}}{\cf16{strcmp}} {\cf2{}}{\cf11{(}} {\cf2{filterAddress}}{\cf11{,}}{\cf2{}}{\cf16{inet_ntoa}} {\cf2{}}{\cf11{(}}{\cf2{peerAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{)) !=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{            read}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}} {\cf2{}}{\cf5{\i // If NULL it will accept a packet from any source address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b else\b0 }} {\cf2{read}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{read}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Check if socket has data from any source address and return right away\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{readSocketWithNoBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{int}} {\cf2{read}}  {\cf11{=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // set number of read bytes to zero\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}} {\cf2{}}{\cf5{\i // Clear  buffer\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{())}} {\cf2{read}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // If not enabled return -{1}\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Else read packet for socket. Notice the MSG_DONTWAIT flag that makes the recv return right away\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b else\b0 }} {\cf2{read}} {\cf11{=}} {\cf2{}}{\cf16{recv}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}}{\cf2{buffer}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{,}}{\cf2{MSG_DONTWAIT}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{read}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Block for a maximum of timeout for a packet from any address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{readSocketWithTimeout}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutSec}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutMilli}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{int}} {\cf2{read}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set number of read bytes to zero\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{())}} {\cf2{read}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // If socket is not enabled clear buffer and return -{1};\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b else\b0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Set timeval and file descriptors set and add sock to it \i0 }}}\par\pard
+\cbpat1{{\cf2{        fd_set fds}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{struct}} {\cf2{timeval tv}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{        tv}}{\cf11{.}}{\cf2{tv_sec}} {\cf11{=}} {\cf2{timeoutSec}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{        tv}}{\cf11{.}}{\cf2{tv_usec}} {\cf11{=}} {\cf2{timeoutMilli}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{FD_ZERO}}{\cf2{}}{\cf11{(&}}{\cf2{fds}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{FD_SET}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, &}}{\cf2{fds}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Wait for activity on the socket.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{select}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{+}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{, &}}{\cf2{fds}}{\cf11{,}} {\cf2{NULL}}{\cf11{,}} {\cf2{NULL}}{\cf11{, &}}{\cf2{tv}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{FD_ISSET}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, &}}{\cf2{fds}}{\cf11{))}} {\cf2{}}{\cf5{\i // If activity occurs fetch packet\i0 }}}\par\pard
+\cbpat1{{\cf2{            read}} {\cf11{=}} {\cf2{}}{\cf16{recv}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}} {\cf2{buffer}}{\cf11{,}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b else\b0 }} {\cf2{read}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{read}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Block reading a packet from any address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{readSocketWithBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{int}} {\cf2{read}}  {\cf11{=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set number of bytes read to {0}\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memset}} {\cf2{}}{\cf11{(}} {\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{maxBytes}}{\cf11{);}} {\cf2{}}{\cf5{\i // clear buffer\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{())}} {\cf2{read}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // if not enabled return -{1}\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b else\b0 }} {\cf2{read}} {\cf11{=}} {\cf2{}}{\cf16{recv}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}} {\cf2{buffer}}{\cf11{,}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // read a packet from the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{read}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getMyPort}} {\cf2{}}{\cf11{()\{}}{\cf2{}}{\cf13{\b return\b0 }} {\cf2{myPort}}{\cf11{;\}}} {\cf2{}}{\cf5{\i // Return the local port of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getPeerPort}} {\cf2{}}{\cf11{()\{}}{\cf2{}}{\cf13{\b return\b0 }} {\cf2{peerPort}}{\cf11{;\}}} {\cf2{}}{\cf5{\i // Return the remote port of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{enable}}{\cf2{}}{\cf11{() \{}}{\cf2{enabled}} {\cf11{=}} {\cf2{}}{\cf13{\b true\b0 }}{\cf2{}}{\cf11{;\}}} {\cf2{}}{\cf5{\i // Set enabled to true\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{disable}}{\cf2{}}{\cf11{()\{}}{\cf2{enabled}} {\cf11{=}} {\cf2{}}{\cf13{\b false\b0 }}{\cf2{}}{\cf11{;\}}} {\cf2{}}{\cf5{\i // Set enabled to false\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{bool}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{()\{}}{\cf2{}}{\cf13{\b return\b0 }} {\cf2{enabled}}{\cf11{;\}}} {\cf2{}}{\cf5{\i // Return the value of the enabled flag\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return the local IP address configured by the Client/Server Classes\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getMyAddress}}{\cf2{}}{\cf11{() \{}} {\cf2{}}{\cf13{\b return\b0 }} {\cf2{myAddress}}{\cf11{;\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return the local IP address that received the last packet\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getMyLastAddress}}{\cf2{}}{\cf11{() \{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // convert the local socket address to an IP string and return it\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b return\b0 }} {\cf2{}}{\cf16{inet_ntoa}}{\cf2{}}{\cf11{(}}{\cf2{myAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return the remote address set by the Client Class \i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getPeerAddress}} {\cf2{}}{\cf11{() \{}}{\cf2{}}{\cf13{\b return\b0 }} {\cf2{peerAddress}}{\cf11{;\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Return remote IP address of the last packet received\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getLastPeerAddress}} {\cf2{}}{\cf11{() \{}} }\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // convert the remote socket address to an IP string and return it\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b return\b0 }} {\cf2{}}{\cf16{inet_ntoa}}{\cf2{}}{\cf11{(}}{\cf2{peerAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getLastPeerPort}} {\cf2{}}{\cf11{() \{}} {\cf2{}}{\cf5{\i // Return remote port number of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Use the network to host short convertor to get the peer port number\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b return\b0 }} {\cf2{}}{\cf16{ntohs}}{\cf2{}}{\cf11{(}}{\cf2{peerAddr}}{\cf11{.}}{\cf2{sin_port}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getFilterAddress}} {\cf2{}}{\cf11{() \{}} {\cf2{}}{\cf13{\b return\b0 }} {\cf2{filterAddress}}{\cf11{; \}}} {\cf2{}}{\cf5{\i // Return filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{int}} {\cf2{UDPSocket}}{\cf11{::}}{\cf2{}}{\cf16{getSocketHandler}}{\cf2{}}{\cf11{() \{}} {\cf2{}}{\cf13{\b return\b0 }} {\cf2{sock}}{\cf11{;\}}} {\cf2{}}{\cf5{\i // Return the socket handler\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{UDPSocket}}{\cf11{::~}}{\cf2{}}{\cf16{UDPSocket}} {\cf2{}}{\cf11{( )}} {\cf2{}}{\cf5{\i // Destructor \i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Free myAddress and peerAddress if allocated\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{myAddress}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf16{free}} {\cf2{}}{\cf11{(}}{\cf2{myAddress}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{peerAddress}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf16{free}} {\cf2{}}{\cf11{(}}{\cf2{peerAddress}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{sock}} {\cf11{!= -}}{\cf2{}}{\cf4{{1}}} {\cf2{}}{\cf11{)}} {\cf2{}}{\cf16{close}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{);}} {\cf2{}}{\cf5{\i // Close socket if it was created\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

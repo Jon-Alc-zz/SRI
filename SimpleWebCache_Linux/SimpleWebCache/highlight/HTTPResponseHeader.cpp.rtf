@@ -1,0 +1,41 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPResponseHeader.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Constructor that sets data members using initialization list. status, status_code, and protocol are used to set up the first line of the header\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPResponseHeader}}{\cf11{::}}{\cf2{}}{\cf16{HTTPResponseHeader}}{\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{,}}{\cf2{string p_status}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{p_status_code}}{\cf11{,}}{\cf2{string p_protocol}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{tcpSocket}}{\cf2{}}{\cf11{(}}{\cf2{p_tcpSocket}}{\cf11{),}}{\cf2{}}{\cf16{status}}{\cf2{}}{\cf11{(}}{\cf2{p_status}}{\cf11{),}}{\cf2{}}{\cf16{status_code}}{\cf2{}}{\cf11{(}}{\cf2{p_status_code}}{\cf11{),}}{\cf2{}}{\cf16{protocol}}{\cf2{}}{\cf11{(}}{\cf2{p_protocol}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    }\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Add a new response header "key: value"\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{HTTPResponseHeader}}{\cf11{::}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{string p_key}}{\cf11{,}}{\cf2{string p_value}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    header}}{\cf11{[}}{\cf2{p_key}}{\cf11{]=}}{\cf2{p_value}}{\cf11{;}} {\cf2{}}{\cf5{\i // add to the header map\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Build up the HTTP header from the header map and write it on the socket back to the client\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{HTTPResponseHeader}}{\cf11{::}}{\cf2{}}{\cf16{respond}} {\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Compose the first line in the header\i0 }}}\par\pard
+\cbpat1{{\cf2{    string header_string}} {\cf11{=}} {\cf2{protocol}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    header_string}} {\cf11{+=}} {\cf2{}}{\cf3{" "}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    header_string}} {\cf11{+=}} {\cf2{}}{\cf16{to_string}}{\cf2{}}{\cf11{(}}{\cf2{status_code}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{    header_string}} {\cf11{+=}} {\cf2{}}{\cf3{" "}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    header_string}} {\cf11{+=}} {\cf2{status}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    header_string}} {\cf11{+=}} {\cf2{}}{\cf3{"}}{\cf7{\\r\\n}}{\cf3{"}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // first line delimiter\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // A for_each iterator base loop with lambda function for building up the rest of the header\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{for_each}} {\cf2{}}{\cf11{(}}{\cf2{header}}{\cf11{.}}{\cf2{}}{\cf16{begin}}{\cf2{}}{\cf11{(),}}{\cf2{header}}{\cf11{.}}{\cf2{}}{\cf16{end}}{\cf2{}}{\cf11{(),[&}}{\cf2{header_string}}{\cf11{](}}{\cf2{}}{\cf14{const}} {\cf2{std}}{\cf11{::}}{\cf2{pair}}{\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{string}}{\cf11{>&}} {\cf2{it}}{\cf11{) ->}} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{            header_string}} {\cf11{+=}}  {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{            header_string}} {\cf11{+=}} {\cf2{}}{\cf3{": "}}{\cf2{}} {\cf11{;}}}\par\pard
+\cbpat1{{\cf2{            header_string}} {\cf11{+=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{            header_string}} {\cf11{+=}} {\cf2{}}{\cf3{"}}{\cf7{\\r\\n}}{\cf3{"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\});}}}\par\pard
+\cbpat1{{\cf2{    header_string}} {\cf11{+=}} {\cf2{}}{\cf3{"}}{\cf7{\\r\\n}}{\cf3{"}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // Empty line as end of header indicator\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Write header to client over tcpSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{    tcpSocket}}{\cf11{->}}{\cf2{}}{\cf16{writeToSocket}}{\cf2{}}{\cf11{(}}{\cf2{header_string}}{\cf11{.}}{\cf2{}}{\cf16{c_str}}{\cf2{}}{\cf11{(),}}{\cf2{header_string}}{\cf11{.}}{\cf2{}}{\cf16{length}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPResponseHeader}}{\cf11{::~}}{\cf2{}}{\cf16{HTTPResponseHeader}}{\cf2{}}{\cf11{()\{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

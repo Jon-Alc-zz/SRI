@@ -1,0 +1,34 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef FILECACHEITEM_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define FILECACHEITEM_H}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"includes.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // A FileCacheItem that encapsulates all the file aattributes including content.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // One of the most important things is that an object of that type represent the most receint content of the file.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{FileCacheItem}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{        string file_name}}{\cf11{;}} {\cf2{}}{\cf5{\i // The file name\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{cache_item_stream}}{\cf11{;}} {\cf2{}}{\cf5{\i // The file content\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{long}} {\cf2{cache_item_size}}{\cf11{;}} {\cf2{}}{\cf5{\i // The file size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // A stats object representing the file stats including the last modification date\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{struct}} {\cf2{stat cache_item_stat}}{\cf11{;}} }\par\pard
+\cbpat1{{\cf2{}}        {\cf14{char}} {\cf2{time_string}}{\cf11{[}}{\cf2{}}{\cf4{{1}{0}{0}}}{\cf2{}}{\cf11{];}} {\cf2{}}{\cf5{\i // A character array to store last update date string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf16{load}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Load file content from disk to cache_item_stream\i0 }}}\par\pard
+\cbpat1{{\cf2{        pthread_mutex_t mutex}}{\cf11{;}}  {\cf2{}}{\cf5{\i // A mutex for locking while serving fetch content\i0 }}}\par\pard
+\cbpat1{{\cf2{        pthread_mutex_t assign_mutex}}{\cf11{;}} {\cf2{}}{\cf5{\i // A mutex for locking while executing the assignment operator\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{FileCacheItem}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Default Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Constructor setting and loading file attributes\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{FileCacheItem}}{\cf2{}}{\cf11{(}}{\cf2{string p_file_name}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{        FileCacheItem}} {\cf11{*}} {\cf2{}}{\cf16{fetchContent}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // return a copy of the FileCacheItem object with the latest content\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getLastUpdateTime}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // return the last update date string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getStream}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Return a pointer to the current stream\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{long}} {\cf2{}}{\cf16{getSize}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Return the size of the target file.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf15{\b operator\b0 }}{\cf2{}}{\cf11{=(}}{\cf2{}}{\cf14{const}} {\cf2{FileCacheItem}} {\cf11{&}} {\cf2{p_fileCacheItem}}{\cf11{);}} {\cf2{}}{\cf5{\i // Assignment Operator     \i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{~}}{\cf2{}}{\cf16{FileCacheItem}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // FILECACHEITEM_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

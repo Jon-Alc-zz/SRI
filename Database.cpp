@@ -480,15 +480,31 @@ void Database::OR(bool printOut, bool t, Rule* rule, vector<Fact*> facts, string
 				}
 			}
 
-			sM.push_back(fM);
-
 			//get params of rule
 			vector<string> ruleParams = rule->getRuleParams();
 
-			if (t) {
-				mtx.lock();
-				printFact(printOut, rName, fName, ruleParams, fM, fM.size());
-				mtx.unlock();
+			bool valid = true;
+
+			//replace parameters without $ with their literal value
+			for (int i = 0; i < ruleParams.size(); i++) {
+				if (ruleParams[i][0] != '$') {
+					if (!ruleParams[i].compare(factThings[i])) {
+						fM[ruleParams[i]] = ruleParams[i];
+					}
+					else {
+						valid = false;
+					}
+				}
+			}
+
+			if (valid) {
+				sM.push_back(fM);
+
+				if (t) {
+					mtx.lock();
+					printFact(printOut, rName, fName, ruleParams, fM, fM.size());
+					mtx.unlock();
+				}
 			}
 
 		}
@@ -572,8 +588,21 @@ void Database::AND(bool printOutput, Rule* thisRule, string ruleName, string new
 	for (unsigned int a = 0; a < mapsToPrint.size(); a++) {
 		vector<string> ruleParams = thisRule->getRuleParams();
 
-		auto tempAND = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
-		joinThreads.push_back(new thread(tempAND));
+		bool valid = true;
+
+		//replace parameters without $ with their literal value
+		for (int i = 0; i < ruleParams.size(); i++) {
+			if (ruleParams[i][0] != '$') {
+				if (ruleParams[i].compare(mapsToPrint[i][ruleParams[i]])) {
+					valid = false;
+				}
+			}
+		}
+
+		if (valid) {
+			auto tempAND = bind(&Database::ANDPrintAll, this, upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], ref(sourceMaps));
+			joinThreads.push_back(new thread(tempAND));
+		}
 		//ANDPrintAll(upperParams, printOutput, ruleName, newFact, thisRule, ruleParams, mapsToPrint[a], sourceMaps);
 	}
 	for (unsigned int i = 0; i < joinThreads.size(); i++) {

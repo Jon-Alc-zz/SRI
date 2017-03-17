@@ -1,0 +1,70 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPRequest.h"}}{\cf8{ }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Add header key/value fields to the header map\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{HTTPRequest}}{\cf11{::}}{\cf2{}}{\cf16{addToHeaderMap}}{\cf2{}}{\cf11{(}}{\cf2{string header_item}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // header_item is in the form of <key>: <value>\\r\\n\i0 }}}\par\pard
+\cbpat1{{\cf2{    stringstream}} {\cf16{iss}}{\cf2{}}{\cf11{(}}{\cf2{header_item}}{\cf11{);}} {\cf2{}}{\cf5{\i // stringstream for parsing a header item\i0 }}}\par\pard
+\cbpat1{{\cf2{    string key}}{\cf11{=}}{\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // A string to store key value\i0 }}}\par\pard
+\cbpat1{{\cf2{    string value}} {\cf11{=}} {\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // A string to store value\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{key}}{\cf11{,}}{\cf2{}}{\cf3{':'}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // fetch key token before ':' character \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{value}}{\cf11{,}}{\cf2{}}{\cf3{'}}{\cf7{\\r}}{\cf3{'}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // fetch value token between ':' and '\\r' characters \i0 }}}\par\pard
+\cbpat1{{\cf2{    header}}{\cf11{[}}{\cf2{key}}{\cf11{] =}} {\cf2{value}}{\cf11{;}}  {\cf2{}}{\cf5{\i // add to the map\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Constructor setting the target request TCPSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPRequest}}{\cf11{::}}{\cf2{}}{\cf16{HTTPRequest}}{\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    tcpSocket}} {\cf11{=}} {\cf2{p_tcpSocket}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set tcpSocket data member\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Read the header from the socket and parse it. \i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Notice that a descendant class is instantiated based on the type of the method HTTPTransaction and hence some data were read from the socket and this is passed in initial_header\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{HTTPRequest}}{\cf11{::}}{\cf2{}}{\cf16{readAndParse}}{\cf2{}}{\cf11{(}}{\cf2{string initial_header}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf14{char}} {\cf2{buffer}}{\cf11{[}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{];}}{\cf2{}}{\cf5{\i // A buffer to read data in\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{memset}} {\cf2{}}{\cf11{(}}{\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Initialize buffer\i0 }}}\par\pard
+\cbpat1{{\cf2{    string http_stream}}{\cf11{=}}{\cf2{initial_header}}{\cf11{;}} {\cf2{}}{\cf5{\i // copy initial header into HTTP stream\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b for\b0 }} {\cf2{}}{\cf11{( ;}}{\cf2{http_stream}}{\cf11{.}}{\cf2{}}{\cf16{find}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"}}{\cf7{\\r\\n\\r\\n}}{\cf3{"}}{\cf2{}}{\cf11{) ==}}{\cf2{std}}{\cf11{::}}{\cf2{string}}{\cf11{::}}{\cf2{npos}}{\cf11{; )}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}} {\cf2{}}{\cf5{\i // keep on reading as long as we cannot find the "\\r\\n\\r\\n" of the header\i0 }}}\par\pard
+\cbpat1{{\cf2{        tcpSocket}}{\cf11{->}}{\cf2{}}{\cf16{readFromSocket}}{\cf2{}}{\cf11{(}}{\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{1}{0}{2}{3}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{        http_stream}} {\cf11{+=}}{\cf2{buffer}}{\cf11{;}} {\cf2{}}{\cf5{\i // Append what you have got from the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{memset}} {\cf2{}}{\cf11{(}}{\cf2{buffer}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Reinitialize the read buffer\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{    stringstream}} {\cf16{iss}}{\cf2{}}{\cf11{(}}{\cf2{http_stream}}{\cf11{);}} {\cf2{}}{\cf5{\i // stringstream for parsing the header\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Get method, URI, and protocol from the first line\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{method}}{\cf11{,}}{\cf2{}}{\cf3{' '}}{\cf2{}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{resource}}{\cf11{,}}{\cf2{}}{\cf3{' '}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{protocol}}{\cf11{,}}{\cf2{}}{\cf3{'}}{\cf7{\\n}}{\cf3{'}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{    protocol}}{\cf11{.}}{\cf2{}}{\cf16{pop_back}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // protocol now has '\\r' in it so we want to remove it\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{    string line}} {\cf11{=}} {\cf2{}}{\cf3{" "}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // set line to anything\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b for\b0 }} {\cf2{}}{\cf11{(;!}}{\cf2{line}}{\cf11{.}}{\cf2{}}{\cf16{empty}}{\cf2{}}{\cf11{();)}} {\cf2{}}{\cf5{\i // keep on looping until you get an empty line indicating "\\r\\n\\r\\n" was found\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{line}}{\cf11{,}}{\cf2{}}{\cf3{'}}{\cf7{\\n}}{\cf3{'}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // get token until '\\n'\i0 }}}\par\pard
+\cbpat1{{\cf2{        line}}{\cf11{.}}{\cf2{}}{\cf16{pop_back}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // eat up the '\\r'\i0 }}}\par\pard
+\cbpat1{{\cf2{        cout}} {\cf11{<<}} {\cf2{line}} {\cf11{<<}} {\cf2{endl}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // now we have the header item in line\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // if line is not empty then we did not reach the end of the header, so we parse rge item\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{( !}}{\cf2{line}}{\cf11{.}}{\cf2{}}{\cf16{empty}}{\cf2{}}{\cf11{())}} {\cf2{}}{\cf16{addToHeaderMap}}{\cf2{}}{\cf11{(}}{\cf2{line}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // extract any data, that have been read from the socket, after the header and store it in body    \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{line}}{\cf11{,}}{\cf2{}}{\cf3{'}}{\cf7{\\n}}{\cf3{'}}{\cf2{}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{    body}} {\cf11{=}} {\cf2{line}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Selector returning the resource URI of the header\i0 }}}\par\pard
+\cbpat1{{\cf2{string HTTPRequest}}{\cf11{::}}{\cf2{}}{\cf16{getResource}} {\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{resource}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // A selector returning a reference to the body of the request\i0 }}}\par\pard
+\cbpat1{{\cf2{string}} {\cf11{&}} {\cf2{HTTPRequest}}{\cf11{::}}{\cf2{}}{\cf16{getBody}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{body}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPRequest}}{\cf11{::~}}{\cf2{}}{\cf16{HTTPRequest}}{\cf2{}}{\cf11{()\{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

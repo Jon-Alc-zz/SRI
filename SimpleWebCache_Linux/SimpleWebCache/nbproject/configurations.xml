@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>headers/FileCache.h</itemPath>
+      <itemPath>headers/FileCacheItem.h</itemPath>
+      <itemPath>headers/GarbageCollector.h</itemPath>
+      <itemPath>headers/HTTPExceptionHandler.h</itemPath>
+      <itemPath>headers/HTTPFormService.h</itemPath>
+      <itemPath>headers/HTTPGETRequest.h</itemPath>
+      <itemPath>headers/HTTPHTMLService.h</itemPath>
+      <itemPath>headers/HTTPMethodNotAllowedExceptionHandler.h</itemPath>
+      <itemPath>headers/HTTPNotAcceptableExceptionHandler.h</itemPath>
+      <itemPath>headers/HTTPNotFoundExceptionHandler.h</itemPath>
+      <itemPath>headers/HTTPPOSTRequest.h</itemPath>
+      <itemPath>headers/HTTPRequest.h</itemPath>
+      <itemPath>headers/HTTPRequestManager.h</itemPath>
+      <itemPath>headers/HTTPResponseHeader.h</itemPath>
+      <itemPath>headers/HTTPService.h</itemPath>
+      <itemPath>headers/HTTPServiceManager.h</itemPath>
+      <itemPath>headers/HTTPTransaction.h</itemPath>
+      <itemPath>headers/TCPServerSocket.h</itemPath>
+      <itemPath>headers/TCPSocket.h</itemPath>
+      <itemPath>headers/Thread.h</itemPath>
+      <itemPath>headers/UDPClientSocket.h</itemPath>
+      <itemPath>headers/UDPServerSocket.h</itemPath>
+      <itemPath>headers/UDPSocket.h</itemPath>
+      <itemPath>headers/common.h</itemPath>
+      <itemPath>headers/includes.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>sources/FileCache.cpp</itemPath>
+      <itemPath>sources/FileCacheItem.cpp</itemPath>
+      <itemPath>sources/GarbageCollector.cpp</itemPath>
+      <itemPath>sources/HTTPExceptionHandler.cpp</itemPath>
+      <itemPath>sources/HTTPFormService.cpp</itemPath>
+      <itemPath>sources/HTTPGETRequest.cpp</itemPath>
+      <itemPath>sources/HTTPHTMLService.cpp</itemPath>
+      <itemPath>sources/HTTPMethodNotAllowedExceptionHandler.cpp</itemPath>
+      <itemPath>sources/HTTPNotAcceptableExceptionHandler.cpp</itemPath>
+      <itemPath>sources/HTTPNotFoundExceptionHandler.cpp</itemPath>
+      <itemPath>sources/HTTPPOSTRequest.cpp</itemPath>
+      <itemPath>sources/HTTPRequest.cpp</itemPath>
+      <itemPath>sources/HTTPRequestManager.cpp</itemPath>
+      <itemPath>sources/HTTPResponseHeader.cpp</itemPath>
+      <itemPath>sources/HTTPService.cpp</itemPath>
+      <itemPath>sources/HTTPServiceManager.cpp</itemPath>
+      <itemPath>sources/HTTPTransaction.cpp</itemPath>
+      <itemPath>sources/TCPServerSocket.cpp</itemPath>
+      <itemPath>sources/TCPSocket.cpp</itemPath>
+      <itemPath>sources/Thread.cpp</itemPath>
+      <itemPath>sources/UDPClientSocket.cpp</itemPath>
+      <itemPath>sources/UDPServerSocket.cpp</itemPath>
+      <itemPath>sources/UDPSocket.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <standard>8</standard>
+          <incDir>
+            <pElem>headers</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>-lpthread</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="headers/FileCache.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/FileCacheItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/GarbageCollector.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPExceptionHandler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPFormService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPGETRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPHTMLService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPMethodNotAllowedExceptionHandler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="headers/HTTPNotAcceptableExceptionHandler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="headers/HTTPNotFoundExceptionHandler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="headers/HTTPPOSTRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPRequestManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPResponseHeader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPServiceManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPTransaction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/TCPServerSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/TCPSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/UDPClientSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/UDPServerSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/UDPSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/common.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/includes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/FileCache.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/FileCacheItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/GarbageCollector.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPExceptionHandler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPFormService.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPGETRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPHTMLService.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPMethodNotAllowedExceptionHandler.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/HTTPNotAcceptableExceptionHandler.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/HTTPNotFoundExceptionHandler.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/HTTPPOSTRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPRequestManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPResponseHeader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPService.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPServiceManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPTransaction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/TCPServerSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/TCPSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/UDPClientSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/UDPServerSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/UDPSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="headers/FileCache.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/FileCacheItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/GarbageCollector.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPExceptionHandler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPFormService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPGETRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPHTMLService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPMethodNotAllowedExceptionHandler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="headers/HTTPNotAcceptableExceptionHandler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="headers/HTTPNotFoundExceptionHandler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="headers/HTTPPOSTRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPRequestManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPResponseHeader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPServiceManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/HTTPTransaction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/TCPServerSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/TCPSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/UDPClientSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/UDPServerSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/UDPSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/common.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/includes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/FileCache.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/FileCacheItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/GarbageCollector.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPExceptionHandler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPFormService.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPGETRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPHTMLService.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPMethodNotAllowedExceptionHandler.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/HTTPNotAcceptableExceptionHandler.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/HTTPNotFoundExceptionHandler.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/HTTPPOSTRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPRequestManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPResponseHeader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPService.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPServiceManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/HTTPTransaction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/TCPServerSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/TCPSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/UDPClientSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/UDPServerSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/UDPSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

@@ -1,0 +1,119 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"TCPServerSocket.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{TCPServerSocket}}{\cf11{::}}{\cf2{}}{\cf16{TCPServerSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{const char}} {\cf2{}}{\cf11{*}} {\cf2{_address}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{_port}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{_backlog}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Allocate and initialize address \i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{_address}} {\cf11{!=}} {\cf2{NULL}} {\cf11{&&}} {\cf2{}}{\cf16{strcmp}} {\cf2{}}{\cf11{(}}{\cf2{_address}}{\cf11{,}}{\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{) !=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{		address}} {\cf11{= (}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*)}} {\cf2{}}{\cf16{calloc}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{strlen}}{\cf2{}}{\cf11{(}}{\cf2{_address}}{\cf11{)+}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf13{\b sizeof\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}}{\cf2{}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{memset}} {\cf2{}}{\cf11{(}}{\cf2{address}}{\cf11{,}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf16{strlen}}{\cf2{}}{\cf11{(}}{\cf2{_address}}{\cf11{)+}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{strcpy}} {\cf2{}}{\cf11{(}}{\cf2{address}}{\cf11{,}}{\cf2{_address}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b else\b0 }} {\cf2{address}}{\cf11{=}} {\cf2{NULL}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{	port}} {\cf11{=}} {\cf2{_port}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set port\i0 }}}\par\pard
+\cbpat1{{\cf2{	backlog}}{\cf11{=}}{\cf2{_backlog}}{\cf11{;}} {\cf2{}}{\cf5{\i // Set listen queue maximum size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{bool}} {\cf2{TCPServerSocket}}{\cf11{::}}{\cf2{}}{\cf16{initializeSocket}} {\cf2{}}{\cf11{( )}} {\cf2{}}{\cf5{\i // Initialize server socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Create a stream socket and return false on error\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{((}}{\cf2{sock}} {\cf11{=}} {\cf2{}}{\cf16{socket}}{\cf2{}}{\cf11{(}}{\cf2{AF_INET}}{\cf11{,}} {\cf2{SOCK_STREAM}}{\cf11{,}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{)) == -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{)}} {\cf2{}}{\cf13{\b return false\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // initialize serverAddr\i0 }}}\par\pard
+\cbpat1{{\cf2{        serverAddr}}{\cf11{.}}{\cf2{sin_family}} {\cf11{=}} {\cf2{AF_INET}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{        serverAddr}}{\cf11{.}}{\cf2{sin_port}} {\cf11{=}} {\cf2{}}{\cf16{htons}}{\cf2{}}{\cf11{(}}{\cf2{port}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{address}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf5{\i // if server address is not NULL listen on specific interface\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{strcmp}} {\cf2{}}{\cf11{(}}{\cf2{address}}{\cf11{,}}{\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{) !=}}{\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}} {\cf2{serverAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{.}}{\cf2{s_addr}} {\cf11{=}} {\cf2{}}{\cf16{inet_addr}}{\cf2{}}{\cf11{(}}{\cf2{address}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b else\b0 }} {\cf2{serverAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{.}}{\cf2{s_addr}} {\cf11{=}} {\cf2{INADDR_ANY}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}} {\cf2{}}{\cf5{\i //else listen on all interfaces\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b else\b0 }} {\cf2{serverAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{.}}{\cf2{s_addr}} {\cf11{=}} {\cf2{INADDR_ANY}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{bzero}}{\cf2{}}{\cf11{(&(}}{\cf2{serverAddr}}{\cf11{.}}{\cf2{sin_zero}}{\cf11{),}} {\cf2{}}{\cf4{{8}}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // initialize last {8} bytes of serverAddr (Bug)\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Disable the Nagle's algorithm\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{int}} {\cf2{flag}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{int}} {\cf2{result}} {\cf11{=}} {\cf2{}}{\cf16{setsockopt}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{                          IPPROTO_TCP}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{                          TCP_NODELAY}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{}}                          {\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*) &}}{\cf2{flag}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{}}                          {\cf13{\b sizeof\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{int}}{\cf2{}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{result}} {\cf11{<}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}	       {\cf16{close}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{      	       sock}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}       	       {\cf13{\b return false\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Enable socket reuse option.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}         {\cf14{int}} {\cf2{sock_opt}} {\cf11{=}} {\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{         result}} {\cf11{=}} {\cf2{}}{\cf16{setsockopt}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{                           SOL_SOCKET}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{                           SO_REUSEADDR}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{}}                           {\cf11{(}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*)&}}{\cf2{sock_opt}}{\cf11{,}}{\cf2{}}{\cf13{\b sizeof\b0 }} {\cf2{}}{\cf11{(}}{\cf2{sock_opt}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{result}} {\cf11{<}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}} 	{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}} 		{\cf16{close}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{ 		sock}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}} 		{\cf13{\b return false\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}} 	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}         {\cf5{\i // Bind the socket handler to the serverAddr\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(::}}{\cf2{}}{\cf16{bind}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, (}}{\cf2{}}{\cf14{struct}} {\cf2{sockaddr}} {\cf11{*)&}}{\cf2{serverAddr}}{\cf11{,}} {\cf2{}}{\cf13{\b sizeof\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{struct}} {\cf2{sockaddr}}{\cf11{)) == -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // Close socket and return false if bind failed\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{close}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{		sock}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{\b return false\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Listen on the socket and configure the connection queue size\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{listen}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}} {\cf2{backlog}}{\cf11{) == -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{close}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{		sock}} {\cf11{= -}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{\b return false\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}} {\cf5{\i // Wait for a client connection. if timeoutSec and timeoutMilli are zeros the method will behave in a blocking mode\i0 }}}\par\pard
+\cbpat1{{\cf2{TCPSocket}} {\cf11{*}} {\cf2{TCPServerSocket}}{\cf11{::}}{\cf2{}}{\cf16{getConnection}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{int}} {\cf2{timeoutSec}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutMilli}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{readBufferSize}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{writeBufferSize}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{	socklen_t sin_size}} {\cf11{;}}{\cf2{}}{\cf5{\i //= sizeof(struct sockaddr_in);\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{int}} {\cf2{newsock}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{timeoutSec}}{\cf11{==}}{\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{&&}} {\cf2{timeoutMilli}} {\cf11{==}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{)}}{\cf2{}}{\cf5{\i // Blocking mode\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // Wait for connection indefinitely\i0 }}}\par\pard
+\cbpat1{{\cf2{		newsock}} {\cf11{=}} {\cf2{}}{\cf16{accept}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, (}}{\cf2{}}{\cf14{struct}} {\cf2{sockaddr}} {\cf11{*)&}}{\cf2{clientAddr}}{\cf11{,&}}{\cf2{sin_size}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b else\b0 }} {\cf2{}}{\cf11{\{}} {\cf2{}}{\cf5{\i // Set up time out timeval and file descriptors set\i0 }}}\par\pard
+\cbpat1{{\cf2{                fd_set fds}}{\cf11{;}} }\par\pard
+\cbpat1{{\cf2{}}                {\cf14{struct}} {\cf2{timeval tv}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{		tv}}{\cf11{.}}{\cf2{tv_sec}} {\cf11{=}} {\cf2{timeoutSec}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{		tv}}{\cf11{.}}{\cf2{tv_usec}} {\cf11{=}} {\cf2{timeoutMilli}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{FD_ZERO}}{\cf2{}}{\cf11{(&}}{\cf2{fds}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{FD_SET}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, &}}{\cf2{fds}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // wait on activity on the socket for a timeout\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{select}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{+}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{, &}}{\cf2{fds}}{\cf11{,}} {\cf2{NULL}}{\cf11{,}} {\cf2{NULL}}{\cf11{, &}}{\cf2{tv}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{FD_ISSET}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, &}}{\cf2{fds}}{\cf11{))}} {\cf2{}}{\cf5{\i // if sock is changed \i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}                        {\cf5{\i // call accept on sock to get the pending connection\i0 }}}\par\pard
+\cbpat1{{\cf2{			newsock}} {\cf11{=}} {\cf2{}}{\cf16{accept}}{\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{, (}}{\cf2{}}{\cf14{struct}} {\cf2{sockaddr}} {\cf11{*)&}}{\cf2{clientAddr}}{\cf11{,&}}{\cf2{sin_size}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{newsock}} {\cf11{<}} {\cf2{}}{\cf4{{1}}} {\cf2{}}{\cf11{)}} {\cf2{}}{\cf5{\i // if newsock is less than one then erroro\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\{}}   {\cf2{}}{\cf5{\i // Print the error and return NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf16{perror}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"ERROR on accept"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b return\b0 }} {\cf2{NULL}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b else\b0 }}{\cf2{}}{\cf11{\{}} {\cf2{}}{\cf5{\i // Else instantiate a TCPSocket object and return a pointer to it \i0 }}}\par\pard
+\cbpat1{{\cf2{                TCPSocket}} {\cf11{*}} {\cf2{tcpSocket}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{TCPSocket}}{\cf2{}}{\cf11{(}}{\cf2{newsock}}{\cf11{,(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*)}}{\cf2{}}{\cf16{inet_ntoa}}{\cf2{}}{\cf11{(}}{\cf2{clientAddr}}{\cf11{.}}{\cf2{sin_addr}}{\cf11{),}}{\cf2{clientAddr}}{\cf11{.}}{\cf2{sin_port}}{\cf11{,}}{\cf2{readBufferSize}}{\cf11{,}}{\cf2{writeBufferSize}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf13{\b return\b0 }} {\cf2{tcpSocket}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // If we are here then we return NULL\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b return\b0 }} {\cf2{NULL}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{TCPServerSocket}}{\cf11{::~}}{\cf2{}}{\cf16{TCPServerSocket}} {\cf2{}}{\cf11{( )}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{shutdown}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{,}}{\cf2{SHUT_RDWR}}{\cf11{);}}  {\cf2{}}{\cf5{\i // Shutdown the server read/write channels\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{close}} {\cf2{}}{\cf11{(}}{\cf2{sock}}{\cf11{);}}              {\cf2{}}{\cf5{\i // Close socket descriptor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{address}} {\cf11{!=}} {\cf2{NULL}} {\cf11{)}} {\cf2{}}{\cf16{free}} {\cf2{}}{\cf11{(}}{\cf2{address}}{\cf11{);}} {\cf2{}}{\cf5{\i // free the address buffer\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

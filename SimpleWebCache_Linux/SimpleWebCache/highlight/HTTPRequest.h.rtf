@@ -1,0 +1,31 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef HTTPREQUEST_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define HTTPREQUEST_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"common.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"TCPSocket.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // A class representing an HTTP Request Header\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{HTTPRequest}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b protected\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{        std}}{\cf11{::}}{\cf2{map}} {\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{string}}{\cf11{,}}{\cf2{ignorecase}}{\cf11{>}} {\cf2{header}}{\cf11{;}} {\cf2{}}{\cf5{\i // A map that represent the HTTP Request Header tupes\i0 }}}\par\pard
+\cbpat1{{\cf2{        string method}}{\cf11{;}} {\cf2{}}{\cf5{\i // The HTTP Request Method\i0 }}}\par\pard
+\cbpat1{{\cf2{        string resource}}{\cf11{;}} {\cf2{}}{\cf5{\i // The HTTP Request Resource URI\i0 }}}\par\pard
+\cbpat1{{\cf2{        string protocol}}{\cf11{;}} {\cf2{}}{\cf5{\i // The HTTP protocol supported by the HTTP client\i0 }}}\par\pard
+\cbpat1{{\cf2{        TCPSocket}} {\cf11{*}} {\cf2{tcpSocket}}{\cf11{;}} {\cf2{}}{\cf5{\i // TCP Socket to communicate over with the HTTP client\i0 }}}\par\pard
+\cbpat1{{\cf2{        string body}}{\cf11{;}} {\cf2{}}{\cf5{\i // A string representing the request body; for simplification we will consider only ASCII bodies.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf16{addToHeaderMap}}{\cf2{}}{\cf11{(}}{\cf2{string header_item}}{\cf11{);}} {\cf2{}}{\cf5{\i // Parse and add a header item to the header map\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{HTTPRequest}}{\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{);}} {\cf2{}}{\cf5{\i // Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf15{\b virtual\b0 }} {\cf2{}}{\cf14{void}} {\cf2{}}{\cf16{readAndParse}}{\cf2{}}{\cf11{(}}{\cf2{string initial_header}}{\cf11{);}} {\cf2{}}{\cf5{\i // Read header from socket and parse it\i0 }}}\par\pard
+\cbpat1{{\cf2{        string}} {\cf16{getResource}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Selector: return the resource data member.\i0 }}}\par\pard
+\cbpat1{{\cf2{        string}} {\cf11{&}} {\cf2{}}{\cf16{getBody}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Selector: return the request body\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // A pure virtual method that should be implemented by all descendants to clone and create new object\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf15{\b virtual\b0 }} {\cf2{HTTPRequest}} {\cf11{*}} {\cf2{}}{\cf16{clone}} {\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{) =}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}} }\par\pard
+\cbpat1{{\cf2{}}        {\cf15{\b virtual\b0 }} {\cf2{}}{\cf11{~}}{\cf2{}}{\cf16{HTTPRequest}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // HTTPREQUEST_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

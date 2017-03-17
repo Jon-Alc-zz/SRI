@@ -1,0 +1,29 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef TCPSERVERSOCKET_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TCPSERVERSOCKET_H}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"includes.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"TCPSocket.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{TCPServerSocket}} {\cf5{\i // TCP Server Socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{int}} {\cf2{sock}}{\cf11{;}}   {\cf2{}}{\cf5{\i // Socket Handler\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{struct}} {\cf2{sockaddr_in serverAddr}}{\cf11{;}}  {\cf2{}}{\cf5{\i // Server Socket Address Structure\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{struct}} {\cf2{sockaddr_in clientAddr}}{\cf11{;}}  {\cf2{}}{\cf5{\i // Client Socket Address Structure\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{address}}{\cf11{;}} {\cf2{}}{\cf5{\i // Local address for the server socket to bind to\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{int}} {\cf2{port}}{\cf11{;}} {\cf2{}}{\cf5{\i // Local port for the server socket to bind to\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{int}} {\cf2{backlog}}{\cf11{;}} {\cf2{}}{\cf5{\i // Maximum length of the queue fo pending connections.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{TCPServerSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{const char}} {\cf2{}}{\cf11{*}} {\cf2{_address}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{_port}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{_backlog}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{bool}} {\cf2{}}{\cf16{initializeSocket}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Initailize server socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // Wait for a client connection and return a TCPSocket object that represents the client\i0 }}}\par\pard
+\cbpat1{{\cf2{		TCPSocket}} {\cf11{*}} {\cf2{}}{\cf16{getConnection}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{int}} {\cf2{timeoutSec}}{\cf11{=}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutMilli}}{\cf11{=}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{readBufferSize}}{\cf11{=}}{\cf2{}}{\cf4{{1}{0}}}{\cf2{}}{\cf11{*}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{*}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{writeBufferSize}}{\cf11{=}}{\cf2{}}{\cf4{{1}{0}}}{\cf2{}}{\cf11{*}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{*}}{\cf2{}}{\cf4{{1}{0}{2}{4}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf11{~}}{\cf2{}}{\cf16{TCPServerSocket}} {\cf2{}}{\cf11{( );}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // TCPSERVERSOCKET_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

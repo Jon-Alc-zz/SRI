@@ -1,0 +1,44 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf6{\i /*\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  * Thread.h\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  *\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  *  Created on: Nov {1}{0}, {2}{0}{1}{0}\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  *      Author: Karim Sobh\i0 }}}\par\pard
+\cbpat1{{\cf6{\i  */\i0 }}{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#ifndef THREAD_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define THREAD_H}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"includes.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{Thread}}    {\cf5{\i // Thread Class\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf15{\b protected\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{                pthread_attr_t pthread_attr}}{\cf11{;}} {\cf2{}}{\cf5{\i // pthread attribute data member\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf14{long}} {\cf2{cpu_count}}{\cf11{;}}     {\cf2{}}{\cf5{\i // Number of CPUs data member\i0 }}}\par\pard
+\cbpat1{{\cf2{		pthread_t pthread}}{\cf11{;}}  {\cf2{}}{\cf5{\i // pthread_t identifier data member\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{char}} {\cf2{identifier}}{\cf11{[}}{\cf2{}}{\cf4{{1}{2}{8}}}{\cf2{}}{\cf11{];}} {\cf2{}}{\cf5{\i // A printable thread identifier represented by the time th thread created\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{bool}} {\cf2{started}}{\cf11{;}}   {\cf2{}}{\cf5{\i // A flag indicating if a thread is started or not\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{bool}} {\cf2{running}}{\cf11{;}}   {\cf2{}}{\cf5{\i // A flag indicating if a thread is running or not\i0 }}}\par\pard
+\cbpat1{{\cf2{		pthread_mutex_t mutex}}{\cf11{;}}  {\cf2{}}{\cf5{\i // A mutex that controls the execution of the thread\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{bool}} {\cf2{termination_request}}{\cf11{;}}   {\cf2{}}{\cf5{\i // A flag indicating that a termination request is initiated\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{void}} {\cf2{}}{\cf11{*(*}}{\cf2{threadRoutine}}   {\cf11{) (}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*);}} {\cf2{}}{\cf5{\i // A pointer to the start routine of the thread execution\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{void}} {\cf2{}}{\cf16{setRunning}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{bool}} {\cf2{_running}}{\cf11{);}}    {\cf2{}}{\cf5{\i // Sets the running flag data member of the thread\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf14{static void}}  {\cf2{}}{\cf16{cleanup}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*}} {\cf2{target_thread}}{\cf11{);}} {\cf2{}}{\cf5{\i // A static method that performs house keeping after the thread terminates\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{Thread}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*(*}}{\cf2{_threadRoutine}}{\cf11{) (}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*) =}}{\cf2{NULL}}{\cf11{);}} {\cf2{}}{\cf5{\i // Constructor \i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{bool}} {\cf2{}}{\cf16{isRunning}} {\cf2{}}{\cf11{();}}      {\cf2{}}{\cf5{\i // Check if thread is running\i0 }}}\par\pard
+\cbpat1{{\cf2{		pthread_t}} {\cf11{*}} {\cf2{}}{\cf16{getThreadHandler}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Returns a pointer to the thread identifier\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{void}} {\cf2{}}{\cf16{start}} {\cf2{}}{\cf11{();}}                  {\cf2{}}{\cf5{\i // A jacket wrapper method that fork the thread execution\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf15{\b virtual\b0 }} {\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{threadMainBody}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*}} {\cf2{arg}}{\cf11{) =}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // A pure virtual method whose implementation is the thread main function\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{static void}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{run}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*}} {\cf2{arg}}{\cf11{);}}     {\cf2{}}{\cf5{\i // A static method that is passed to pthread_create and invokes threadMainBody from within\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{void}} {\cf2{}}{\cf16{waitForRunToFinish}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Blocks until the running thread finishes execution\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getThreadIdentifier}} {\cf2{}}{\cf11{();}}  {\cf2{}}{\cf5{\i // Return the thread identifier string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf14{bool}} {\cf2{}}{\cf16{isAlive}} {\cf2{}}{\cf11{();}}    {\cf2{}}{\cf5{\i // Checks if the thread start is initiated\i0 }}}\par\pard
+\cbpat1{{\cf2{}}		{\cf15{\b virtual\b0 }} {\cf2{}}{\cf11{~}}{\cf2{}}{\cf16{Thread}}{\cf2{}}{\cf11{();}}  {\cf2{}}{\cf5{\i // Virtual Thread Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // THREAD_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

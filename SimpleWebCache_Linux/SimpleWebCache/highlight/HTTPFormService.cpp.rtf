@@ -1,0 +1,133 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPFORMService.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPResponseHeader.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPNotFoundExceptionHandler.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Decode URL encoded string, replace every %ascii code with its equivelant ascii character \i0 }}}\par\pard
+\cbpat1{{\cf2{string HTTPFORMService}}{\cf11{::}}{\cf2{}}{\cf16{urldecode}}{\cf2{}}{\cf11{(}}{\cf2{string}} {\cf11{&}} {\cf2{urlencoded}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    string urldecoded}}{\cf11{=}}{\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // A string for holding the decoded string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b for\b0 }} {\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{int}} {\cf2{i}} {\cf11{=}} {\cf2{}}{\cf4{{0}}} {\cf2{}}{\cf11{;}}{\cf2{i}} {\cf11{<}} {\cf2{urlencoded}}{\cf11{.}}{\cf2{}}{\cf16{length}}{\cf2{}}{\cf11{();)}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}} {\cf2{}}{\cf5{\i // loop on all characters in the encoded string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{char}} {\cf2{c}} {\cf11{=}} {\cf2{urlencoded}}{\cf11{[}}{\cf2{i}}{\cf11{];}} {\cf2{}}{\cf5{\i // get the character at the current index\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // check if the character is '%' and there are atleast two characters after it\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{i}} {\cf11{<}} {\cf2{urlencoded}}{\cf11{.}}{\cf2{}}{\cf16{length}}{\cf2{}}{\cf11{() -}} {\cf2{}}{\cf4{{2}}} {\cf2{}}{\cf11{&&}} {\cf2{c}} {\cf11{==}} {\cf2{}}{\cf3{'%'}}{\cf2{}}{\cf11{) \{}} }\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Get the next two characters and store them in c{1} and c{2}\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf14{char}} {\cf2{c{1}}} {\cf11{=}} {\cf2{urlencoded}}{\cf11{[}}{\cf2{i}} {\cf11{+}} {\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{];}} }\par\pard
+\cbpat1{{\cf2{}}            {\cf14{char}} {\cf2{c{2}}} {\cf11{=}} {\cf2{urlencoded}}{\cf11{[}}{\cf2{i}} {\cf11{+}} {\cf2{}}{\cf4{{2}}}{\cf2{}}{\cf11{];}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // Convert the two characters to lower case\i0 }}}\par\pard
+\cbpat1{{\cf2{            c{1}}} {\cf11{=}} {\cf2{}}{\cf16{tolower}}{\cf2{}}{\cf11{(}}{\cf2{c{1}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{            c{2}}} {\cf11{=}} {\cf2{}}{\cf16{tolower}}{\cf2{}}{\cf11{(}}{\cf2{c{2}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i // check if c{1} and c{2} are hexa digits\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{isxdigit}}{\cf2{}}{\cf11{(}}{\cf2{c{1}}}{\cf11{) &&}} {\cf2{}}{\cf16{isxdigit}}{\cf2{}}{\cf11{(}}{\cf2{c{2}}}{\cf11{)) \{}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // convert c{1} and c{2} to their numeric equivalent\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{c{1}}} {\cf11{<=}} {\cf2{}}{\cf3{'{9}'}}{\cf2{}}{\cf11{)}}      }\par\pard
+\cbpat1{{\cf2{                    c{1}}} {\cf11{=}} {\cf2{c{1}}} {\cf11{-}} {\cf2{}}{\cf3{'{0}'}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf13{\b else\b0 }}}\par\pard
+\cbpat1{{\cf2{                    c{1}}} {\cf11{=}} {\cf2{c{1}}} {\cf11{-}} {\cf2{}}{\cf3{'a'}}{\cf2{}} {\cf11{+}} {\cf2{}}{\cf4{{1}{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{c{2}}} {\cf11{<=}} {\cf2{}}{\cf3{'{9}'}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{                    c{2}}} {\cf11{=}} {\cf2{c{2}}} {\cf11{-}} {\cf2{}}{\cf3{'{0}'}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf13{\b else\b0 }}}\par\pard
+\cbpat1{{\cf2{                    c{2}}} {\cf11{=}} {\cf2{c{2}}} {\cf11{-}} {\cf2{}}{\cf3{'a'}}{\cf2{}} {\cf11{+}} {\cf2{}}{\cf4{{1}{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{                c}} {\cf11{= (}}{\cf2{}}{\cf14{char}}{\cf2{}}{\cf11{) ((}}{\cf2{}}{\cf4{{1}{6}}} {\cf2{}}{\cf11{*}} {\cf2{c{1}}}{\cf11{) +}} {\cf2{c{2}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf5{\i // if the character is a new line replace it with HTML line break\i0 }}}\par\pard
+\cbpat1{{\cf2{}}                {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}} {\cf2{c}} {\cf11{==}} {\cf2{}}{\cf3{'}}{\cf7{\\n}}{\cf3{'}}{\cf2{}}{\cf11{)}} {\cf2{urldecoded}} {\cf11{+=}} {\cf2{}}{\cf3{"<br/>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{                urldecoded}}{\cf11{+=}}{\cf2{c}}{\cf11{;}} {\cf2{}}{\cf5{\i // add the character to the urldecoded string\i0 }}}\par\pard
+\cbpat1{{\cf2{                i}} {\cf11{+=}} {\cf2{}}{\cf4{{3}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // increment index by {3}: % + {2} characters\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf11{\}}} {\cf2{}}{\cf13{\b else\b0 }} {\cf2{}}{\cf11{\{}} {\cf2{}}{\cf5{\i // else it is a normal character\i0 }}}\par\pard
+\cbpat1{{\cf2{                urldecoded}}{\cf11{+=}} {\cf2{c}}{\cf11{;}} {\cf2{}}{\cf5{\i // add it to the urldecoded string\i0 }}}\par\pard
+\cbpat1{{\cf2{                i}}{\cf11{++;}} {\cf2{}}{\cf5{\i // increment the index by {1}\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}} {\cf2{}}{\cf13{\b else\b0 }} {\cf2{}}{\cf11{\{}} {\cf2{}}{\cf5{\i // else this the current character is not '%' or is one of the two last digits\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b if\b0 }} {\cf2{}}{\cf11{(}}{\cf2{c}} {\cf11{==}} {\cf2{}}{\cf3{'+'}}{\cf2{}}{\cf11{)}} {\cf2{c}} {\cf11{=}} {\cf2{}}{\cf3{' '}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // convert the '+' character to white space\i0 }}}\par\pard
+\cbpat1{{\cf2{            urldecoded}}{\cf11{+=}} {\cf2{c}}{\cf11{;}} {\cf2{}}{\cf5{\i // add it to the urldecoded string\i0 }}}\par\pard
+\cbpat1{{\cf2{            i}}{\cf11{++;}}{\cf2{}}{\cf5{\i // increment the index by {1}\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{\}}}        }\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{urldecoded}}{\cf11{;}} {\cf2{}}{\cf5{\i // return the urldecoded string\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Add new form fields to the form_data and the raw_form_data maps\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{HTTPFORMService}}{\cf11{::}}{\cf2{}}{\cf16{add_to_form_data}}{\cf2{}}{\cf11{(}}{\cf2{string}} {\cf11{&}} {\cf2{form_field}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    stringstream}} {\cf16{iss}}{\cf2{}}{\cf11{(}}{\cf2{form_field}}{\cf11{);}} {\cf2{}}{\cf5{\i // stringstream for paring the form field( tuple key=value&)\i0 }}}\par\pard
+\cbpat1{{\cf2{    string field_name}} {\cf11{=}} {\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // A string to hold the key\i0 }}}\par\pard
+\cbpat1{{\cf2{    string field_value}} {\cf11{=}} {\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // A string to hold the value\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{field_name}}{\cf11{,}}{\cf2{}}{\cf3{'='}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // parse whatever before '=' and store it in field_name\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{field_value}}{\cf11{,}}{\cf2{}}{\cf3{'&'}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // parse whatever between '=' and '&' and store it in field_name\i0 }}}\par\pard
+\cbpat1{{\cf2{    raw_form_data}}{\cf11{[}}{\cf2{field_name}}{\cf11{]=}}{\cf2{field_value}}{\cf11{;}} {\cf2{}}{\cf5{\i // store the raw data into the raw_form_data map\i0 }}}\par\pard
+\cbpat1{{\cf2{    form_data}}{\cf11{[}}{\cf2{}}{\cf16{urldecode}}{\cf2{}}{\cf11{(}}{\cf2{field_name}}{\cf11{)]=}}{\cf2{}}{\cf16{urldecode}}{\cf2{}}{\cf11{(}}{\cf2{field_value}}{\cf11{);}} {\cf2{}}{\cf5{\i // store the urldecoded data into the form_data map\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Parse the body data of a POST request which is expected to be an HTML form data\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{HTTPFORMService}}{\cf11{::}}{\cf2{}}{\cf16{parse_data}} {\cf2{}}{\cf11{(}}{\cf2{HTTPRequest}} {\cf11{*}} {\cf2{p_httpRequest}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{    string data}}  {\cf11{=}} {\cf2{p_httpRequest}}{\cf11{->}}{\cf2{}}{\cf16{getBody}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // get the HTTPRequest body data\i0 }}}\par\pard
+\cbpat1{{\cf2{    stringstream}} {\cf16{iss}}{\cf2{}}{\cf11{(}}{\cf2{data}}{\cf11{);}} {\cf2{}}{\cf5{\i // stringstream to parse fields delimited by '&'\i0 }}}\par\pard
+\cbpat1{{\cf2{    string field}} {\cf11{=}} {\cf2{}}{\cf3{""}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // A field string to store different form fields\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b for\b0 }} {\cf2{}}{\cf11{(;!}}{\cf2{iss}}{\cf11{.}}{\cf2{}}{\cf16{eof}}{\cf2{}}{\cf11{();)}} {\cf2{}}{\cf5{\i // while more tokens exists in the stringstream\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{getline}}{\cf2{}}{\cf11{(}}{\cf2{iss}}{\cf11{,}}{\cf2{field}}{\cf11{,}}{\cf2{}}{\cf3{'&'}}{\cf2{}}{\cf11{);}} {\cf2{}}{\cf5{\i // Get token until next '&' or end of stream\i0 }}}\par\pard
+\cbpat1{{\cf2{        field}} {\cf11{+=}} {\cf2{}}{\cf3{"&"}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // append '&' to each the parsing of the field further\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{add_to_form_data}}{\cf2{}}{\cf11{(}}{\cf2{field}}{\cf11{);}} {\cf2{}}{\cf5{\i // parse and add the field to the form data maps\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // compose the reply body from the maps built up of the form field. The reply body is a HTML stream containing to HTML tables.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // The first table presents the HTML form fields in their raw format and the second table presents the HTML form fields after URL decoding them\i0 }}}\par\pard
+\cbpat1{{\cf2{string HTTPFORMService}}{\cf11{::}}{\cf2{}}{\cf16{compose_reply}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // The reply string contains the HTML stream. We compose it step by step\i0 }}}\par\pard
+\cbpat1{{\cf2{    string reply}} {\cf11{=}} {\cf2{}}{\cf3{"<html><head><title>Form Engine</title></head><body>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    reply}} {\cf11{+=}} {\cf2{}}{\cf3{"<table width='{1}{0}{0}%' border='{1}'>"}}{\cf2{}}{\cf11{;}}     {\cf2{}}{\cf5{\i // First HTML Table\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // for_each iterator loop over raw_form_data with lambda function to build the first HTML table body\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{for_each}} {\cf2{}}{\cf11{(}}{\cf2{raw_form_data}}{\cf11{.}}{\cf2{}}{\cf16{begin}}{\cf2{}}{\cf11{(),}}{\cf2{raw_form_data}}{\cf11{.}}{\cf2{}}{\cf16{end}}{\cf2{}}{\cf11{(),[&}}{\cf2{reply}}{\cf11{](}}{\cf2{}}{\cf14{const}} {\cf2{std}}{\cf11{::}}{\cf2{pair}}{\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{string}}{\cf11{>&}} {\cf2{it}}{\cf11{) ->}} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{}}{\cf3{"<tr><td>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{}}{\cf3{"</td><td>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{}}{\cf3{"</td></tr>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\});}}}\par\pard
+\cbpat1{{\cf2{    reply}} {\cf11{+=}} {\cf2{}}{\cf3{"</table><br/>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    reply}} {\cf11{+=}} {\cf2{}}{\cf3{"<table width='{1}{0}{0}%' border='{1}'>"}}{\cf2{}}{\cf11{;}}    {\cf2{}}{\cf5{\i // Second HTML Table\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // for_each iterator loop over form_data with lambda function to build the second HTML table body    \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{for_each}} {\cf2{}}{\cf11{(}}{\cf2{form_data}}{\cf11{.}}{\cf2{}}{\cf16{begin}}{\cf2{}}{\cf11{(),}}{\cf2{form_data}}{\cf11{.}}{\cf2{}}{\cf16{end}}{\cf2{}}{\cf11{(),[&}}{\cf2{reply}}{\cf11{](}}{\cf2{}}{\cf14{const}} {\cf2{std}}{\cf11{::}}{\cf2{pair}}{\cf11{<}}{\cf2{string}}{\cf11{,}}{\cf2{string}}{\cf11{>&}} {\cf2{it}}{\cf11{) ->}} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{}}{\cf3{"<tr><td>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{}}{\cf3{"</td><td>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{std}}{\cf11{::}}{\cf2{get}}{\cf11{<}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{>(}}{\cf2{it}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{            reply}} {\cf11{+=}} {\cf2{}}{\cf3{"</td></tr>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}} }\par\pard
+\cbpat1{{\cf2{}}    {\cf11{\});}}}\par\pard
+\cbpat1{{\cf2{    reply}} {\cf11{+=}} {\cf2{}}{\cf3{"</table>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{    reply}} {\cf11{+=}} {\cf2{}}{\cf3{"</body></html>"}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return\b0 }} {\cf2{reply}}{\cf11{;}} {\cf2{}}{\cf5{\i // return reply\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{HTTPFORMService}}{\cf11{::}}{\cf2{}}{\cf16{HTTPFORMService}}{\cf2{}}{\cf11{( )}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{:}}{\cf2{}}{\cf16{HTTPService}}{\cf2{}}{\cf11{(}}{\cf2{NULL}}{\cf11{,}}{\cf2{}}{\cf13{\b false\b0 }}{\cf2{}}{\cf11{) \{\}}} {\cf2{}}{\cf5{\i // Constructor setting data members using initialization list\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Execute  the HTTPFORM service \i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{bool}} {\cf2{HTTPFORMService}}{\cf11{::}}{\cf2{}}{\cf16{execute}}{\cf2{}}{\cf11{(}}{\cf2{HTTPRequest}} {\cf11{*}} {\cf2{p_httpRequest}}{\cf11{,}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{parse_data}}{\cf2{}}{\cf11{(}}{\cf2{p_httpRequest}}{\cf11{);}} {\cf2{}}{\cf5{\i // parse the request body data\i0 }}}\par\pard
+\cbpat1{{\cf2{    string reply}} {\cf11{=}} {\cf2{}}{\cf16{compose_reply}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // compose the HTTP reply body\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i //Build and set the HTTP response Header fields.\i0 }}}\par\pard
+\cbpat1{{\cf2{    HTTPResponseHeader}} {\cf11{*}} {\cf2{httpResponseHeader}} {\cf11{=}} {\cf2{}}{\cf13{\b new\b0 }} {\cf2{}}{\cf16{HTTPResponseHeader}}{\cf2{}}{\cf11{(}}{\cf2{p_tcpSocket}}{\cf11{,}}{\cf2{}}{\cf3{"OK"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf4{{2}{0}{0}}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf3{"HTTP/{1}.{1}"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{    httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Content-Type"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf3{"text/html"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{    httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Connection"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf3{"close"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{    httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{setHeader}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Content-Length"}}{\cf2{}}{\cf11{,}}{\cf2{}}{\cf16{to_string}}{\cf2{}}{\cf11{(}}{\cf2{reply}}{\cf11{.}}{\cf2{}}{\cf16{length}}{\cf2{}}{\cf11{()));}}}\par\pard
+\cbpat1{{\cf2{    httpResponseHeader}}{\cf11{->}}{\cf2{}}{\cf16{respond}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Write back the response to the client through the TCPSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Write back the file to the client through the TCPSocket\i0 }}}\par\pard
+\cbpat1{{\cf2{    p_tcpSocket}}{\cf11{->}}{\cf2{}}{\cf16{writeToSocket}}{\cf2{}}{\cf11{(}}{\cf2{reply}}{\cf11{.}}{\cf2{}}{\cf16{c_str}}{\cf2{}}{\cf11{(),}}{\cf2{reply}}{\cf11{.}}{\cf2{}}{\cf16{length}}{\cf2{}}{\cf11{());}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b delete\b0 }} {\cf2{}}{\cf11{(}}{\cf2{httpResponseHeader}}{\cf11{);}} {\cf2{}}{\cf5{\i // Delete the HTTP Response\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return true\b0 }}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{\i // return true\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // Clone a new identical object and return it to the caller\i0 }}}\par\pard
+\cbpat1{{\cf2{HTTPService}} {\cf11{*}} {\cf2{HTTPFORMService}}{\cf11{::}}{\cf2{}}{\cf16{clone}} {\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Instantiate an HTTPHTMLService object and set it up with the same fileCache. \i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{\i // Notice that the clean flag is set to false as the current object will be carrying this out.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{\b return new\b0 }} {\cf2{}}{\cf16{HTTPFORMService}}{\cf2{}}{\cf11{();}}  }\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{HTTPFORMService}}{\cf11{::~}}{\cf2{}}{\cf16{HTTPFORMService}}{\cf2{}}{\cf11{()\{\}}} {\cf2{}}{\cf5{\i // Destructor\i0 }}{\cf2{}}}\par\pard
+\cbpat1{}}

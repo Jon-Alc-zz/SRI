@@ -1,0 +1,57 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef UDPSOCKET_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define UDPSOCKET_H}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"includes.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{UDPSocket}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b protected\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{sock}}{\cf11{;}}   {\cf2{}}{\cf5{\i // Socket Handler\i0 }}}\par\pard
+\cbpat1{{\cf2{	sockaddr_in myAddr}}{\cf11{;}} {\cf2{}}{\cf5{\i // Socket Address Structure representing local end of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{	sockaddr_in peerAddr}}{\cf11{;}} {\cf2{}}{\cf5{\i // Socket Address Structure representing remote end of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{myAddress}}{\cf11{;}}   {\cf2{}}{\cf5{\i // Local IP address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{peerAddress}}{\cf11{;}} {\cf2{}}{\cf5{\i // Remote IP address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{filterAddress}}{\cf11{;}} {\cf2{}}{\cf5{\i // An address used to filter packets and only accept packets from it \i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{myPort}}{\cf11{;}}     {\cf2{}}{\cf5{\i // Local port of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{peerPort}}{\cf11{;}}   {\cf2{}}{\cf5{\i // Report port of the socket.\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{bool}} {\cf2{enabled}}{\cf11{;}}   {\cf2{}}{\cf5{\i // A flag representing if the socket is enabled or disabled\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{UDPSocket}} {\cf2{}}{\cf11{();}}   {\cf2{}}{\cf5{\i // Constructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{void}} {\cf2{}}{\cf16{setFilterAddress}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{_filterAddress}}{\cf11{);}} {\cf2{}}{\cf5{\i // Modifier for setting the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getFilterAddress}} {\cf2{}}{\cf11{();}}     {\cf2{}}{\cf5{\i // Select for returning the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Pure virtual method for initialization to be extended by the client and server classes\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf15{\b virtual\b0 }} {\cf2{}}{\cf14{bool}} {\cf2{}}{\cf16{initialize}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{_addr}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{_myPort}}{\cf11{) =}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Write to a socket a buffer with a specific size (Need to fit into UDP Packet)\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{writeToSocket}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{);}} }\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Write to a socket a buffer with a specific size and wait for a number of micro seconds before returning (Need to fit into UDP Packet)\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{writeToSocketAndWait}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}}  {\cf2{maxBytes}}{\cf11{,}}{\cf2{}}{\cf14{int}} {\cf2{microSec}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Check if socket has data from the filter address and return right away\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{readFromSocketWithNoBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}}  {\cf2{maxBytes}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Block for a maximum of timeout for a packet from the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{readFromSocketWithTimeout}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutSec}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutMilli}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Block reading a packet from the filter address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{readFromSocketWithBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Check if socket has data from any source address and return right away\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{readSocketWithNoBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}}  {\cf2{maxBytes}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Block for a maximum of timeout for a packet from any address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{readSocketWithTimeout}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{maxBytes}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutSec}}{\cf11{,}} {\cf2{}}{\cf14{int}} {\cf2{timeoutMilli}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Block reading a packet from any address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{readSocketWithBlock}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{buffer}}{\cf11{,}}  {\cf2{}}{\cf14{int}} {\cf2{maxBytes}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getMyAddress}}{\cf2{}}{\cf11{();}}  {\cf2{}}{\cf5{\i // Get the address that the socket is bound to\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getPeerAddress}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Get the remote address\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{getMyPort}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Selector returning the local port number of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{getPeerPort}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Selector returning the remote port number of the socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{void}} {\cf2{}}{\cf16{enable}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Enable socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{void}} {\cf2{}}{\cf16{disable}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Disable socket\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{bool}} {\cf2{}}{\cf16{isEnabled}}{\cf2{}}{\cf11{();}}   {\cf2{}}{\cf5{\i // Check if socket is enabled\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getMyLastAddress}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i //Get last address a packet received on\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{char}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{getLastPeerAddress}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Get the remote address of the last packet received\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{getLastPeerPort}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Get the remote port of the last packet received\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf14{int}} {\cf2{}}{\cf16{getSocketHandler}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Return the socket handler (sock)\i0 }}}\par\pard
+\cbpat1{{\cf2{}}	{\cf15{\b virtual\b0 }} {\cf2{}}{\cf11{~}}{\cf2{}}{\cf16{UDPSocket}} {\cf2{}}{\cf11{( );}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i // UDPSOCKET_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

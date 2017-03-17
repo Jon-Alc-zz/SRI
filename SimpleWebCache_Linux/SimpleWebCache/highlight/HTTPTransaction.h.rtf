@@ -1,0 +1,27 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef HTTPTRANSACTION_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define HTTPTRANSACTION_H}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"Thread.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPServiceManager.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPRequest.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"HTTPRequestManager.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i // A class encapsulating all the details of an HTTP Transaction. It inherits from Thread as every HTTP transaction should be executed as a detached paralled independant thread\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{\b class\b0 }} {\cf2{HTTPTransaction}} {\cf11{:}} {\cf2{}}{\cf15{\b public\b0 }} {\cf2{Thread}} }\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b private\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{        TCPSocket}} {\cf11{*}} {\cf2{tcpSocket}}{\cf11{;}} {\cf2{}}{\cf5{\i // TCP socket of the target HTTP transaction\i0 }}}\par\pard
+\cbpat1{{\cf2{        HTTPServiceManager}} {\cf11{*}} {\cf2{httpServiceManager}}{\cf11{;}} {\cf2{}}{\cf5{\i // Pointer to the HTTPServiceManager to be able to fetch services\i0 }}}\par\pard
+\cbpat1{{\cf2{        HTTPRequestManager}} {\cf11{*}} {\cf2{httpRequestManager}}{\cf11{;}} {\cf2{}}{\cf5{\i // Pointer to the HTTPRequestManager to be able to fetch a request handler based on the request method type\i0 }}}\par\pard
+\cbpat1{{\cf2{        HTTPRequest}} {\cf11{*}} {\cf2{}}{\cf16{fetchHTTPRequest}} {\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Return an HTTPRequest object whose type depends on the HTTPHeader method\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf16{process}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Process the HTTP transaction\i0 }}}\par\pard
+\cbpat1{{\cf2{}}    {\cf15{\b public\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i // Constructor setting up the data members of the HTTPTRansaction object\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf16{HTTPTransaction}} {\cf2{}}{\cf11{(}}{\cf2{TCPSocket}} {\cf11{*}} {\cf2{p_tcpSocket}}{\cf11{,}}{\cf2{HTTPServiceManager}} {\cf11{*}} {\cf2{p_httpServiceManager}}{\cf11{,}}{\cf2{HTTPRequestManager}} {\cf11{*}} {\cf2{p_httpRequestManager}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf14{void}} {\cf2{}}{\cf11{*}} {\cf2{}}{\cf16{threadMainBody}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{*}} {\cf2{arg}}{\cf11{);}} {\cf2{}}{\cf5{\i // The main thread body that executed all the logic for the detached thread\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf11{~}}{\cf2{}}{\cf16{HTTPTransaction}}{\cf2{}}{\cf11{();}} {\cf2{}}{\cf5{\i // Destructor\i0 }}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\};}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}} {\cf5{\i //HTTPTRANSACTION_H\i0 }}{\cf8{}}{\cf2{}}}\par\pard
+\cbpat1{}}

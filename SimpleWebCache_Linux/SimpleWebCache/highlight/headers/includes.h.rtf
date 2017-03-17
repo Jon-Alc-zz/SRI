@@ -1,0 +1,139 @@
+{\rtf1\ansi \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#ifndef __includes_h__}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define __includes_h__}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"common.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <execinfo.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <stdio.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <errno.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <string.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <stdlib.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <stdarg.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <unistd.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <pthread.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <time.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <signal.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <dlfcn.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <pthread.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/time.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/timeb.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/types.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/wait.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/socket.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <netinet/in.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <arpa/inet.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <netdb.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/stat.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <errno.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <ctype.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <signal.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <math.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/resource.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/ioctl.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/file.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <net/if.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <sys/ioctl.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <net/if_arp.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <arpa/inet.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <ctype.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <dirent.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <mysql/mysql.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<netdb.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<netinet/udp.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<netinet/tcp.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<netinet/ip.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<sys/socket.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<net/if.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<net/ethernet.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<netinet/in.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<sys/ioctl.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include<sys/ipc.h>}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TCP_SOCKET_WRITE_BUFFER_SIZE    {1}{0}{2}{4}*{1}{0}{2}{4}*{1}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TCP_SOCKET_READ_BUFFER_SIZE         {1}{0}{2}{4}*{1}{0}{2}{4}*{1}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SINGLE_QUOTE}}                                                    {\cf9{'}}{\cf7{\\'}}{\cf9{'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define DOUBLE_QUOTE}}                                                    {\cf9{'"'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define OPEN_XML_BRACKET}}                                                {\cf9{'<'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOSE_XML_BRACKET}}                                               {\cf9{'>'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define WHITE_SPACE}}                                                             {\cf9{' '}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define EQUAL_SIGN}}                                                              {\cf9{'='}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define QUESTION_MARK}}                                                   {\cf9{'?'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SLASH}}                                                                   {\cf9{'}}{\cf7{\\\\}}{\cf9{'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SLASH_N}}                                                                 {\cf9{'}}{\cf7{\\n}}{\cf9{'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SLASH_R}}                                                                 {\cf9{'}}{\cf7{\\r}}{\cf9{'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SLASH_T}}                                                                 {\cf9{'}}{\cf7{\\t}}{\cf9{'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define BACK_SLASH}}                                                              {\cf9{'/'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOSE_XML_BRACKET_WITH_SLASH}}                    {\cf9{"</"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOSE_XML_BRACKET_WITH_BACK_SLASH}}               {\cf9{"/>"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define XML_QUESTION_MARK_OPEN_TAG}}                              {\cf9{"<?"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define XML_QUESTION_MARK_CLOSE_TAG}}                             {\cf9{"?>"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define XML_TAG_NAME_SIZE {1}{0}{2}{4}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDARCHITECTURE}}                                               {\cf9{'A'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDNODE}}                                                               {\cf9{'N'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDNETWORK}}                                                    {\cf9{'L'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDIMAGEFORMAT}}                                                {\cf9{'F'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDIMAGE}}                                                              {\cf9{'I'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDNODEDEPOT}}                                                  {\cf9{'D'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDVMPROFILE}}                                                  {\cf9{'P'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDTERMINATE}}                                                  {\cf9{'T'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDINSTANCEMANAGER}}                                    {\cf9{'S'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDINSTANCE}}                                                   {\cf9{'s'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDNETWORKMANAGER}}                                             {\cf9{'N'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDHTTPFILE}}                                           {\cf9{'H'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDINSTANCEVIRTUALINTERFACE}}           {\cf9{'V'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDDISK}}                               {\cf9{'K'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDADMINISTRATOR}}                                              {\cf9{'M'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDADMINISTRATORSGROUP}}                {\cf9{'G'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDADMINISTRATORGROUPSUBSCRIPTION}}     {\cf9{'a'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CLOUDADMINISTARTORRESOURCEPRIVILEGE}}     {\cf9{'r'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SQLQUERY_INSERT}}                                                 {\cf9{'I'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SQLQUERY_UPDATE}}                                                 {\cf9{'U'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SQLQUERY_SELECT}}                                                 {\cf9{'S'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SQLQUERY_DELETE}}                                                 {\cf9{'D'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SQLQUERY_CUSTOM}}                                                 {\cf9{'C'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SQLQUERY_ADD_FORM}}                                               {\cf9{'A'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SQLQUERY_MODIFY_FORM}}                                    {\cf9{'M'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define XMALIZE}}                                 {\cf9{'X'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TEXTALIZE}}                               {\cf9{'T'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define LOG_NOTICE                                                                      {1}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define LOG_WARNING                                                                     {1}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define LOG_ERROR                                                                       {1}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define RAW_SOCKET_BUFFER_SIZE                                          {6}{5}{5}{3}{6}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SOCKET_READ_BUFFER_SIZE         {1}{0}{2}{4}*{1}{0}{2}{4}*{1}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SOCKET_WRITE_BUFFER_SIZE        {1}{0}{2}{4}*{1}{0}{2}{4}*{1}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TCP_SOCKET_WRITE_BUFFER_SIZE    {1}{0}{2}{4}*{1}{0}{2}{4}*{1}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TCP_SOCKET_READ_BUFFER_SIZE     {1}{0}{2}{4}*{1}{0}{2}{4}*{1}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define MULTICAST_GROUP_PORT            {3}{3}{3}{3}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define USER_MULTICAST_GROUP_PORT       {4}{4}{4}{4}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define MULTICAST_PACKET_SIZE           {8}{0}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define BAG_WAIT                        {1}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define MINIMUM_WRITE_WAIT              {1}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SECONDARY_WRITE_WAIT_DELTA      {1}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define WRITE_WAIT_DELTA                {1}{0}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define INITIAL_WRITE_WAIT              {1}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define MAX_CONSTELLATION_SIZE              {6}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define PAGE_RENDER_MODE_FLATTENED              {1}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define PAGE_RENDER_MODE_NOT_FLATTENED          {2}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define PAGE_RENDER_MODE_BOTH                   {3}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define MAX_LOOP                                {1}{0}{0}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define STRING_NODE_TYPE}}                        {\cf9{'S'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SHORT_NODE_TYPE}}                         {\cf9{'H'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define INTEGER_NODE_TYPE}}                       {\cf9{'I'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define LONG_NODE_TYPE}}                          {\cf9{'l'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define FLOAT_NODE_TYPE}}                         {\cf9{'F'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define DOUBLE_NODE_TYPE}}                        {\cf9{'D'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define CHAR_NODE_TYPE}}                          {\cf9{'C'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define BOOL_NODE_TYPE}}                          {\cf9{'B'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define BYTE_NODE_TYPE}}                          {\cf9{'Y'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define LIST_NODE_TYPE}}                          {\cf9{'L'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define XML_NODE_TYPE}}                           {\cf9{'X'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define VOID_NODE_TYPE}}                          {\cf9{'V'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SERVICE_NODE_TYPE}}                       {\cf9{'s'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define SHARED_LIB_NODE_TYPE}}                    {\cf9{'r'}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#endif}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{\i //~ Formatted by Jindent --- http://www.jindent.com\i0 }}{\cf2{}}}\par\pard
+\cbpat1{}}
