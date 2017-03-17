@@ -1,5 +1,6 @@
 #include "TCPSocket.h"
 #include "Thread.h"
+#include "SRI.h"
 
 // A class representing a single connection form a client
 class Connection : public Thread

@@ -20,6 +20,6 @@ void * Connection::threadMainBody (void * arg) { // Main thread body for serving
 	
 	SRI(tcpSocket); // Starts the SRI program
 	
-	tcpSocket→shutDown(); // Shutdown the TCP Socket
+	tcpSocket->shutDown(); // Shutdown the TCP Socket
 	return NULL;
 }

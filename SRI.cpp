@@ -1,5 +1,4 @@
-#include "Database.h"
-#include "TCPSocket.h"
+#include "SRI.h"
 
 void SRI(TCPSocket * p_tcpSocket) {
 	char file_name[1024]; // A buffer for holding the file name
