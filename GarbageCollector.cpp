@@ -21,7 +21,7 @@ void GarbageCollector::addConnection(Connection * connection){
 
 void GarbageCollector::cleanup(){
     Connection * cur = head;
-    for(; cur! = NULL && !cur->isRunning();){
+    for(; cur != NULL && !cur->isRunning();){
         cur->waitForRunToFinish();
         Connection * cur1 = cur;
         cur = cur->getNextConnection();
@@ -35,7 +35,7 @@ void GarbageCollector::cleanup(){
 
 void GarbageCollector::terminate(){
     Connection * cur = head;
-    for( ; cur! = NULL;){
+    for( ; cur != NULL;){
         cur->waitForRunToFinish();
         Connection * cur1 = cur;
         cur = cur->getNextConnection();

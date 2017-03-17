@@ -10,7 +10,7 @@ void SRI(TCPSocket * p_tcpSocket) {
 
 	while (true) {
 		memset (file_name,0,1024); // Initialize the buffer
-		read_bytes = p_tcpSocket→readFromSocket(file_name,1023); 
+		read_bytes = p_tcpSocket->readFromSocket(file_name,1023); 
 		
 		if(read_bytes > 0){
 			
@@ -26,5 +26,4 @@ void SRI(TCPSocket * p_tcpSocket) {
 
 	delete(DB);
 
-	return(0);
 }

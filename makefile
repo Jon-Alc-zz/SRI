@@ -2,7 +2,7 @@ OBJS = sriServer.o Connection.o GarbageCollector.o TCPServerSocket.o TCPSocket.o
 CC = g++
 DEBUG = -g
 CFLAGS = -Wall -std=c++11 -lpthread -lsocket -c $(DEBUG)
-LFLAGS = -Wall -std=c++11 -lpthread -lsocket $(DEBUG)
+LFLAGS = -Wall -std=c++11 -lpthread $(DEBUG)
 
 sriServer : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o sriServer
